@@ -1,0 +1,10 @@
+Slimerjs how can I intercept the queries
+
+How slimerjs clicks on web-page?
+
+CASPER HAS:
+Stopping execution of web-page environment (stopping javascript)
+debugHTML, debugPage, this.echo
+casper can fill the forms
+getElementsBounds - gives size, very good for using "ckick" afterwards
+getHTML, getElementXXX, ...
