@@ -46,3 +46,32 @@ module.exports.colors = {
     cyan : (ss) => { return "\033[0;36m" + ss + "\033[0m"; },
     white : (ss) => { return "\033[0;37m" + ss + "\033[0m"; }
 };
+
+// ====================================================================================================================
+module.exports.crawlerLogger = function crawlerLogger (crawlerUser, logLevel) {
+    var logLevels = ['info', 'log', 'warn', 'error'];
+
+    this.info = function (msg) {
+        if (logLevels.indexOf(logLevel) <= 0) {
+            console.info ('[Browser "' + crawlerUser + '"] ' + msg);
+        }
+    };
+
+    this.log = function (msg) {
+        if (logLevels.indexOf(logLevel) <= 1) {
+            console.log ('[Browser "' + crawlerUser + '"] ' + msg);
+        }
+    };
+
+    this.warn = function (msg) {
+        if (logLevels.indexOf(logLevel) <= 2) {
+            console.warn (module.exports.colors.yellow('[Browser "' + crawlerUser + '"] ' + msg));
+        }
+    };
+
+    this.error = function (msg) {
+        if (logLevels.indexOf(logLevel) <= 3) {
+            console.error (module.exports.colors.red('[Browser "' + crawlerUser + '"] ' + msg));
+        }
+    };
+};
