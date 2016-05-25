@@ -8,3 +8,5 @@ debugHTML, debugPage, this.echo
 casper can fill the forms
 getElementsBounds - gives size, very good for using "ckick" afterwards
 getHTML, getElementXXX, ...
+
+Alternative to use slimerjs and phantomjs is to use nodejs module https://www.npmjs.com/package/jsdom

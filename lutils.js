@@ -1,5 +1,7 @@
 // lutils - local utils, used during development
 
+var fs = require('fs');
+
 // ====================================================================================================================
 function PatchedSlimerRequire (){
 
@@ -48,30 +50,45 @@ module.exports.colors = {
 };
 
 // ====================================================================================================================
-module.exports.crawlerLogger = function crawlerLogger (crawlerUser, logLevel) {
-    var logLevels = ['info', 'log', 'warn', 'error'];
+module.exports.crawlerLogger = function crawlerLogger(file_name, crawlerUser, logLevel) {
+    var logLevels = ['debug', 'info', 'warn', 'error'];
 
-    this.info = function (msg) {
+    // console.log(util.inspect(fs.exists(file_name)));
+
+    // var logfile = fs.open('/tmp/uniq1', {
+    //     mode: 'w',
+    //     nobuffer: true
+    // });
+    // var logfile = fs.open('/tmp/uniq1', 'a');
+    
+    // var logfile = fs.open(file_name, 'a');
+
+    this.debug = function(msg) {
         if (logLevels.indexOf(logLevel) <= 0) {
-            console.info ('[Browser "' + crawlerUser + '"] ' + msg);
+            // logfile.write('[debug][Browser "' + crawlerUser + '"] ' + msg + '\n');
+            // fs.write(file_name, '[debug][Browser "' + crawlerUser + '"] ' + msg, 'w');
+            console.log('[crdebug][Browser "' + crawlerUser + '"] ' + msg);
         }
     };
 
-    this.log = function (msg) {
+    this.info = function(msg) {
         if (logLevels.indexOf(logLevel) <= 1) {
-            console.log ('[Browser "' + crawlerUser + '"] ' + msg);
+            // fs.write(file_name, '[info][Browser "' + crawlerUser + '"] ' + msg, 'w');
+            console.log('[crinfo][Browser "' + crawlerUser + '"] ' + msg);
         }
     };
 
-    this.warn = function (msg) {
+    this.warn = function(msg) {
         if (logLevels.indexOf(logLevel) <= 2) {
-            console.warn (module.exports.colors.yellow('[Browser "' + crawlerUser + '"] ' + msg));
+            // fs.write(file_name, '[warn]' + module.exports.colors.yellow('[Browser "' + crawlerUser + '"] ' + msg), 'w');
+            console.log('[crwarn]' + module.exports.colors.yellow('[Browser "' + crawlerUser + '"] ' + msg));
         }
     };
 
-    this.error = function (msg) {
+    this.error = function(msg) {
         if (logLevels.indexOf(logLevel) <= 3) {
-            console.error (module.exports.colors.red('[Browser "' + crawlerUser + '"] ' + msg));
+            // fs.write(file_name, '[error]' + module.exports.colors.red('[Browser "' + crawlerUser + '"] ' + msg), 'w');
+            console.log('[crerror]' + module.exports.colors.red('[Browser "' + crawlerUser + '"] ' + msg));
         }
     };
 };

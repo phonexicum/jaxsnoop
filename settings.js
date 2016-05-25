@@ -7,10 +7,10 @@ module.exports = {
 
     slimerjs_cli_settings: [
         // '--debug=page,pageloading,netprogress,config,cli,errors',
-        // '-jsconsole',
+        '-jsconsole',
         '--load-images=false',
         '--disk-cache=true'
     ],
-    console_log_level: 'info',
+    console_log_level: 'debug', /* debug -> info -> warn -> error */
     q_long_stack_support: true
 };

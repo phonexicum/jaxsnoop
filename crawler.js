@@ -21,7 +21,38 @@ var crawlerSettings = require('./settings_crawler.js');
 var crawlerUser = system.env.USER_NAME;
 
 var util = require('/usr/lib/node_modules/util-slimy/util.js');
-var logger = new lutils.crawlerLogger(crawlerUser, crawlerSettings.logLevel);
+var logPipe = system.env.LOG_PIPE;
+var logger = new lutils.crawlerLogger(logPipe, crawlerUser, crawlerSettings.logLevel);
+
+// In slimerjs open returns Promise, and I am actively using this feature, but phantomjs is not working with it.
+// That is why I probably run into not supporting phantom
+
+// Possible python BeautifulSoup analogue to manipulate and parse DOM
+// https://github.com/cheeriojs/cheerio - can not use it, because it uses htmlparser2 (the fastest parser there is for
+// node) and it uses nodejs events, which is not implemented in neither phantomjs neither slimerjs
+// Very-very pity I can not use it!
+
+// ====================================================================================================================
+// ====================================================================================================================
+// ====================================================================================================================
+
+function printTestLogMessages (){
+    logger.debug('You must see 3 logging messages below, if not => there is problems with logging system');
+    logger.debug('1) message from slimerjs context');
+    var page = webpage.create();
+    page.open("<head></head><body>Hello World</body>", function (status) {
+        logger.debug('2) message from slimerjs context inside handler of processing webpage');
+        page.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
+            logger.debug('3) handling console message from browser webpage context "' + msg + '"');
+        };
+        page.evaluate(function () {
+            console.log('message from inside');
+        });
+        page.close();
+    });
+}
+
+printTestLogMessages();
 
 // ====================================================================================================================
 // ====================================================================================================================
@@ -61,7 +92,7 @@ function JaxsnoopServer (){
 
                     } catch (err){
                         logger.error("Error while setting new settings " + err);
-                        
+
                         response.statusCode = 400;
                         response.write('Error: ' + err);
                         response.close();
@@ -110,6 +141,7 @@ function JaxsnoopCrawler() {
     this.jaxsnoopSettings = {};
     this.page = undefined;
 
+
     // ================================================================================================================
     this.RewriteSettings = function RewriteSettings (new_settings){
         this.jaxsnoopSettings = JSON.parse(new_settings);
@@ -117,38 +149,133 @@ function JaxsnoopCrawler() {
         logger.info("Rewrite settings in crawler. ");// + util.inspect(this.jaxsnoopSettings, false, null));
     };
 
+
     // ================================================================================================================
     this.createWebpage = function createWebpage() {
         
+        logger.info('LOGGER ALIVE 1');
         this.page = webpage.create();
-        page.onConsoleMessage = function (msg) {
-            console.log('[Browser "' + crawlerUser + ' console] ' + msg);
-        };       
+        logger.info('LOGGER ALIVE 2');
+        
+        this.page.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
+            // logger.debug ('[Browser "' + crawlerUser + '" console] Script error. file: ' + file + ' line: ' + line + ' message: ' + msg);
+        };
+        
+        logger.info('LOGGER ALIVE 4');
+
+        // this.page.onError = function(message, stack) {
+        //     // logger.debug ('[Browser "' + crawlerUser + '" console] Browser error. stack: ' + stack + ' message: ' + message);
+        // };
+        
+        logger.info('LOGGER ALIVE 5');
+
+        this.page.viewportSize = { width: 1280, height: 600 };
+
+        logger.info('LOGGER ALIVE 6');
+
+
+        var ppp = require('webpage').create();
+
+        console.log('execution');
+        logger.info('LOGGER ALIVE 7');
+        
+
+        ppp.open('http://127.0.0.1:8000/pyforum/default/login', function(status) {
+            console.log('hifi');
+            ppp.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
+                console.log('console message 1 ' + msg);
+                console.log(logger);
+                logger.debug ('[console] Script error. file: ' + file + ' line: ' + line + ' message: ' + msg);
+                console.log('console message 2 ' + msg);
+            };
+            ppp.onError = function(message, stack) {
+                logger.debug ('[console] Browser error. stack: ' + stack + ' message: ' + message);
+            };
+
+            ppp.evaluate(function () {
+                console.log("TESTING 1");
+            });
+
+
+        });
+
+        logger.info('LOGGER ALIVE 3');
+
+        // .then(function(){
+        //     ppp.open('http://127.0.0.1:8000/pyforum/default/login', function(status) {
+                
+        //         // ppp.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
+        //         //     logger.debug ('[Browser "' + crawlerUser + '" console] Script error. file: ' + file + ' line: ' + line + ' message: ' + msg);
+        //         // };
+        //         // ppp.onError = function(message, stack) {
+        //         //     logger.debug ('[Browser "' + crawlerUser + '" console] Browser error. stack: ' + stack + ' message: ' + message);
+        //         // };
+
+        //         ppp.evaluate(function () {
+        //             console.log("TESTING 2");
+        //         });
+        //     });
+        // });
+
+
 
     };
+
 
     // ================================================================================================================
     this.closeWebpage = function closeWebpage() {
         this.page.close();
     };
 
-    // ================================================================================================================
-    this.login = function login() {
-
-    };
 
     // ================================================================================================================
-    this.logout = function logout() {
-
+    this.login = function login(page) {
+        var promise = crawlerSettings.users[crawlerUser].login_function(page);
+        return promise;
     };
+
+
+    // ================================================================================================================
+    this.logout = function logout(page) {
+        var promise = crawlerSettings.users[crawlerUser].logout_function(page);
+        return promise;
+    };
+
 
     // ================================================================================================================
     // This function crawls the web-application generating the map (oriented graph with named edges) for the user, without
     // trigering state changing events (such as POST requests to server)
     // 
-    this.crawlStaticActions = function crawlStaticActions() {
+    this.crawlStaticActions = function crawlStaticActions() { var self = this;
+        // var map;
+        logger.info('CRAWLER ALIVE');
+        var promise = self.login(self.page);
+        // while (true)
+        // {
+        //     promise = promise.then(function (message){
 
+        //         // get DOM and pass to classifyWebpage
+        //         var content1 = self.page.evaluate(function(){
+        //             console.log("shit");
+        //             // console.log(document.getElementsByTagName("body")[0]);
+        //             // return document.getElementsByTagName("body")[0].innerHTML;
+        //         });
+        //         // console.log(content1);
+
+        //         return new Promise(function(res, rej) {res("success");});
+
+        //     }, function (err) {
+        //         logging.error('Error crawling the state: ' + err);
+        //     });
+        // }
+        
+        // promise = promise.then(function (message){
+        //     console.log('before');
+        //     return self.logout(self.page);
+        // });
+        return promise;
     };
+
 
     // ================================================================================================================
     // This function looks on the current opened webpage in the crawler and already generated map of static actions for
@@ -182,3 +309,7 @@ var jaxsnoopCrawler = new JaxsnoopCrawler ();
 var jaxsnoopServer = new JaxsnoopServer ();
 
 jaxsnoopServer.StartSlaveWebServer(jaxsnoopCrawler);
+
+jaxsnoopCrawler.createWebpage();
+// jaxsnoopCrawler.crawlStaticActions();
+// jaxsnoopCrawler.closeWebpage();
