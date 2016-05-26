@@ -182,28 +182,28 @@ function JaxSnoop() {
             var childArgs = [path.join(__dirname, './crawler.js')].concat(jaxsnoopSettings.slimerjs_cli_settings);
             var crwlr_port = ctrl_utils.GetFreePortNumber();
 
-            // // Setting HTTP server to listen for crawler logs
-            // const server = http.createServer((req, res) => {
-            //     if (req.method === 'POST') {
-            //         var data = '';
-            //         req.on('data', (data_chunk) => {
-            //             data = data + data_chunk;
-            //         });
-            //         req.on('end', () => {
-            //             parseCrawlerLog(data);
-            //         });
-            //         req.on('error', (err) => {
-            //             parseCrawlerLog(data);
-            //             nodeLogger.error('Error from crawler "' +  + '" logs incoming connection');
-            //         });
-            //     }
-            //     res.writeHead(200, "OK", {'Content-Type': 'text/plain'});
-            //     res.end();
-            // }).listen(0, 100);
-            // 
-            // crawler_destructor.on('kill_crawler', () => {
-            //     server.close();
-            // });
+            // Setting HTTP server to listen for crawler logs
+            const server = http.createServer((req, res) => {
+                if (req.method === 'POST') {
+                    var data = '';
+                    req.on('data', (data_chunk) => {
+                        data = data + data_chunk;
+                    });
+                    req.on('end', () => {
+                        parseCrawlerLog(data);
+                    });
+                    req.on('error', (err) => {
+                        parseCrawlerLog(data);
+                        nodeLogger.error('Error from crawler "' +  + '" logs incoming connection');
+                    });
+                }
+                res.writeHead(200, "OK", {'Content-Type': 'text/plain'});
+                res.end();
+            }).listen(0, 100);
+            
+            crawler_destructor.on('kill_crawler', () => {
+                server.close();
+            });
 
             var crawler_inst = childProcess.spawn(slimerjs.path, childArgs, {
                 stdio: 'pipe',
@@ -213,16 +213,18 @@ function JaxSnoop() {
                     'COMMANDS_PORT_CRAWLER': crwlr_port,
                     'CRAWLER_SETTINGS_PATH': './' + path.join ('./', args['settings_dir'], './settings_crawler.js'),
                     'LOGGING_HOST': 'localhost',
-                    'LOGGING_PORT': 20000})//server.address().port })
+                    // 'LOGGING_PORT': 0
+                    'LOGGING_PORT': server.address().port
+                })
             });
             crawler_inst.stderr.on('data', (data) => {
                 crawlerLogger.error('Got stderr output from crawler: >' + data.slice(0, -1) + '<');
             });
 
-            crawler_inst.stdout.on('data', parseCrawlerLog);
-            crawler_inst.stdout.on('error', (err) => {
-                crawlerLogger.error('crawler stdout error: ' + err);
-            });
+            // crawler_inst.stdout.on('data', parseCrawlerLog);
+            // crawler_inst.stdout.on('error', (err) => {
+            //     crawlerLogger.error('crawler stdout error: ' + err);
+            // });
 
             
             self.crawlers[user_name] = {
