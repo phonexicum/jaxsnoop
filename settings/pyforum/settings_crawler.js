@@ -1,31 +1,14 @@
 // Settings for each crawler instance
 
 function userLoginAction(login, passwd) {
-    return function(page) {
+    return function(page, crawler_user) {
         return new Promise(function(res, rej) {
             try {
                 page.open('http://127.0.0.1:8000/pyforum/default/login', function(status) {
-
-                    page.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
-                        console.log ('--> [Browser "' + '" console] Script error. file: ' + file + ' line: ' + line + ' message: ' + msg);
-                    };
-                    page.onError = function(message, stack) {
-                        console.log ('--> [Browser "' + '" console] Browser error. stack: ' + stack + ' message: ' + message);
-                    };
-
-                    console.log('FUCK');
-
                     if (status === 'success') {
-                        
-                        console.log('FUCK2');
-
                         page.evaluate(function(login, passwd) {
-                            
-                            // asdfasdf;
+                            console.error('test');
 
-                            console.error('test\n');
-                            alert('fucking shit');
-                            
                             document.getElementById('auth_alias').value = login;
                             document.getElementById('passwd').value = passwd;
                             document.getElementById('login_b').click();
@@ -51,16 +34,9 @@ function userLogoutAction(page) {
     return new Promise(function(resolve, reject) {
         page.open('http://127.0.0.1:8000/pyforum/default/index', function(status) {
             if (status === 'success') {
-                console.log(status);
-                // console.log(page.content);
-                var ret = page.evaluate(function() {
-                    console.log('inside');
-                    // var content = document.getElementsByTagName("body")[0].innerHTML;
-                    // console.log('content ' + content);
-                    // document.querySelectorAll('[title=Logout]')[0].click();
-                    return 'hifi';
+                page.evaluate(function() {
+                    document.querySelectorAll('[title=Logout]')[0].click();
                 });
-                console.log(ret);
                 resolve(status);
             } else {
                 reject(status);
@@ -90,5 +66,5 @@ module.exports = {
         }
     },
 
-    logLevel: 'info'
+    loglevel: 'debug'
 };

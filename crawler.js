@@ -2,12 +2,11 @@
 
 // ====================================================================================================================
 // ====================================================================================================================
+// Includes
 // ====================================================================================================================
 // We are limited with normal node packages functionality, because slimerjs and phantomjs - are not nodejs and have
 // support drawbacks
-// 
-// Includes
-// 
+
 
 var system = require('system');
 var webpage = require('webpage');
@@ -16,13 +15,12 @@ var webserver = require('webserver');
 
 // var sleep = require(system.env.HOME + '/node_modules/sleep/index.js');
 
-var lutils = require('./lutils.js');
-var crawlerSettings = require('./settings_crawler.js');
+var slimer_utils = require('./utils/slimer_utils.js');
+var crawlerSettings = require(system.env.CRAWLER_SETTINGS_PATH);
 var crawlerUser = system.env.USER_NAME;
 
 var util = require('/usr/lib/node_modules/util-slimy/util.js');
-var logPipe = system.env.LOG_PIPE;
-var logger = new lutils.crawlerLogger(logPipe, crawlerUser, crawlerSettings.logLevel);
+var logger = new slimer_utils.crawlerLogger(system.env.LOGGING_HOST, system.env.LOGGING_PORT, crawlerUser, crawlerSettings.loglevel);
 
 // In slimerjs open returns Promise, and I am actively using this feature, but phantomjs is not working with it.
 // That is why I probably run into not supporting phantom
@@ -32,15 +30,16 @@ var logger = new lutils.crawlerLogger(logPipe, crawlerUser, crawlerSettings.logL
 // node) and it uses nodejs events, which is not implemented in neither phantomjs neither slimerjs
 // Very-very pity I can not use it!
 
-// ====================================================================================================================
-// ====================================================================================================================
-// ====================================================================================================================
+// https://github.com/laurentj/slimerjs/issues/478
 
+// ====================================================================================================================
+// ====================================================================================================================
+// ====================================================================================================================
 function printTestLogMessages (){
-    logger.debug('You must see 3 logging messages below, if not => there is problems with logging system');
+    logger.debug('You must see 3 special logging messages below, if not => there is problems with logging system');
     logger.debug('1) message from slimerjs context');
     var page = webpage.create();
-    page.open("<head></head><body>Hello World</body>", function (status) {
+    page.open('http://slimerjs.org', function (status) {
         logger.debug('2) message from slimerjs context inside handler of processing webpage');
         page.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
             logger.debug('3) handling console message from browser webpage context "' + msg + '"');
@@ -52,7 +51,8 @@ function printTestLogMessages (){
     });
 }
 
-printTestLogMessages();
+// if (crawlerSettings.loglevel === 'debug')
+//     printTestLogMessages();
 
 // ====================================================================================================================
 // ====================================================================================================================
@@ -63,7 +63,7 @@ function JaxsnoopServer (){
     // ================================================================================================================
     this.StartSlaveWebServer = function StartSlaveWebServer (jaxsnoopCrawler) {
 
-        var webserverSlavePort = parseInt(system.env.PORT_CRAWLER);
+        var webserverSlavePort = parseInt(system.env.COMMANDS_PORT_CRAWLER);
         var webserverSlave = webserver.create();
 
         try {
@@ -146,79 +146,22 @@ function JaxsnoopCrawler() {
     this.RewriteSettings = function RewriteSettings (new_settings){
         this.jaxsnoopSettings = JSON.parse(new_settings);
 
-        logger.info("Rewrite settings in crawler. ");// + util.inspect(this.jaxsnoopSettings, false, null));
+        logger.debug("Rewrite settings in crawler.");
     };
 
 
     // ================================================================================================================
     this.createWebpage = function createWebpage() {
-        
-        logger.info('LOGGER ALIVE 1');
+
         this.page = webpage.create();
-        logger.info('LOGGER ALIVE 2');
         
         this.page.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
-            // logger.debug ('[Browser "' + crawlerUser + '" console] Script error. file: ' + file + ' line: ' + line + ' message: ' + msg);
+            logger.warn ('[Browser "' + crawlerUser + '" console] Script error. file: ' + file + ' line: ' + line + ' message: ' + msg);
         };
-        
-        logger.info('LOGGER ALIVE 4');
-
-        // this.page.onError = function(message, stack) {
-        //     // logger.debug ('[Browser "' + crawlerUser + '" console] Browser error. stack: ' + stack + ' message: ' + message);
-        // };
-        
-        logger.info('LOGGER ALIVE 5');
-
+        this.page.onError = function(message, stack) {
+            logger.warn ('[Browser "' + crawlerUser + '" console] Browser error. stack: ' + stack + ' message: ' + message);
+        };
         this.page.viewportSize = { width: 1280, height: 600 };
-
-        logger.info('LOGGER ALIVE 6');
-
-
-        var ppp = require('webpage').create();
-
-        console.log('execution');
-        logger.info('LOGGER ALIVE 7');
-        
-
-        ppp.open('http://127.0.0.1:8000/pyforum/default/login', function(status) {
-            console.log('hifi');
-            ppp.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
-                console.log('console message 1 ' + msg);
-                console.log(logger);
-                logger.debug ('[console] Script error. file: ' + file + ' line: ' + line + ' message: ' + msg);
-                console.log('console message 2 ' + msg);
-            };
-            ppp.onError = function(message, stack) {
-                logger.debug ('[console] Browser error. stack: ' + stack + ' message: ' + message);
-            };
-
-            ppp.evaluate(function () {
-                console.log("TESTING 1");
-            });
-
-
-        });
-
-        logger.info('LOGGER ALIVE 3');
-
-        // .then(function(){
-        //     ppp.open('http://127.0.0.1:8000/pyforum/default/login', function(status) {
-                
-        //         // ppp.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
-        //         //     logger.debug ('[Browser "' + crawlerUser + '" console] Script error. file: ' + file + ' line: ' + line + ' message: ' + msg);
-        //         // };
-        //         // ppp.onError = function(message, stack) {
-        //         //     logger.debug ('[Browser "' + crawlerUser + '" console] Browser error. stack: ' + stack + ' message: ' + message);
-        //         // };
-
-        //         ppp.evaluate(function () {
-        //             console.log("TESTING 2");
-        //         });
-        //     });
-        // });
-
-
-
     };
 
 
@@ -230,7 +173,7 @@ function JaxsnoopCrawler() {
 
     // ================================================================================================================
     this.login = function login(page) {
-        var promise = crawlerSettings.users[crawlerUser].login_function(page);
+        var promise = crawlerSettings.users[crawlerUser].login_function(page, crawlerUser);
         return promise;
     };
 
@@ -248,7 +191,7 @@ function JaxsnoopCrawler() {
     // 
     this.crawlStaticActions = function crawlStaticActions() { var self = this;
         // var map;
-        logger.info('CRAWLER ALIVE');
+        
         var promise = self.login(self.page);
         // while (true)
         // {
@@ -305,11 +248,10 @@ function JaxsnoopCrawler() {
 // ====================================================================================================================
 // ====================================================================================================================
 // ====================================================================================================================
-var jaxsnoopCrawler = new JaxsnoopCrawler ();
 var jaxsnoopServer = new JaxsnoopServer ();
-
 jaxsnoopServer.StartSlaveWebServer(jaxsnoopCrawler);
 
+var jaxsnoopCrawler = new JaxsnoopCrawler ();
 jaxsnoopCrawler.createWebpage();
-// jaxsnoopCrawler.crawlStaticActions();
+jaxsnoopCrawler.crawlStaticActions();
 // jaxsnoopCrawler.closeWebpage();
