@@ -19,7 +19,7 @@ var slimer_utils = require('./utils/slimer_utils.js');
 var crawlerSettings = require(system.env.CRAWLER_SETTINGS_PATH);
 var crawlerUser = system.env.USER_NAME;
 
-var util = require('/usr/lib/node_modules/util-slimy/util.js');
+// var util = require('/usr/lib/node_modules/util-slimy/util.js');
 var logger = new slimer_utils.crawlerLogger(system.env.LOGGING_HOST, system.env.LOGGING_PORT, crawlerUser, crawlerSettings.loglevel);
 
 // In slimerjs open returns Promise, and I am actively using this feature, but phantomjs is not working with it.
@@ -35,7 +35,7 @@ var logger = new slimer_utils.crawlerLogger(system.env.LOGGING_HOST, system.env.
 // ====================================================================================================================
 // ====================================================================================================================
 // ====================================================================================================================
-function printTestLogMessages (){
+function testCrawlerLogSystem (){
     logger.debug('You must see 3 special logging messages below, if not => there is problems with logging system');
     logger.debug('1) message from slimerjs context');
     var page = webpage.create();
@@ -52,7 +52,7 @@ function printTestLogMessages (){
 }
 
 // if (crawlerSettings.loglevel === 'debug')
-//     printTestLogMessages();
+//     testCrawlerLogSystem();
 
 // ====================================================================================================================
 // ====================================================================================================================
@@ -85,6 +85,7 @@ function JaxsnoopServer (){
                 else if (request.method == 'POST' && request.url == '/set_settings') {
                     try{
                         jaxsnoopCrawler.RewriteSettings(request.post);
+                        logger.info("setting written successfully");
                         
                         response.statusCode = 200;
                         response.write('');

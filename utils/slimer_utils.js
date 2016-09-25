@@ -57,60 +57,60 @@ module.exports.colors = {
 // ====================================================================================================================
 // ====================================================================================================================
 module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, crawlerUser, logLevel) {
-    var page = webpage.create();
-    page.viewportSize = { width: 50, height: 25 };
+    // var page = webpage.create();
+    // page.viewportSize = { width: 50, height: 25 };
     
     var logLevels = ['debug', 'info', 'warn', 'error'];
 
     this.debug = function(msg) {
         if (logLevels.indexOf(logLevel) <= 0) {
             var data = '[crdebug][Browser "' + crawlerUser + '"] ' + msg;
-            // console.log(data);
+            console.log(data);
 
-            page.openUrl(loggingHost + ':' + loggingPort, {
-                operation: 'POST',
-                data: data,
-                headers: []
-            }, null, function (status) {});
+            // page.openUrl(loggingHost + ':' + loggingPort, {
+            //     operation: 'POST',
+            //     data: data,
+            //     headers: []
+            // }, null, function (status) {});
         }
     };
 
     this.info = function(msg) {
         if (logLevels.indexOf(logLevel) <= 1) {
             var data = '[crinfo][Browser "' + crawlerUser + '"] ' + msg;
-            // console.log(data);
+            console.log(data);
             
-            page.openUrl(loggingHost + ':' + loggingPort, {
-                operation: 'POST',
-                data: data,
-                headers: []
-            }, null, function () {});
+            // page.openUrl(loggingHost + ':' + loggingPort, {
+            //     operation: 'POST',
+            //     data: data,
+            //     headers: []
+            // }, null, function () {});
         }
     };
 
     this.warn = function(msg) {
         if (logLevels.indexOf(logLevel) <= 2) {
             var data = '[crwarn]' + module.exports.colors.yellow('[Browser "' + crawlerUser + '"] ' + msg);
-            // console.log(data);
+            console.log(data);
             
-            page.openUrl(loggingHost + ':' + loggingPort, {
-                operation: 'POST',
-                data: data,
-                headers: []
-            }, null, function () {});
+            // page.openUrl(loggingHost + ':' + loggingPort, {
+            //     operation: 'POST',
+            //     data: data,
+            //     headers: []
+            // }, null, function () {});
         }
     };
 
     this.error = function(msg) {
         if (logLevels.indexOf(logLevel) <= 3) {
             var data = '[crerror]' + module.exports.colors.red('[Browser "' + crawlerUser + '"] ' + msg);
-            // console.log(data);
+            console.log(data);
             
-            page.openUrl(loggingHost + ':' + loggingPort, {
-                operation: 'POST',
-                data: data,
-                headers: []
-            }, null, function () {});
+            // page.openUrl(loggingHost + ':' + loggingPort, {
+            //     operation: 'POST',
+            //     data: data,
+            //     headers: []
+            // }, null, function () {});
         }
     };
 };

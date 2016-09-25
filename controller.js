@@ -50,8 +50,8 @@ parser.addArgument(
 );
 var args = parser.parseArgs();
 
-const jaxsnoopSettings = require('./' + path.join (args['settings_dir'], './settings.js'));
-const crawlerSettings = require('./' + path.join ('./', args['settings_dir'], './settings_crawler.js'));
+const jaxsnoopSettings = require('./' + path.join (args.settings_dir, './settings.js'));
+const crawlerSettings = require('./' + path.join ('./', args.settings_dir, './settings_crawler.js'));
 
 const my_loggers = require('./utils/setup_ctrl_logger.js');
 const crawlerLogger = my_loggers.crawlerLogger (jaxsnoopSettings.console_log_level);
@@ -124,7 +124,7 @@ function JaxSnoop() {
 
             delete this.crawlers[user_name];
 
-            crawlerLogger.debug('Crawler killed.');
+            crawlerLogger.debug('Crawler "' + user_name + '" killed.');
         }
     };
 
@@ -141,7 +141,6 @@ function JaxSnoop() {
     this.RestartCrawler = function RestartCrawler (user_name) { var self = this;
 
         var parseCrawlerLog = (data) => { data = data+'';
-            // console.log('>>>' + data);
 
             // Sometimes log messages from crawler will come in packs (meaning data will contain several messages)
             // To destinguish them I am going to use one of two principles
@@ -150,7 +149,7 @@ function JaxSnoop() {
             //      But in this case we will attach strange alone messages to the previous message with '[cr...]'
             // var re_log_message = /\s*(\[cr(?:debug|info|warn|error)\](?:.|\n)*)(?:\[cr(?:debug|info|warn|error)\]|\s*$)/g;
             // 
-            //      2) Each line are separate message
+            //      2) Each line is a separate message
             var re_log_message = /\s*(.+)(?:\n|$)/g;
 
             var re_log_message_lastIndex = 0;
@@ -182,28 +181,28 @@ function JaxSnoop() {
             var childArgs = [path.join(__dirname, './crawler.js')].concat(jaxsnoopSettings.slimerjs_cli_settings);
             var crwlr_port = ctrl_utils.GetFreePortNumber();
 
-            // Setting HTTP server to listen for crawler logs
-            const server = http.createServer((req, res) => {
-                if (req.method === 'POST') {
-                    var data = '';
-                    req.on('data', (data_chunk) => {
-                        data = data + data_chunk;
-                    });
-                    req.on('end', () => {
-                        parseCrawlerLog(data);
-                    });
-                    req.on('error', (err) => {
-                        parseCrawlerLog(data);
-                        nodeLogger.error('Error from crawler "' +  + '" logs incoming connection');
-                    });
-                }
-                res.writeHead(200, "OK", {'Content-Type': 'text/plain'});
-                res.end();
-            }).listen(0, 100);
+            // // Setting HTTP server to listen for crawler logs
+            // const server = http.createServer((req, res) => {
+            //     if (req.method === 'POST') {
+            //         var data = '';
+            //         req.on('data', (data_chunk) => {
+            //             data = data + data_chunk;
+            //         });
+            //         req.on('end', () => {
+            //             parseCrawlerLog(data);
+            //         });
+            //         req.on('error', (err) => {
+            //             parseCrawlerLog(data);
+            //             nodeLogger.error('Error from crawler "' +  + '" logs incoming connection');
+            //         });
+            //     }
+            //     res.writeHead(200, "OK", {'Content-Type': 'text/plain'});
+            //     res.end();
+            // }).listen(0, 100);
             
-            crawler_destructor.on('kill_crawler', () => {
-                server.close();
-            });
+            // crawler_destructor.on('kill_crawler', () => {
+            //     server.close();
+            // });
 
             var crawler_inst = childProcess.spawn(slimerjs.path, childArgs, {
                 stdio: 'pipe',
@@ -211,20 +210,20 @@ function JaxSnoop() {
                     'USER_NAME': user_name,
                     // 'COMMANDS_HOST_CRAWLER': 'localhost',
                     'COMMANDS_PORT_CRAWLER': crwlr_port,
-                    'CRAWLER_SETTINGS_PATH': './' + path.join ('./', args['settings_dir'], './settings_crawler.js'),
+                    'CRAWLER_SETTINGS_PATH': './' + path.join ('./', args.settings_dir, './settings_crawler.js'),
                     'LOGGING_HOST': 'localhost',
-                    // 'LOGGING_PORT': 0
-                    'LOGGING_PORT': server.address().port
+                    'LOGGING_PORT': 0
+                    // 'LOGGING_PORT': server.address().port
                 })
             });
             crawler_inst.stderr.on('data', (data) => {
                 crawlerLogger.error('Got stderr output from crawler: >' + data.slice(0, -1) + '<');
             });
 
-            // crawler_inst.stdout.on('data', parseCrawlerLog);
-            // crawler_inst.stdout.on('error', (err) => {
-            //     crawlerLogger.error('crawler stdout error: ' + err);
-            // });
+            crawler_inst.stdout.on('data', parseCrawlerLog);
+            crawler_inst.stdout.on('error', (err) => {
+                crawlerLogger.error('crawler stdout error: ' + err);
+            });
 
             
             self.crawlers[user_name] = {
@@ -235,6 +234,7 @@ function JaxSnoop() {
 
             var promise = self.CheckCrawlerConnection(user_name)
                 .fail((err) => {
+                    nodeLogger.error('failed to start crawler "' + user_name + '"');
                     self.KillCrawler(user_name);
                     throw err;
                 });
@@ -280,9 +280,9 @@ Q.all(
     nodeLogger.fatal('Error. Crawling stopped.');
     throw err;
 
-})/*.fin(() => {
+}).fin(() => {
     Object.keys(jaxSnoop.crawlers).map((val, i, arr) => {
         jaxSnoop.KillCrawler(val);
     });
-})*/
+})
 .done();
