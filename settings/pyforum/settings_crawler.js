@@ -1,4 +1,6 @@
-// Settings for each crawler instance
+// Settings for crawler instances
+// 
+// Execution context: nodejs and slimerjs
 
 function userLoginAction(login, passwd) {
     return function(page, crawler_user) {
@@ -7,7 +9,7 @@ function userLoginAction(login, passwd) {
                 page.open('http://127.0.0.1:8000/pyforum/default/login', function(status) {
                     if (status === 'success') {
                         page.evaluate(function(login, passwd) {
-                            console.error('test');
+                            // console.error('test');
 
                             document.getElementById('auth_alias').value = login;
                             document.getElementById('passwd').value = passwd;

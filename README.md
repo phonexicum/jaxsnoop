@@ -1,8 +1,15 @@
 # jaxsnoop
 AJAX web-crawler based on nodejs and slimerjs
 
-Nothing works, project still in its first stages.
+*Nothing works, project still in its first stages.*
 
+
+## Table of Contents
+
+1. [TODO list (plan of development)](#todo-list)
+1. [Notes](#notes)
+1. [possible libraries](#possible-libraries)
+1. [Unstructured notes](#unstructured-notes)
 
 ## TODO list
 
@@ -93,3 +100,49 @@ Slimerjs crawlers for per-users web-state will be the same
 improving the software:
 
 - add various blacklists and whitelists as an option
+
+## Notes
+
+The only two modules suited to connect slimer and node: spooky and node-phantom-simple
+
+I refused from both of them, because it is ubnormal to write functions for slimer in node files, there must be interface to 'connect' them, not to include one into another - so there is no appropriate module
+
+Casperjs drawback - you must fully construct suite for page processing and only after that run it. I choose slimer on its own, because you can create web page and make actions on it in motion
+
+phantomjs can not be used instead of slimerjs, because it has no promises
+
+Possible python BeautifulSoup analogue to manipulate and parse DOM:  
+https://github.com/cheeriojs/cheerio - can not use it, because it uses htmlparser2 (the fastest parser there is for
+node) and it uses nodejs events, which is not implemented in neither phantomjs neither slimerjs
+Very-very pity I can not use it!
+
+
+slimerjs stdio problem:  
+https://github.com/laurentj/slimerjs/issues/478
+
+Logging:  
+I prefered to pipe crawlers messages into nodejs through stdio, because I think for now it will work faster, not to use network.  
+Messages has special format.
+
+## Possible libraries
+
+Possile graph libraries:  
+https://www.npmjs.com/package/graph.js  
+https://www.npmjs.com/package/digraphe  
+https://www.npmjs.com/package/jsgraph
+
+Tree edit distance:  
+https://github.com/hoonto/jqgram
+
+## Unstructured notes
+
+Methods for slimerjs to destinguish clickabels and click them.
+
+CASPER HAS:  
+Stopping execution of web-page environment (stopping javascript)  
+debugHTML, debugPage, this.echo  
+casper can fill the forms  
+getElementsBounds - gives size, very good for using "click" afterwards  
+getHTML, getElementXXX, ...  
+
+Alternative to use slimerjs and phantomjs is to use nodejs module https://www.npmjs.com/package/jsdom

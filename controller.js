@@ -1,11 +1,6 @@
-//  This script executes in context of nodejs
+// Main jaxsnoop script
 // 
-//  The only two modules suited to connect slimer and node: spooky and node-phantom-simple
-//  I refused from both of them, because it is ubnormal to write functions for slimer in node files, there must be interface to 'connect' them, not to include one into another - so there is no appropriate module
-// 
-//  Casperjs drawback - you must fully construct suite for page processing and only after that run it. I choose slimer on its own, because you can create web page and make actions on it in motion
-// 
-//  Probably you can use phantomjs instead of slimerjs, but I never tried
+// Execution context: nodejs
 
 // ====================================================================================================================
 // ====================================================================================================================
@@ -27,14 +22,6 @@ const tmp = require('tmp');
 const argparse = require('argparse').ArgumentParser;
 
 const slimerjs = require('slimerjs');
-
-// Possile graph libraries
-// https://www.npmjs.com/package/graph.js
-// https://www.npmjs.com/package/digraphe
-// https://www.npmjs.com/package/jsgraph
-
-// Tree edit distance
-// https://github.com/hoonto/jqgram
 
 // ====================================================================================================================
 // ====================================================================================================================
@@ -71,7 +58,7 @@ function JaxSnoop() {
     this.crawlers = {};
 
     // ================================================================================================================
-    // Checks connection to crawler by sending request to it and waitng for answer
+    // Checks connection to crawler by sending request to it and waiting for answer
     // 
     // user_name - is the name of the field defined in crawler settings
     // 
@@ -280,9 +267,8 @@ Q.all(
     nodeLogger.fatal('Error. Crawling stopped.');
     throw err;
 
-}).fin(() => {
+})/*.fin(() => {
     Object.keys(jaxSnoop.crawlers).map((val, i, arr) => {
         jaxSnoop.KillCrawler(val);
     });
-})
-.done();
+})*/.done();

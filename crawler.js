@@ -1,4 +1,6 @@
-// This script executes in context of slimerjs
+// Main jaxsnoop crawler script
+// 
+// Execution context: slimerjs
 
 // ====================================================================================================================
 // ====================================================================================================================
@@ -17,42 +19,25 @@ var webserver = require('webserver');
 
 var slimer_utils = require('./utils/slimer_utils.js');
 var crawlerSettings = require(system.env.CRAWLER_SETTINGS_PATH);
+var crawler_test_utils = require('./crawler_test_utils.js');
+
+// ====================================================================================================================
+// ====================================================================================================================
+// Setup
+// ====================================================================================================================
 var crawlerUser = system.env.USER_NAME;
 
-// var util = require('/usr/lib/node_modules/util-slimy/util.js');
 var logger = new slimer_utils.crawlerLogger(system.env.LOGGING_HOST, system.env.LOGGING_PORT, crawlerUser, crawlerSettings.loglevel);
+var debugLogger = new slimer_utils.crawlerDebugLogger("./log/debug_log.log");
 
-// In slimerjs open returns Promise, and I am actively using this feature, but phantomjs is not working with it.
-// That is why I probably run into not supporting phantom
-
-// Possible python BeautifulSoup analogue to manipulate and parse DOM
-// https://github.com/cheeriojs/cheerio - can not use it, because it uses htmlparser2 (the fastest parser there is for
-// node) and it uses nodejs events, which is not implemented in neither phantomjs neither slimerjs
-// Very-very pity I can not use it!
-
-// https://github.com/laurentj/slimerjs/issues/478
+var webPageModelGenerator = require('./crawler_routine/web_page_model_generator.js');
 
 // ====================================================================================================================
 // ====================================================================================================================
 // ====================================================================================================================
-function testCrawlerLogSystem (){
-    logger.debug('You must see 3 special logging messages below, if not => there is problems with logging system');
-    logger.debug('1) message from slimerjs context');
-    var page = webpage.create();
-    page.open('http://slimerjs.org', function (status) {
-        logger.debug('2) message from slimerjs context inside handler of processing webpage');
-        page.onConsoleMessage = function (msg, line, file, level, functionName, timestamp) {
-            logger.debug('3) handling console message from browser webpage context "' + msg + '"');
-        };
-        page.evaluate(function () {
-            console.log('message from inside');
-        });
-        page.close();
-    });
-}
 
 // if (crawlerSettings.loglevel === 'debug')
-//     testCrawlerLogSystem();
+//     crawler_test_utils.testCrawlerLogSystem();
 
 // ====================================================================================================================
 // ====================================================================================================================
@@ -84,7 +69,7 @@ function JaxsnoopServer (){
                 }
                 else if (request.method == 'POST' && request.url == '/set_settings') {
                     try{
-                        jaxsnoopCrawler.RewriteSettings(request.post);
+                        jaxsnoopCrawler.rewriteSettings(request.post);
                         logger.info("setting written successfully");
                         
                         response.statusCode = 200;
@@ -144,7 +129,7 @@ function JaxsnoopCrawler() {
 
 
     // ================================================================================================================
-    this.RewriteSettings = function RewriteSettings (new_settings){
+    this.rewriteSettings = function rewriteSettings (new_settings){
         this.jaxsnoopSettings = JSON.parse(new_settings);
 
         logger.debug("Rewrite settings in crawler.");
@@ -187,36 +172,34 @@ function JaxsnoopCrawler() {
 
 
     // ================================================================================================================
-    // This function crawls the web-application generating the map (oriented graph with named edges) for the user, without
-    // trigering state changing events (such as POST requests to server)
     // 
-    this.crawlStaticActions = function crawlStaticActions() { var self = this;
-        // var map;
+    this.openNextUsersWebPageState = function openNextUsersWebPageState(/*here must be some parameter selecting action for opening new web page state*/) {
+        var self = this;
         
+        // Making user-step
+        // By default I only logging in user
         var promise = self.login(self.page);
-        // while (true)
-        // {
-        //     promise = promise.then(function (message){
+        // var promise = crawler_test_utils.openTestPage (self.page);
+        // TODO: Not default behaviour (indeed making user-step)
+        // 
 
-        //         // get DOM and pass to classifyWebpage
-        //         var content1 = self.page.evaluate(function(){
-        //             console.log("shit");
-        //             // console.log(document.getElementsByTagName("body")[0]);
-        //             // return document.getElementsByTagName("body")[0].innerHTML;
-        //         });
-        //         // console.log(content1);
+        // Getting web-page model
+        promise = promise.then((message) => {
 
-        //         return new Promise(function(res, rej) {res("success");});
+            var jsonDOMtreeModel = self.page.evaluate(webPageModelGenerator.GenerateWebPageModel);
+            var domTreeModelRoot = JSON.parse(jsonDOMtreeModel);
 
-        //     }, function (err) {
-        //         logging.error('Error crawling the state: ' + err);
-        //     });
-        // }
+            debugLogger.log (JSON.stringify(domTreeModelRoot, null, 2));
+
+            // TODO: pushing jsonDOMtreeModel into per-user behavioural graph
+            // 
+            
+            return new Promise(function(res, rej) {res("success");});
+
+        }, (err) => {
+            logging.error('Error in opening next users web state: ' + err);
+        });
         
-        // promise = promise.then(function (message){
-        //     console.log('before');
-        //     return self.logout(self.page);
-        // });
         return promise;
     };
 
@@ -249,10 +232,11 @@ function JaxsnoopCrawler() {
 // ====================================================================================================================
 // ====================================================================================================================
 // ====================================================================================================================
+var jaxsnoopCrawler = new JaxsnoopCrawler ();
+
 var jaxsnoopServer = new JaxsnoopServer ();
 jaxsnoopServer.StartSlaveWebServer(jaxsnoopCrawler);
 
-var jaxsnoopCrawler = new JaxsnoopCrawler ();
 jaxsnoopCrawler.createWebpage();
-jaxsnoopCrawler.crawlStaticActions();
+jaxsnoopCrawler.openNextUsersWebPageState();
 // jaxsnoopCrawler.closeWebpage();

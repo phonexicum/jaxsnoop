@@ -1,4 +1,6 @@
 // Settings for jaxsnoop project
+// 
+// Execution context: nodejs
 
 module.exports = {
     web_application_name: 'pyforum',
