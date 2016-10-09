@@ -2,17 +2,18 @@
 //
 // Execution context: slimerjs
 
-// This function execution context: web-page
+// ==================================================================================================================================================
+// This function execution context: webpage
 // 
 // this function must generate some tree-object which will reflect DOM-tree and possible user-actions
 //  
 module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
 
-    console.log('GenerateWebPageModel started');
     console.log(document.location);
 
-    // ================================================================================================================
+    // ==============================================================================================================================================
     // This array contains several functions each checking if the node must not be ignored
+    
     var nodeBlacklist = [
         (node) => {
             return node.hidden === true;
@@ -27,8 +28,10 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
         });
     }
 
-    // ================================================================================================================
-    // This object contains pairs of nodeModel property and function which return the value that is going to be saved into DOM tree model (function gets pointer to DOM node of web-page).
+    // ==============================================================================================================================================
+    // This object contains pairs of nodeModel property and function which return the value that is going to be saved into DOM tree model
+    //      (function gets pointer to DOM node of webpage).
+    
     var nodePropertiesOfInterest = {
         "tagName": (node) => { 
             // returns tagName string
@@ -56,20 +59,21 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
             var nodeValues = [];
             for (var subnode of node.childNodes) {
                 if (subnode.nodeName == "#text" && ! /^\s*$/g.test(subnode.nodeValue)) {
-                    nodeValues.push(subnode.nodeValue);
+                    nodeValues.push(subnode.nodeValue.trim());
                 }
             }
             return nodeValues;
         }
     };
 
-    // ================================================================================================================
+    // ==============================================================================================================================================
     // Names of clickables, which has to be memorized if they are available.
+    
     var nodeClickablesOfInterest = ["onclick"];
 
-    // ================================================================================================================
+    // ==============================================================================================================================================
     // Function for making model from DOM node
-    // 
+    
     function MakingDOMcopyOnModel (currentNode, currentNodeModel) {
 
         currentNodeModel.clickables = [];
@@ -87,7 +91,7 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
         }
     }
 
-    // ================================================================================================================
+    // ==============================================================================================================================================
     function main () {
 
         var rootNode = document.getElementsByTagName('body')[0];
@@ -106,7 +110,7 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
             
             var blacklistCheckedNode = null;
 
-            /* If we have childNodes and this is not the first time we analyze this node (we have never before investigted its children) */
+            // If we have childNodes and this is not the first time we analyze this node (we have never before investigted its children)
             if (currentNode.children.length > 0 && domTreeModelPointer.childNodes === null) {
 
                 for (var node of currentNode.children) {
@@ -127,7 +131,7 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
                 }
             }
 
-            /* If we have sibling node */
+            // If we have sibling node
             if (currentNode.nextElementSibling !== null) {
 
                 var nextSibling = currentNode.nextElementSibling;
@@ -152,7 +156,8 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
             } 
 
             currentNode = currentNode.parentNode;
-            /* If we have not parent node */
+
+            // If we does not have parent node
             if (domTreeModelPointerStack.length === 0) break;
             domTreeModelPointer = domTreeModelPointerStack.pop();
         }

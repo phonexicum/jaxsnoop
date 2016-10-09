@@ -49,7 +49,10 @@ function userLogoutAction(page) {
 
 module.exports = {
     url_start: 'http://127.0.0.1:8000/pyforum/default/index',
-    url_whitelist: [/^http:\/\/127.0.0.1:8000\/pyforum\/.*/], // Error of regexps
+    url_whitelist: [ // Arrow of regexps
+        /^http:\/\/127.0.0.1:8000\/pyforum\/.*/,
+        /^file:\/\/.*/
+    ],
     url_blacklist: [],
     maxWaitForFullPageLoadTime: 5000, // milliseconds
 

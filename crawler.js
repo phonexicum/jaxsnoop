@@ -48,6 +48,8 @@ function JaxsnoopServer (){
 function JaxsnoopCrawler(){
 
     this.page = undefined;
+    this.userWebApplicationState = {};
+
 }
 
 // ==================================================================================================================================================
@@ -221,6 +223,11 @@ JaxsnoopCrawler.prototype.setRequestsFilters = function setRequestsFilters(){
 //      if conditions are not fullfilled then crawler will wait for crawlerSettings.maxWaitForFullPageLoadTime amount of time
 //      and if nothing happens, it will be also suggested, that browser executed all immidiate activities
 // 
+// ASSUMPTION:
+//      I expect browser to be ready immidiately after any undertaken user action, in assumption that webpage scripts will be performed before
+//      returning back into master-script (this one), though the only reason, why webpage can be unready is - network queries, therefore this
+//      function monitors network activities.
+// 
 JaxsnoopCrawler.prototype.waitFullPageLoad = function waitFullPageLoad(promise){
     var self = this;
 
@@ -359,13 +366,14 @@ JaxsnoopCrawler.prototype.logout = function logout(page){
 // ==================================================================================================================================================
 //                                                                                                         JaxsnoopCrawler::openNextUsersWebPageState
 // ==================================================================================================================================================
-JaxsnoopCrawler.prototype.openNextUsersWebPageState = function openNextUsersWebPageState(/*here must be some parameter selecting action for opening new web page state*/) {
+JaxsnoopCrawler.prototype.openNextUsersWebPageState = function openNextUsersWebPageState(/*some parameter selecting action for opening new web page state*/) {
     var self = this;
     
     // Making user-step
     // By default I only logging in user
-    var promise = self.login(self.page);
-    // var promise = crawler_test_utils.openTestPage (self.page);
+    // var promise = self.login(self.page);
+    var promise = crawler_test_utils.openTestPage (self.page);
+    
     // TODO: Not default behaviour (indeed making user-step)
     // 
 

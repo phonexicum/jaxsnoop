@@ -25,7 +25,7 @@ module.exports.testCrawlerLogSystem = function testCrawlerLogSystem (){
 // ====================================================================================================================
 module.exports.openTestPage = function openTestPage(page) {
     return new Promise(function(resolve, reject) {
-        page.open('file://' + fs.workingDirectory + '/test/test_dom.html', function(status) {
+        page.open('file://' + fs.workingDirectory + '/test/test_resources/test_dom.html', function(status) {
             if (status === 'success') {
                 resolve(status);
             } else {
