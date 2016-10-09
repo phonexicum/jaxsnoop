@@ -13,6 +13,6 @@ module.exports = {
         '--load-images=no',
         '--disk-cache=true'
     ],
-    console_log_level: 'trace', /* trace -> debug -> info -> warn -> error -> fatal */
-    q_long_stack_support: true
+    console_log_level: 'trace', // One of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
+    q_long_stack_support: true // Prameter from "q" library
 };

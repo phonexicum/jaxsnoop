@@ -29,14 +29,14 @@ module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, 
 
     this.trace = function(msg) {
         if (logLevels.indexOf(logLevel) <= logLevels.indexOf('trace')) {
-            var data = '[crtrace][Browser "' + crawlerUser + '"] ' + msg;
+            var data = '[crtrace]' + colors.white('[Browser "' + crawlerUser + '"] ' + msg);
             console.log(data);
         }
     };
 
     this.debug = function(msg) {
         if (logLevels.indexOf(logLevel) <= logLevels.indexOf('debug')) {
-            var data = '[crdebug][Browser "' + crawlerUser + '"] ' + msg;
+            var data = '[crdebug]' + colors.yellow('[Browser "' + crawlerUser + '"] ' + msg);
             console.log(data);
 
             // page.openUrl(loggingHost + ':' + loggingPort, {
@@ -49,7 +49,7 @@ module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, 
 
     this.info = function(msg) {
         if (logLevels.indexOf(logLevel) <= logLevels.indexOf('info')) {
-            var data = '[crinfo][Browser "' + crawlerUser + '"] ' + msg;
+            var data = '[crinfo]' + '[Browser "' + crawlerUser + '"] ' + msg;
             console.log(data);
             
             // page.openUrl(loggingHost + ':' + loggingPort, {
@@ -62,7 +62,7 @@ module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, 
 
     this.warn = function(msg) {
         if (logLevels.indexOf(logLevel) <= logLevels.indexOf('warn')) {
-            var data = '[crwarn]' + colors.yellow('[Browser "' + crawlerUser + '"] ' + msg);
+            var data = '[crwarn]' + colors.purple('[Browser "' + crawlerUser + '"] ' + msg);
             console.log(data);
             
             // page.openUrl(loggingHost + ':' + loggingPort, {

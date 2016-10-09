@@ -40,7 +40,7 @@ var args = parser.parseArgs();
 const jaxsnoopSettings = require('./' + path.join (args.settings_dir, './settings.js'));
 const crawlerSettings = require('./' + path.join ('./', args.settings_dir, './settings_crawler.js'));
 
-const my_loggers = require('./utils/setup_ctrl_logger.js');
+const my_loggers = require('./utils/ctrl_logger_setup.js');
 const crawlerLogger = my_loggers.crawlerLogger (jaxsnoopSettings.console_log_level);
 const nodeLogger = my_loggers.nodeLogger (jaxsnoopSettings.console_log_level);
 
