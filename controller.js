@@ -21,7 +21,7 @@ const util = require('util');
 const tmp = require('tmp');
 const argparse = require('argparse').ArgumentParser;
 
-const slimerjs = require('slimerjs');
+const slimerjs = require('slimerjs-core');
 
 // ====================================================================================================================
 // ====================================================================================================================

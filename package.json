@@ -1,0 +1,29 @@
+{
+    "name": "jaxsnoop",
+    "version": "0.0.1",
+    "author": {
+        "email": "phonexicum@yandex.ru",
+        "name": "phonexicum",
+        "url": ""
+    },
+    "description": "Web-crawler based on slimerjs",
+    "keywords": [
+        "webcrawler"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/phonexicum/jaxsnoop.git"
+    },
+    "dependencies": {
+        "q": ">=1.4.1",
+        "merge": ">=1.2.0",
+        "sleep": ">=3.0.1",
+        "util": ">=0.10.3",
+        "tmp": ">=0.0.29",
+        "argparse": ">=1.0.7",
+        "jqgram": ">=0.2.5",
+        "bunyan": ">=1.8.1",
+        "slimerjs-core": ">=0.11.5"
+    },
+    "private": true
+}

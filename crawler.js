@@ -12,6 +12,8 @@ var webpage = require('webpage');
 var fs = require('fs');
 var webserver = require('webserver');
 
+var jqgram = require('./node_modules/jqgram/index.js');
+
 var slimer_utils = require('./utils/slimer_utils.js');
 var crawlerSettings = require(system.env.CRAWLER_SETTINGS_PATH);
 var crawler_test_utils = require('./test/crawler_test_utils.js');
@@ -48,8 +50,9 @@ function JaxsnoopServer (){
 function JaxsnoopCrawler(){
 
     this.page = undefined;
-    this.userWebApplicationState = {};
-
+    this.userWebApplicationState_Root = {};
+    this.userWebApplicationState_NodeNumbers = 0;
+    this.userWebApplicationState_CurrentNode = this.userWebApplicationState_Root;
 }
 
 // ==================================================================================================================================================
@@ -373,21 +376,20 @@ JaxsnoopCrawler.prototype.openNextUsersWebPageState = function openNextUsersWebP
     // By default I only logging in user
     // var promise = self.login(self.page);
     var promise = crawler_test_utils.openTestPage (self.page);
-    
+
     // TODO: Not default behaviour (indeed making user-step)
     // 
 
     // Getting web-page model
     promise = promise.then((message) => {
 
-        var jsonDOMtreeModel = self.page.evaluate(webPageModelGenerator.GenerateWebPageModel);
-        var domTreeModelRoot = JSON.parse(jsonDOMtreeModel);
+        var jsonUsersWebPageState = self.page.evaluate(webPageModelGenerator.GenerateWebPageModel);
+        var usersWebPageState = JSON.parse(jsonUsersWebPageState);
 
-        debugLogger.log (JSON.stringify(domTreeModelRoot, null, 2));
-
-        // TODO: pushing jsonDOMtreeModel into per-user behavioural graph
-        // 
+        debugLogger.log (JSON.stringify(usersWebPageState, null, 2));
         
+        this.domTreeModelConvolution(usersWebPageState);
+
         return new Promise(function(res, rej) {res("success");});
 
     }, (err) => {
@@ -399,8 +401,31 @@ JaxsnoopCrawler.prototype.openNextUsersWebPageState = function openNextUsersWebP
 
 
 // ==================================================================================================================================================
+//                                                                                                           JaxsnoopCrawler::domTreeModelConvolution
+// ==================================================================================================================================================
+// 
+// function must detect similarities:
+//      1) similarities on one page (e.g. two forums on one webpage; crawler must be interested to crawl only one of them)
+//      2) similar pages (e.g. habrahabr articles of different users)
+//      3) similarities between pages (e.g. status bar (login, logout, settings, etc))
+// 
+JaxsnoopCrawler.prototype.domTreeModelConvolution = function domTreeModelConvolution(usersWebPageState){
+
+    var userWebAppCurrentNode = {
+        nodeNumber: undefined,
+        url: usersWebPageState.url,
+        domTreeModel: usersWebPageState.domTreeModel
+    };
+
+
+
+};
+
+
+// ==================================================================================================================================================
 //                                                                                                                   JaxsnoopCrawler::classifyWebpage
 // ==================================================================================================================================================
+// 
 // This function looks on the current opened webpage in the crawler and already generated map of static actions for
 // current user and breaks it into independent blocks, making tree of this blocks.
 // The main goal of classification is to identify equal and similar DOM subtrees, so webcrawler will be able to not

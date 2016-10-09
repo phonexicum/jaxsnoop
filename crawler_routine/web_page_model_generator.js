@@ -163,7 +163,10 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
         }
         domTreeModelPointer = domTreeModelRoot;
 
-        return JSON.stringify(domTreeModelRoot);
+        return JSON.stringify({
+            url: document.location.href,
+            domTreeModel: domTreeModelRoot
+        });
     }
 
     return main();
