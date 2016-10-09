@@ -14,7 +14,7 @@ var fs = require('fs');
 // ====================================================================================================================
 // ====================================================================================================================
 module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, crawlerUser, logLevel) {
-    var logLevels = ['debug', 'info', 'warn', 'error'];
+    var logLevels = ['trace', 'debug', 'info', 'warn', 'error', 'fatal'];
 
     var colors = {
         red : (ss) => { return "\033[0;31m" + ss + "\033[0m"; },
@@ -27,8 +27,15 @@ module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, 
         white : (ss) => { return "\033[0;37m" + ss + "\033[0m"; }
     };
 
+    this.trace = function(msg) {
+        if (logLevels.indexOf(logLevel) <= logLevels.indexOf('trace')) {
+            var data = '[crtrace][Browser "' + crawlerUser + '"] ' + msg;
+            console.log(data);
+        }
+    };
+
     this.debug = function(msg) {
-        if (logLevels.indexOf(logLevel) <= 0) {
+        if (logLevels.indexOf(logLevel) <= logLevels.indexOf('debug')) {
             var data = '[crdebug][Browser "' + crawlerUser + '"] ' + msg;
             console.log(data);
 
@@ -41,7 +48,7 @@ module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, 
     };
 
     this.info = function(msg) {
-        if (logLevels.indexOf(logLevel) <= 1) {
+        if (logLevels.indexOf(logLevel) <= logLevels.indexOf('info')) {
             var data = '[crinfo][Browser "' + crawlerUser + '"] ' + msg;
             console.log(data);
             
@@ -54,7 +61,7 @@ module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, 
     };
 
     this.warn = function(msg) {
-        if (logLevels.indexOf(logLevel) <= 2) {
+        if (logLevels.indexOf(logLevel) <= logLevels.indexOf('warn')) {
             var data = '[crwarn]' + colors.yellow('[Browser "' + crawlerUser + '"] ' + msg);
             console.log(data);
             
@@ -67,7 +74,7 @@ module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, 
     };
 
     this.error = function(msg) {
-        if (logLevels.indexOf(logLevel) <= 3) {
+        if (logLevels.indexOf(logLevel) <= logLevels.indexOf('error')) {
             var data = '[crerror]' + colors.red('[Browser "' + crawlerUser + '"] ' + msg);
             console.log(data);
             
@@ -76,6 +83,13 @@ module.exports.crawlerLogger = function crawlerLogger(loggingHost, loggingPort, 
             //     data: data,
             //     headers: []
             // }, null, function () {});
+        }
+    };
+
+    this.fatal = function(msg) {
+        if (logLevels.indexOf(logLevel) <= logLevels.indexOf('fatal')) {
+            var data = '[crfatal]' + colors.black('[Browser "' + crawlerUser + '"] ' + msg);
+            console.log(data);
         }
     };
 };

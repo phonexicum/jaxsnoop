@@ -27,7 +27,7 @@ module.exports.nodeLogger = function (console_log_level) {
                 stream: process.stdout
             },
             {
-                level: 'error',
+                level: 'trace',
                 path: './log/error.log'
             },
         ],
@@ -45,7 +45,7 @@ module.exports.crawlerLogger = function (console_log_level) {
                 stream: process.stdout
             },
             {
-                level: 'info',
+                level: 'trace',
                 path: './log/crawlers.log'
             },
         ],

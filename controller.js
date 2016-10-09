@@ -143,7 +143,7 @@ function JaxSnoop() {
             for (var log_message = re_log_message.exec(data); log_message !== null; log_message = re_log_message.exec(data))
             {
                 re_log_message_lastIndex = re_log_message.lastIndex;
-                var re = /(.*)\[cr(debug|info|warn|error)\]((?:.|\n)*)\s*/;
+                var re = /(.*)\[cr(trace|debug|info|warn|error|fatal)\]((?:.|\n)*)\s*/;
                 var parsed_str = re.exec(log_message[1]);
 
                 if (parsed_str !== null) {

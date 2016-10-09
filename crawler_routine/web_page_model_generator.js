@@ -8,6 +8,9 @@
 //  
 module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
 
+    console.log('GenerateWebPageModel started');
+    console.log(document.location);
+
     // ================================================================================================================
     // This array contains several functions each checking if the node must not be ignored
     var nodeBlacklist = [
@@ -19,8 +22,8 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
         }
     ];
     function checkNodeIsBlacklisted (node) {
-        return ! nodeBlacklist.every((val, i, arr) => {
-            return ! val(node);
+        return nodeBlacklist.some((val, i, arr) => {
+            return val(node);
         });
     }
 
