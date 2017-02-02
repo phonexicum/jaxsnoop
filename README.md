@@ -1,27 +1,21 @@
 # jaxsnoop
-AJAX web-crawler based on nodejs and slimerjs
+AJAX web-crawler based on nodejs and selenium-webdriver.
 
 *Nothing works, project still in its first stages.*
 
+Theory basis for this project can be found at https://phonexicum.github.io/infosec/webcrawler.html
 
 ## Table of Contents
 
 1. [Crawlers ideas](#crawlers-ideas)
 1. [TODO list (plan of development)](#todo-list)
-1. [Notes](#notes)
-1. [possible libraries](#possible-libraries)
-1. [Unstructured notes](#unstructured-notes)
+1. [Possible libraries](#possible-libraries)
+1. [Choosing technologies](#choosing-technologies)
+1. [Dump](#dump)
 
 ## Crawlers ideas
 
-* CrawlJax
-
-* htcap
-
-## TODO list
-
-* [https://github.com/webdriverio/webdriverrtc] - enables your client instance to grep statistical data from a running WebRTC peer connection (webdriver >= v4.0)
-* [https://github.com/webdriverio/browserevent] - experimental feature that helps you to listen on events within the browser. It is currently only supported in Chrome browser (webdriver < v3.0 - ?)
+CrawlJax, htcap
 
 ## TODO list
 
@@ -113,29 +107,6 @@ improving the software:
 
 - add various blacklists and whitelists as an option
 
-## Notes
-
-The only two modules suited to connect slimer and node: spooky and node-phantom-simple
-
-I refused from both of them, because it is ubnormal to write functions for slimer in node files, there must be interface to 'connect' them, not to include one into another - so there is no appropriate module
-
-Casperjs drawback - you must fully construct suite for page processing and only after that run it. I choose slimer on its own, because you can create web page and make actions on it in motion
-
-phantomjs can not be used instead of slimerjs, because it has no promises
-
-Possible python BeautifulSoup analogue to manipulate and parse DOM:  
-https://github.com/cheeriojs/cheerio - can not use it, because it uses htmlparser2 (the fastest parser there is for
-node) and it uses nodejs events, which is not implemented in neither phantomjs neither slimerjs
-Very-very pity I can not use it!
-
-
-slimerjs stdio problem:  
-https://github.com/laurentj/slimerjs/issues/478
-
-Logging:  
-I prefered to pipe crawlers messages into nodejs through stdio, because I think for now it will work faster, not to use network.  
-Messages has special format.
-
 ## Possible libraries
 
 Possile graph libraries:  
@@ -146,42 +117,76 @@ https://www.npmjs.com/package/jsgraph
 Tree edit distance:  
 https://github.com/hoonto/jqgram
 
-## Unstructured notes
+Possible python BeautifulSoup analogue to manipulate and parse DOM:  
+https://github.com/cheeriojs/cheerio
 
-Methods for slimerjs to destinguish clickabels and click them.
+## Choosing technologies
 
-CASPER HAS:  
-Stopping execution of web-page environment (stopping javascript)  
-debugHTML, debugPage, this.echo  
-casper can fill the forms  
-getElementsBounds - gives size, very good for using "click" afterwards  
-getHTML, getElementXXX, ...  
+#### Selenium
 
-Alternative to use slimerjs and phantomjs is to use nodejs module https://www.npmjs.com/package/jsdom
+All browser tries to support remoute management (mainly for sites test purposes). Obvious leader in driving browsers are **selenium**.
 
+In case of selenium browser management chain look like:
 
-Other potential proxy for selenium+nodejs:
+    Programming language ->
+        selenium **webdriver** for programming language (language library) ->
+            selenium webserver (manages browsers instances and translates commands of *selenium standart* to browser driver) ->
+                browser driver (written by vendor for browser management) ->
+                    browser (e.g firefox, chrome, edge, phantomjs, etc.)
 
-* Browsermob https://github.com/lightbody/browsermob-proxy http://bmp.lightbody.net/
+Alternatives:
+* slimerjs (works only with firefox and uses old javascript and slimerjs scripts greatly bounded with available libraries (this is not nodejs)).
 
-    Articles:
+    After an attempt, slimerjs was rejected, too many crunches and boundaries. (e.g slimerjs stdio problem: https://github.com/laurentj/slimerjs/issues/478)
 
-    * https://keshavtechinfo.wordpress.com/web-automation/selenium/web-page-load-testing-using-selenium-and-browsermob-proxy/
+* phantomjs, casperjs
+* casperjs (based on slimerjs or phantomjs)
+    
+    Drawback: you must fully construct suite for page processing and only after that run it. I choose slimer on its own, because you can create web page and make actions on it in motion.
 
-* Firebug + NetExport plugin: http://www.seleniumtests.com/2012/10/capture-network-traffic-using-webdriver.html
+#### JavaScript (nodejs)
 
-* self-made proxy (I used https://www.npmjs.com/package/http-proxy and the idea in https://newspaint.wordpress.com/2012/11/05/node-js-http-and-https-proxy/)
+Selenium webdriver available for: java, python, javascript, c#, ruby, php, perl.
+I decided to use javascript for my project.
 
+#### selenium-webdriver
 
-## Choosing webdriver implementation
-
-JavaScript webdriver implementations: https://www.slant.co/topics/2814/~node-js-selenium-webdriver-client-libraries-bindings
-
-obvious leaders: webdriverio and webdriverjs (selenium-webdriver)
+There are several javascript webdriver implementations: https://www.slant.co/topics/2814/~node-js-selenium-webdriver-client-libraries-bindings .Oobvious leaders: webdriverio and webdriverjs (selenium-webdriver):
 
 * webdriverio - synchronous implementation of asynchronous browser commands (you may not worry about promises). Main goal: make it easier to write selenium tests.
-* selenium-webdriver - official javascript selenium webdriver implementation
+* selenium-webdriver - official javascript selenium webdriver implementation. webdriverjs code probably less clean but has more abilities.
 
-Code comparison example can be find: https://github.com/webdriverio/webdriverio/issues/138
+Code comparison example can be found here: https://github.com/webdriverio/webdriverio/issues/138
 
-webdriverjs code probably less clean but has more abilities.
+#### proxy-server (client side)
+
+This project demand ability to intercept and drop some requests from browser. Selenium has weak capabilities (`CaptureNetworkTraffic`), therefor I will use some proxy-server (which is needed to be online configurable).
+
+* (BMP) Browser Mob Proxy - very discussed option in internet (https://github.com/lightbody/browsermob-proxy) (http://bmp.lightbody.net/ (https://keshavtechinfo.wordpress.com/web-automation/selenium/web-page-load-testing-using-selenium-and-browsermob-proxy/)
+* Firebug + NetExport plugin: http://www.seleniumtests.com/2012/10/capture-network-traffic-using-webdriver.html
+* self-made proxy. I created standalone project https://github.com/phonexicum/ClientProxy (proxy-server is based on https://www.npmjs.com/package/http-proxy and the idea in https://newspaint.wordpress.com/2012/11/05/node-js-http-and-https-proxy/)
+
+I choose to use self-made proxy.
+
+---
+
+# Dump
+
+---
+
+* [https://github.com/webdriverio/webdriverrtc] - enables your client instance to grep statistical data from a running WebRTC peer connection (webdriver >= v4.0)
+* [https://github.com/webdriverio/browserevent] - experimental feature that helps you to listen on events within the browser. It is currently only supported in Chrome browser (webdriver < v3.0 - ?)
+
+---
+
+Logging:
+I prefered to pipe crawlers messages into nodejs through stdio, because I think for now it will work faster, not to use network.  
+Messages has special format.
+
+---
+
+The only two modules suited to connect slimer and node: spooky and node-phantom-simple. I refused from both of them, because it is ubnormal to write functions for slimer in node files, there must be interface to 'connect' them, not to include one into another - so there is no appropriate module.
+
+phantomjs can not be used instead of slimerjs, because it has no promises
+
+---
