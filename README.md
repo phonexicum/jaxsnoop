@@ -20,6 +20,11 @@ AJAX web-crawler based on nodejs and slimerjs
 
 ## TODO list
 
+* [https://github.com/webdriverio/webdriverrtc] - enables your client instance to grep statistical data from a running WebRTC peer connection (webdriver >= v4.0)
+* [https://github.com/webdriverio/browserevent] - experimental feature that helps you to listen on events within the browser. It is currently only supported in Chrome browser (webdriver < v3.0 - ?)
+
+## TODO list
+
 Getting the global oriented graph of web-app web-state for all users
 
 - constructing web-state for one user without trigerring events
@@ -153,3 +158,30 @@ getElementsBounds - gives size, very good for using "click" afterwards
 getHTML, getElementXXX, ...  
 
 Alternative to use slimerjs and phantomjs is to use nodejs module https://www.npmjs.com/package/jsdom
+
+
+Other potential proxy for selenium+nodejs:
+
+* Browsermob https://github.com/lightbody/browsermob-proxy http://bmp.lightbody.net/
+
+    Articles:
+
+    * https://keshavtechinfo.wordpress.com/web-automation/selenium/web-page-load-testing-using-selenium-and-browsermob-proxy/
+
+* Firebug + NetExport plugin: http://www.seleniumtests.com/2012/10/capture-network-traffic-using-webdriver.html
+
+* self-made proxy (I used https://www.npmjs.com/package/http-proxy and the idea in https://newspaint.wordpress.com/2012/11/05/node-js-http-and-https-proxy/)
+
+
+## Choosing webdriver implementation
+
+JavaScript webdriver implementations: https://www.slant.co/topics/2814/~node-js-selenium-webdriver-client-libraries-bindings
+
+obvious leaders: webdriverio and webdriverjs (selenium-webdriver)
+
+* webdriverio - synchronous implementation of asynchronous browser commands (you may not worry about promises). Main goal: make it easier to write selenium tests.
+* selenium-webdriver - official javascript selenium webdriver implementation
+
+Code comparison example can be find: https://github.com/webdriverio/webdriverio/issues/138
+
+webdriverjs code probably less clean but has more abilities.

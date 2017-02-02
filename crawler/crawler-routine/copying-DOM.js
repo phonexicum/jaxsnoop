@@ -1,13 +1,11 @@
 // Module containing function for web-page DOM analysis and generating its tree model with marks of interested clickables
-//
-// Execution context: slimerjs
 
 // ==================================================================================================================================================
 // This function execution context: webpage
 // 
 // this function must generate some tree-object which will reflect DOM-tree and possible user-actions
 //  
-module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
+module.exports.GenerateDOMCopy = function GenerateDOMCopy() {
 
     console.log(document.location);
 
@@ -158,7 +156,8 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
             currentNode = currentNode.parentNode;
 
             // If we does not have parent node
-            if (domTreeModelPointerStack.length === 0) break;
+            if (domTreeModelPointerStack.length === 0)
+                break;
             domTreeModelPointer = domTreeModelPointerStack.pop();
         }
         domTreeModelPointer = domTreeModelRoot;

@@ -1,3 +1,9 @@
+# Project specific
+log
+proxy-cert
+selenium-server-standalone
+test
+
 # Logs
 logs
 *.log

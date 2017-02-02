@@ -1,6 +1,4 @@
-// Settings for crawler instances
-// 
-// Execution context: nodejs and slimerjs
+'use strict';
 
 function userLoginAction(login, passwd) {
     return function(page, crawler_user) {
@@ -48,13 +46,21 @@ function userLogoutAction(page) {
 
 
 module.exports = {
-    url_start: 'http://127.0.0.1:8000/pyforum/default/index',
-    url_whitelist: [ // Arrow of regexps
-        /^http:\/\/127.0.0.1:8000\/pyforum\/.*/,
-        /^file:\/\/.*/
+    urlStartingPoint: 'http://127.0.0.1:8000/pyforum/default/index',
+    urlWhiteList: [ // Array of regexp parameters
+        {
+            source: '^http:\/\/127.0.0.1:8000\/pyforum\/.*$',
+            flags: 'i'
+        }, {
+            source: '^file:\/\/.*$',
+            flags: 'i'
+        }, {
+            source: '^.*$', // Allow all
+            flags: 'i'
+        }
     ],
-    url_blacklist: [],
-    maxWaitForFullPageLoadTime: 5000, // milliseconds
+    urlBlackList: [ // Array of regexp parameters
+    ],
 
     users: {
         // public: {
@@ -66,10 +72,8 @@ module.exports = {
         //     }
         // },
         member_1: {
-            login_function: userLoginAction('bot1@bot.ru', 'bot1'),
-            logout_function: userLogoutAction
+            login: userLoginAction('bot1@bot.ru', 'bot1'),
+            logout: userLogoutAction
         }
-    },
-
-    loglevel: 'trace' // One of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
+    }
 };
