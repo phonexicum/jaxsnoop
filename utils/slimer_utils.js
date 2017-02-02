@@ -102,6 +102,25 @@ module.exports.crawlerDebugLogger = function crawlerDebugLogger(logfile) {
     this.log = function(msg) {
         fs.write(logfile, msg, "a");
     };
+
+    var dump_counter = 0;
+    this.dumpDOMmodel = function(domModel){
+        fs.open(logfile + ".html." + dump_counter, "w");
+
+        var stack = [domModel.domTreeModel];
+
+        var node = stack[stack.length -1];
+        while (true){
+            var tag = "<" + node.tagName;
+            for (var attr in node.attributes){
+                tag += " " + attr.attrName + "=\"" + attr.attrValue + "\"";
+            }
+            tag += ">";
+            fs.write(tag + node.nodeValue.join("\n"));
+        }
+
+        dump_counter++;
+    };
 };
 
 // ====================================================================================================================

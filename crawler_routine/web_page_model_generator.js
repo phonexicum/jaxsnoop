@@ -36,7 +36,7 @@ module.exports.GenerateWebPageModel = function GenerateWebPageModel() {
         "tagName": (node) => { 
             // returns tagName string
 
-            return node.nodeName;
+            return node.nodeName.toLowerCase();
         },
 
         "attributes": (node) => {

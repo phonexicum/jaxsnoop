@@ -21,9 +21,10 @@
         "util": ">=0.10.3",
         "tmp": ">=0.0.29",
         "argparse": ">=1.0.7",
-        "jqgram": ">=0.2.5",
+        "jqgram": "https://github.com/phonexicum/jqgram.git",
         "bunyan": ">=1.8.1",
-        "slimerjs-core": ">=0.11.5"
+        "slimerjs-core": ">=0.11.5",
+        "url": ">=0.11.0"
     },
     "private": true
 }

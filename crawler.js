@@ -12,7 +12,7 @@ var webpage = require('webpage');
 var fs = require('fs');
 var webserver = require('webserver');
 
-var jqgram = require('./node_modules/jqgram/index.js');
+var jqgram = require('./node_modules/jqgram/index.js').jqgram;
 
 var slimer_utils = require('./utils/slimer_utils.js');
 var crawlerSettings = require(system.env.CRAWLER_SETTINGS_PATH);
@@ -25,7 +25,7 @@ var crawler_test_utils = require('./test/crawler_test_utils.js');
 var crawlerUser = system.env.USER_NAME;
 
 var logger = new slimer_utils.crawlerLogger(system.env.LOGGING_HOST, system.env.LOGGING_PORT, crawlerUser, crawlerSettings.loglevel);
-var debugLogger = new slimer_utils.crawlerDebugLogger("./log/debug_log.log");
+var debugLogger = new slimer_utils.crawlerDebugLogger("./log/debug/dom.log");
 
 var webPageModelGenerator = require('./crawler_routine/web_page_model_generator.js');
 
@@ -386,11 +386,12 @@ JaxsnoopCrawler.prototype.openNextUsersWebPageState = function openNextUsersWebP
         var jsonUsersWebPageState = self.page.evaluate(webPageModelGenerator.GenerateWebPageModel);
         var usersWebPageState = JSON.parse(jsonUsersWebPageState);
 
-        debugLogger.log (JSON.stringify(usersWebPageState, null, 2));
-        
-        this.domTreeModelConvolution(usersWebPageState);
 
-        return new Promise(function(res, rej) {res("success");});
+        debugLogger.log (JSON.stringify(usersWebPageState, null, 2));
+        var promise = this.domTreeModelConvolution(usersWebPageState);
+
+
+        return promise;
 
     }, (err) => {
         logging.error('Error in opening next users web state: ' + err);
@@ -411,13 +412,87 @@ JaxsnoopCrawler.prototype.openNextUsersWebPageState = function openNextUsersWebP
 // 
 JaxsnoopCrawler.prototype.domTreeModelConvolution = function domTreeModelConvolution(usersWebPageState){
 
-    var userWebAppCurrentNode = {
+    var userWebAppCurrentState = {
         nodeNumber: undefined,
         url: usersWebPageState.url,
         domTreeModel: usersWebPageState.domTreeModel
     };
 
+    var promise = new Promise(function(res, rej){res("success");});
 
+    var distance = -1;
+    // For jqgram distance =
+    //      0 - equal trees
+    //      1 - different trees
+
+    var treeComparizonParameters = {
+        "tagsSpecifics": {
+            "unknown": [
+                "tagName"
+            ],
+            "a": [
+                ""
+            ]
+        }
+    };
+
+    var nodeHandlerFn = {
+        // For "compare" function there is assumption, that a1 and a2 are nodes with tagNames is appropriate
+        "a": {
+            compare: function(a1, a2){
+                return ;
+            }
+        },
+        "DEFAULT": {}
+    };
+
+    var compareSubTrees = function compareSubTrees(promise, roota, rootb) {
+        return promise.then(function(status){
+            return new Promise(function(res, rej){
+
+                var lableFunction = function lableFunction(node){
+                    return node;
+                };
+
+                var childFunction = function childFunction(node){
+                    return node.childNodes;
+                };
+
+                var compareFn = function compareFn(a1,a2) {
+                    if (a1.length !== a2.length){ return false; }
+                    for (var i = 0; i < a2.length; i++) {
+                        if (a1[i] !== a2[i]){ return false; }
+                    }
+                    return true;
+                };
+
+                jqgram.distance({
+                    root: roota,
+                    lfn: lableFunction,
+                    cfn: childFunction
+                }, {
+                    root: rootb,
+                    lfn: lableFunction,
+                    cfn: childFunction
+                }, {
+                    p:2,
+                    q:3,
+                    depth:100
+                }, function(result){
+                    distance = result.distance;
+                    res("success");
+
+                }, compareFn);
+            });
+        });
+    };
+    promise = compare(promise, userWebAppCurrentState.domTreeModel.childNodes[0], userWebAppCurrentState.domTreeModel.childNodes[1]);
+
+    promise.then(function(status){
+        console.log(distance);
+    });
+
+    return promise;
 
 };
 

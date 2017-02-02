@@ -6,10 +6,17 @@ AJAX web-crawler based on nodejs and slimerjs
 
 ## Table of Contents
 
+1. [Crawlers ideas](#crawlers-ideas)
 1. [TODO list (plan of development)](#todo-list)
 1. [Notes](#notes)
 1. [possible libraries](#possible-libraries)
 1. [Unstructured notes](#unstructured-notes)
+
+## Crawlers ideas
+
+* CrawlJax
+
+* htcap
 
 ## TODO list
 
