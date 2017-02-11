@@ -28,7 +28,16 @@ const args = argparse.parseArgs();
 
 const childProcess = require('child_process');
 
-const webdriverio = require('webdriverio');
+// const webdriverio = require('webdriverio');
+const webdriver = require('selenium-webdriver'),
+    wdCapabilities = require('selenium-webdriver/lib/capabilities'),
+    wdProxy = require('selenium-webdriver/lib/proxy'),
+    chrome = require('selenium-webdriver/chrome'),
+    firefox = require('selenium-webdriver/firefox');
+
+const wdBy = webdriver.By,
+    wdUntil = webdriver.until;
+
 const ClientProxy = require('ClientProxy');
 
 const crawlerSettings = require('../' + args.settings_file);
@@ -118,61 +127,89 @@ class Crawler {
     _webDriverSetup() {
 
         this._webProxyIP = '127.0.0.1';
-        // see http://webdriver.io/guide/testrunner/configurationfile.html
-        let options = {
-            
-            // see https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
-            desiredCapabilities: {
         
-                acceptSslCerts: true, // Whether the session should accept all SSL certs by default.
-                proxy: {
-                    proxyType: 'manual',
-                    httpProxy: this._webProxyIP + ':' + this._webProxyPort,
-                    sslProxy: this._webProxyIP + ':' + this._webProxyPort,
-                    socksProxy: this._webProxyIP + ':' + this._webProxyPort
-                },
+        let proxyConfig = new wdCapabilities.ProxyConfig();
+        proxyConfig.proxyType = 'MANUAL';
+        proxyConfig.httpProxy = this._webProxyIP + ':' + this._webProxyPort;
+        proxyConfig.sslProxy = this._webProxyIP + ':' + this._webProxyPort;
 
-                // browserName: 'chrome',
-                // // see https://sites.google.com/a/chromium.org/chromedriver/capabilities
-                // 'chromeOptions': {
-                //     // http://peter.sh/experiments/chromium-command-line-switches/
-                //     'args': [
-                //         // '--disable-web-security', // disable SOP
-                //         // '--enable-potentially-annoying-security-features', //Enables a number of potentially annoying security features (strict mixed content mode, powerful feature restrictions, etc.)
-                //         // '--reduce-security-for-testing', // Enables more web features over insecure connections. Designed to be used for testing purposes only.
-                //         // '--translate-security-origin', // Overrides security-origin with which Translate runs in an isolated world.
-                //         '--window-size=1000,600',
-                //         '--allow-insecure-localhost', // Enables TLS/SSL errors on localhost to be ignored (no interstitial, no blocking of requests).
-                //         // '--ssl-version-min=tls1', // Specifies the minimum SSL/TLS version ("tls1", "tls1.1", "tls1.2", or "tls1.3").
-                //         '--ignore-certificate-errors'
-                //     ],
-                //     'prefs': {
-                //         'profile.managed_default_content_settings.images': 2
-                //     }
-                // },
-
-                browserName: 'firefox',
-                // see https://github.com/mozilla/geckodriver
-                'geckoOptions': {
-                    'args': [
-                        '--window-size=1000,600',
-                        '--load-images=no'
-                    ]//,
-                    // 'prefs': {
-                    //     // 'browser.ssl_override_behavior': 1
-                    //     // 'permissions.default.image': 2, // Doesn't work in firefox anymore
-                    //     // 'permissions.default.stylesheet': 2 // Never existed in firefox
-                    // },
-                    // webdriver_accept_untrusted_certs: true
-                },
-                
-                javascriptEnabled: true, // Whether the session supports executing user supplied JavaScript in the context of the current page (only on HTMLUnitDriver).
-                nativeEvents: true       // Whether the session is capable of generating native events when simulating user input.
-            },
-            logLevel: 'verbose' // verbose | silent | command | data | result | error
+        let proxyObj = {
+            'proxyType': 'MANUAL',
+            'httpProxy': this._webProxyIP,
+            'httpProxyPort': parseInt(this._webProxyPort),
+            'sslProxy': this._webProxyIP,
+            'sslProxyPort': parseInt(this._webProxyPort)
         };
-        this._browserClient = webdriverio.remote(options);
+
+        let chromeOptions = new chrome.Options()
+            .addArguments([
+                // '--disable-web-security',                            // disable SOP
+                // '--enable-potentially-annoying-security-features',   // Enables a number of potentially annoying security features (strict mixed content mode, powerful feature restrictions, etc.)
+                // '--reduce-security-for-testing',                     // Enables more web features over insecure connections. Designed to be used for testing purposes only.
+                // '--translate-security-origin',                       // Overrides security-origin with which Translate runs in an isolated world.
+                // '--ssl-version-min=tls1',                            // Specifies the minimum SSL/TLS version ("tls1", "tls1.1", "tls1.2", or "tls1.3").
+                '--window-size=1000,600',
+                '--allow-insecure-localhost',                           // Enables TLS/SSL errors on localhost to be ignored (no interstitial, no blocking of requests).
+                '--ignore-certificate-errors'
+            ])
+            .setProxy(proxyConfig)
+            .setUserPreferences({
+                'profile.managed_default_content_settings.images': 2
+            });
+
+        // err: Does not work properly
+        // let firefoxBinary = new firefox.Binary();
+        //     firefoxBinary.addArguments([
+        //         // '--window-size=1000,600',
+        //         // '--load-images=no',
+        //         '--jsconsole'
+        //     ]);
+        let firefoxProfile = new firefox.Profile();
+            firefoxProfile.setPreference('permissions.default.image', 2);
+            firefoxProfile.setPreference('dom.ipc.plugins.enabled.libflashplayer.so', false);
+            // firefoxProfile.setPreference('permissions.default.stylesheet', 2);
+
+            firefoxProfile.setPreference('network.proxy.type', 1);
+            firefoxProfile.setPreference('network.proxy.no_proxies_on', '');
+            firefoxProfile.setPreference('network.proxy.http', this._webProxyIP);
+            firefoxProfile.setPreference('network.proxy.http_port', this._webProxyPort);
+            firefoxProfile.setPreference('network.proxy.ssl', this._webProxyIP);
+            firefoxProfile.setPreference('network.proxy.ssl_port', this._webProxyPort);
+
+            firefoxProfile.setAcceptUntrustedCerts(true);
+            firefoxProfile.setAssumeUntrustedCertIssuer(true);
+        let firefoxOptions = new firefox.Options()
+            .setProfile(firefoxProfile);
+            // .setBinary(firefoxBinary)   // err: Does not work properly, can not set arguments
+            // .setProxy(proxyConfig);     // err: Does not work properly, can not set proxy
+
+        // err: Does not work properly, can not set proxy
+        // let capabilities = webdriver.Capabilities.firefox()
+        //     // .set(webdriver.Capability.ACCEPT_SSL_CERTS, true)
+        //     // .set(webdriver.Capability.SECURE_SSL, false)
+        //     .set(webdriver.Capability.PROXY, proxyConfig);
+        //     // .setProxy(proxyConfig);
+
+        this._browserClient = new webdriver.Builder()
+            // .withCapabilities(capabilities) // err: Does not work properly
+
+            // There is some problems with chrome and my handwritten proxy, there is some network problems and it works unstable
+            // .forBrowser('chrome')
+            // .setChromeOptions(chromeOptions)
+            
+            // Firefox proxy problems: http://stackoverflow.com/questions/41089511/getting-request-and-response-using-browsermobproxy-selenium-firefox-marionett/41373808#41373808
+            .forBrowser('firefox')
+            .setFirefoxOptions(firefoxOptions)
+
+            // .setProxy(wdProxy.manual({
+            //     http: this._webProxyIP + ':' + this._webProxyPort,
+            //     https: this._webProxyIP + ':' + this._webProxyPort
+            // })) // This does not work properly
+            .usingServer('http://localhost:4444/wd/hub')
+            .build();
         
+        // this._browserClient.manage().window().setSize(1000,600);
+
         crawlerLogger.trace('Crawler', this.userName, '_webDriverSetup success.');
     }
 
@@ -185,15 +222,32 @@ class Crawler {
 
                 // Crawl ?
 
-                this._browserClient
-                    .init()
-                    .url('http://duckduckgo.com/')
-                    .setValue('#search_form_input_homepage', 'WebdriverIO')
-                    .click('#search_button_homepage')
-                    .getTitle().then(function(title) {
-                        console.log('Title is: ' + title);
-                    })
-                    .end();
+                this.logout();
+                this.login();
+
+                this._browserClient.get(crawlerSettings.homePageUrl);
+
+                
+
+                this._browserClient.controlFlow().execute(result => {
+                    console.log('client ready');
+                });
+
+                // this._browserClient.get('http://www.google.com/ncr');
+                // this._browserClient.findElement(wdBy.name('q')).sendKeys('webdriver', webdriver.Key.ENTER);
+                // // this._browserClient.findElement(wdBy.name('btnG')).click();
+                // this._browserClient.wait(wdUntil.titleIs('webdriver - Google Search'), 1000);
+                // this._browserClient.quit();
+
+                // this._browserClient
+                //     .init()
+                //     .url('http://duckduckgo.com/')
+                //     .setValue('#search_form_input_homepage', 'WebdriverIO')        
+                //     .click('#search_button_homepage')
+                //     .getTitle().then(function(title) {
+                //         console.log('Title is: ' + title);
+                //     })
+                //     .end();
 
                 // setTimeout(()=>{
                 //     process.send({
@@ -214,19 +268,21 @@ class Crawler {
 
     // ================================================================================================================
     waitFullPageLoad() {
-        // TODO: this._browserClient.WaitUntil(function(){
-        //     return document.readyState === 'complete';
-        // });
+        this._browserClient.wait(() => {
+            return this._browserClient.executeScript(function(){
+                return document.readyState === 'complete';
+            });
+        });
     }
 
     // ================================================================================================================
     login() {
-        return crawlerSettings.users[this.userName].login_function(this._browserClient, this.userName);
+        crawlerSettings.users[this.userName].login(this._browserClient, this.userName);
     }
 
     // ================================================================================================================
     logout() {
-        return crawlerSettings.users[crawlerUser].logout_function(this._browserClient);
+        crawlerSettings.users[this.userName].logout(this._browserClient);
     }
 
     // ================================================================================================================
@@ -241,6 +297,9 @@ let workflowPromise = webCrawler
 .setup()
 .then(result => {
     webCrawler.listenCommands();
+})
+.catch(error => {
+    crawlerLogger.error('Fatal Error setting up crawler:', error);
 });
 
 
@@ -406,82 +465,3 @@ let workflowPromise = webCrawler
 // JaxsnoopCrawler.prototype.classifyWebpage = function classifyWebpage() {
 
 // };
-
-
-// // ==================================================================================================================================================
-// //                                                                                                                JaxsnoopServer::StartSlaveWebServer
-// // ==================================================================================================================================================
-// // 
-// // starting listening for incoming commands from crawler controller.
-// // 
-// JaxsnoopServer.prototype.StartSlaveWebServer = function StartSlaveWebServer (jaxsnoopCrawler) {
-
-//     var webserverSlavePort = parseInt(system.env.COMMANDS_PORT_CRAWLER);
-//     var webserverSlave = webserver.create();
-
-//     try {
-//         webserverSlave.listen(webserverSlavePort, function(request, response) {
-//             if (request.method == 'GET' && request.url == '/check_crawler') {
-//                 response.statusCode = 200;
-//                 response.write('I am alive');
-//                 response.close();
-//             }
-//             else if (request.method == 'GET' && request.url == '/close_server') {
-//                 logger.info('Closing crawler ' + crawlerUser);
-//                 webserverSlave.close();
-//                 slimer.exit();
-
-//                 response.statusCode = 200;
-//                 response.write('OK');
-//                 response.close();
-//             }
-//             // else if (request.method == 'POST' && request.url == '/set_settings') {
-//             //     try{
-//             //         jaxsnoopCrawler.rewriteSettings(request.post);
-//             //         logger.info('settings written successfully');
-                    
-//             //         response.statusCode = 200;
-//             //         response.write('');
-//             //         response.close();
-
-//             //     } catch (err){
-//             //         logger.error('Error while setting new settings ' + err);
-
-//             //         response.statusCode = 400;
-//             //         response.write('Error: ' + err);
-//             //         response.close();
-//             //     }
-//             // }
-//             else if (request.method == 'GET' && request.url == '/get_webapp_state') {
-
-
-//                 response.statusCode = 200;
-//                 response.write('Got it');
-//                 response.close();
-//             }
-//             else if (request.method == 'POST' && request.url == '/make_webapp_action') {
-
-
-//                 response.statusCode = 200;
-//                 response.write('Got it');
-//                 response.close();
-//             }
-//             else {
-//                 logger.warn('Unrecognized request to server');
-
-//                 response.statusCode = 400;
-//                 response.write('unrecognized request');
-//                 response.close();
-//             }
-//         });
-//         logger.info('Crawler webserver started on port ' + webserverSlavePort);
-
-//     } catch (err) {
-//         logger.error('Error while opening webserver on web crawler side.\nError: ' + err);
-//         throw err;
-//     }
-// };
-
-// // ==================================================================================================================================================
-// // ==================================================================================================================================================
-// MAIN();

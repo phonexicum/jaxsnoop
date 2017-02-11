@@ -3,6 +3,7 @@ log
 proxy-cert
 selenium-server-standalone
 test
+.vscode
 
 # Logs
 logs

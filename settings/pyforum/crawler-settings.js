@@ -1,55 +1,29 @@
 'use strict';
 
+const webdriver = require('selenium-webdriver');
+const wdBy = webdriver.By;
+
+
 function userLoginAction(login, passwd) {
-    return function(page, crawler_user) {
-        return new Promise(function(res, rej) {
-            try {
-                page.open('http://127.0.0.1:8000/pyforum/default/login', function(status) {
-                    if (status === 'success') {
-                        page.evaluate(function(login, passwd) {
-                            document.getElementById('auth_alias').value = login;
-                            document.getElementById('passwd').value = passwd;
-                            document.getElementById('login_b').click();
-                        }, login, passwd);
-                        res(status);
-                    } else {
-                        rej(status);
-                    }
-                });
-
-            } catch (err) {
-
-                page.evaluate(function() {
-                    console.log('Error logging in: ' + err);
-                });
-                rej('Error logging in: ' + err);
-            }
-        });
+    return function(driver, crawler_user) {
+        driver.get('http://localhost:8000/pyforum/default/login');
+        driver.findElement(wdBy.id('auth_alias')).sendKeys(login);
+        driver.findElement(wdBy.id('passwd')).sendKeys(passwd);
+        driver.findElement(wdBy.id('login_b')).click();
     };
 }
 
 
-function userLogoutAction(page) {
-    return new Promise(function(resolve, reject) {
-        page.open('http://127.0.0.1:8000/pyforum/default/index', function(status) {
-            if (status === 'success') {
-                page.evaluate(function() {
-                    document.querySelectorAll('[title=Logout]')[0].click();
-                });
-                resolve(status);
-            } else {
-                reject(status);
-            }
-        });
-    });
+function userLogoutAction(driver) {
+    driver.get('http://localhost:8000/pyforum/default/logout');
 }
 
 
 module.exports = {
-    urlStartingPoint: 'http://127.0.0.1:8000/pyforum/default/index',
+    homePageUrl: 'http://localhost:8000/pyforum/default/index',
     urlWhiteList: [ // Array of regexp parameters
         {
-            source: '^http:\/\/127.0.0.1:8000\/pyforum\/.*$',
+            source: '^http:\/\/localhost:8000\/pyforum.*$',
             flags: 'i'
         }, {
             source: '^file:\/\/.*$',

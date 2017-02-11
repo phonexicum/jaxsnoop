@@ -14,6 +14,8 @@ const args = argparse.parseArgs();
 // ====================================================================================================================
 // Includes & Setup
 
+const url = require('url');
+
 const ClientProxy = require('ClientProxy');
 const proxyLogger = require('../utils/logging.js').proxyLogger(args.log_level);
 
@@ -27,6 +29,16 @@ let proxyParams = {
     filterBlackList: false,
     urlBlackList: [],
 };
+
+// ====================================================================================================================
+// Utilities
+
+function getUrl(protocol, req) {
+    let reqUrl = url.parse(req.url);
+    reqUrl.protocol = protocol + ':';
+    reqUrl.host = req.headers.host;
+    return url.parse(url.format(reqUrl));
+}
 
 // ====================================================================================================================
 function Intercepter (req, res) {
@@ -58,12 +70,16 @@ function Intercepter (req, res) {
 // ====================================================================================================================
 let webProxy = new ClientProxy((req, res) => {
         // http intercepter
-        proxyLogger.trace('http connection to host:', req.headers.host, 'url:', req.url);
+        
+        let reqUrl = getUrl('http', req);
+        proxyLogger.trace('connection on url:', reqUrl.href);
         return Intercepter(req, res);
 
     }, (req, res) => {
         // https intercepter
-        proxyLogger.trace('https connection to host:', req.headers.host, 'url:', req.url);
+
+        let reqUrl = getUrl('https', req);
+        proxyLogger.trace('connection on url:', reqUrl.href);
         return Intercepter(req, res);
 
     }, { // CAkeyOptions

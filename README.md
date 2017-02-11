@@ -8,7 +8,7 @@ Theory basis for this project can be found at https://phonexicum.github.io/infos
 ## Table of Contents
 
 1. [Crawlers ideas](#crawlers-ideas)
-1. [TODO list (plan of development)](#todo-list)
+1. [TODO list (approximate plan of development)](#todo-list)
 1. [Possible libraries](#possible-libraries)
 1. [Choosing technologies](#choosing-technologies)
 1. [Dump](#dump)
@@ -158,19 +158,21 @@ There are several javascript webdriver implementations: https://www.slant.co/top
 
 Code comparison example can be found here: https://github.com/webdriverio/webdriverio/issues/138
 
+I use selenium-webdriver version "3.0.0-beta-3", because of error `WebDriverError: Firefox option was set, but is not a FirefoxOption: {}` (see more https://github.com/seleniumhq/selenium/issues/3115)
+
 #### proxy-server (client side)
 
-This project demand ability to intercept and drop some requests from browser. Selenium has weak capabilities (`CaptureNetworkTraffic`), therefor I will use some proxy-server (which is needed to be online configurable).
+This project demand ability to intercept and drop some requests from browser. Selenium has weak capabilities (`CaptureNetworkTraffic`), therefore I will use some proxy-server (which is needed to be online configurable).
 
 * (BMP) Browser Mob Proxy - very discussed option in internet (https://github.com/lightbody/browsermob-proxy) (http://bmp.lightbody.net/ (https://keshavtechinfo.wordpress.com/web-automation/selenium/web-page-load-testing-using-selenium-and-browsermob-proxy/)
 * Firebug + NetExport plugin: http://www.seleniumtests.com/2012/10/capture-network-traffic-using-webdriver.html
 * self-made proxy. I created standalone project https://github.com/phonexicum/ClientProxy (proxy-server is based on https://www.npmjs.com/package/http-proxy and the idea in https://newspaint.wordpress.com/2012/11/05/node-js-http-and-https-proxy/)
 
-I choose to use self-made proxy.
+I choose to use self-made proxy. Probably this is not the best solution, maybe it is better to use some well-known programmable proxy server (e.g BrowserMob proxy (https://github.com/lightbody/browsermob-proxy#rest-api) or burpsuite).
 
 ---
 
-# Dump
+# Dummy
 
 ---
 
