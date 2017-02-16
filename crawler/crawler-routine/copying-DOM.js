@@ -1,47 +1,41 @@
-// Module containing function for web-page DOM analysis and generating its tree model with marks of interested clickables
+// Module containing functions executed in browser's javascript context
 
-// ==================================================================================================================================================
-// This function execution context: webpage
-// 
-// this function must generate some tree-object which will reflect DOM-tree and possible user-actions
-//  
-module.exports.GenerateDOMCopy = function GenerateDOMCopy() {
-
-    console.log(document.location);
-
-    // ==============================================================================================================================================
-    // This array contains several functions each checking if the node must not be ignored
+// ====================================================================================================================
+function GenerateDOMCopy(yieldTreeNodes) {
     
-    var nodeBlacklist = [
-        (node) => {
-            return node.hidden === true;
+    eval(yieldTreeNodes); // converting string to function
+
+    // ================================================================================================================
+    // This array contains several functions each checking if the node must be ignored
+    
+    let nodeBlacklist = [
+        node => {
+            // Check if element is hidden https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+            return node.offsetParent === null; // node.hidden === true || node.style.display === 'none'
         },
-        (node) => {
+        node => {
             return node.nodeName === "#text";
         }
     ];
-    function checkNodeIsBlacklisted (node) {
-        return nodeBlacklist.some((val, i, arr) => {
-            return val(node);
-        });
+    function checkNodeIsBlacklisted(node) {
+        return nodeBlacklist.some(val => val(node));
     }
 
-    // ==============================================================================================================================================
+    // ================================================================================================================
     // This object contains pairs of nodeModel property and function which return the value that is going to be saved into DOM tree model
     //      (function gets pointer to DOM node of webpage).
     
-    var nodePropertiesOfInterest = {
-        "tagName": (node) => { 
+    let nodePropertiesOfInterest = {
+        tagName: node => { 
             // returns tagName string
-
             return node.nodeName.toLowerCase();
         },
 
-        "attributes": (node) => {
+        attributes: node => {
             // returns array of dictionaries representing node attributes
 
-            var attributes = [];
-            for (var attr of node.attributes)
+            let attributes = [];
+            for (let attr of node.attributes)
             {
                 attributes.push({
                     attrName: attr.nodeName,
@@ -51,12 +45,12 @@ module.exports.GenerateDOMCopy = function GenerateDOMCopy() {
             return attributes;
         },
 
-        "nodeValues": (node) => {
+        nodeValues: node => {
             // returns array of "#text" childNodes .nodeValue
             
-            var nodeValues = [];
-            for (var subnode of node.childNodes) {
-                if (subnode.nodeName == "#text" && ! /^\s*$/g.test(subnode.nodeValue)) {
+            let nodeValues = [];
+            for (let subnode of node.childNodes) {
+                if (subnode.nodeName === '#text' && ! /^\s*$/g.test(subnode.nodeValue)) {
                     nodeValues.push(subnode.nodeValue.trim());
                 }
             }
@@ -64,109 +58,67 @@ module.exports.GenerateDOMCopy = function GenerateDOMCopy() {
         }
     };
 
-    // ==============================================================================================================================================
+    // ================================================================================================================
     // Names of clickables, which has to be memorized if they are available.
     
-    var nodeClickablesOfInterest = ["onclick"];
+    let nodeClickablesOfInterest = ["onclick"];
 
-    // ==============================================================================================================================================
+    // ================================================================================================================
     // Function for making model from DOM node
     
-    function MakingDOMcopyOnModel (currentNode, currentNodeModel) {
+    function MakingDOMcopyOnModel(currentNode, currentNodeModel) {
 
-        currentNodeModel.clickables = [];
-
-        for (var property in nodePropertiesOfInterest) {
+        for (let property in nodePropertiesOfInterest) {
             if (nodePropertiesOfInterest.hasOwnProperty(property)) {
                 currentNodeModel[property] = nodePropertiesOfInterest[property](currentNode);
             }
         }
 
-        for (var clickable of nodeClickablesOfInterest) {
+        currentNodeModel.clickables = [];
+
+        for (let clickable of nodeClickablesOfInterest) {
             if (currentNode[clickable] !== null) {
                 currentNodeModel.clickables.push(clickable);
             }
         }
     }
 
-    // ==============================================================================================================================================
-    function main () {
+    // ================================================================================================================
+    function main() {
 
-        var rootNode = document.getElementsByTagName('body')[0];
-        var currentNode = rootNode;
+        let rootDOMnode = document.getElementsByTagName('body')[0];
 
-        var domTreeModelRoot = { // each tree node is dictionary with array of child-nodes
-            childNodes: null
+        let domModel = {
+            childNodes: []
         };
-        var domTreeModelPointer = domTreeModelRoot;
-        var domTreeModelPointerStack = [];
+        let domModelStack = [domModel];
 
-        // In this cycle algorithm is walking through DOM tree depth-first with regard to checkNodeIsBlacklisted
-        while (true){
-
-            MakingDOMcopyOnModel (currentNode, domTreeModelPointer);
-            
-            var blacklistCheckedNode = null;
-
-            // If we have childNodes and this is not the first time we analyze this node (we have never before investigted its children)
-            if (currentNode.children.length > 0 && domTreeModelPointer.childNodes === null) {
-
-                for (var node of currentNode.children) {
-                    if (checkNodeIsBlacklisted(node) === false) {
-                        blacklistCheckedNode = node;
-                        break;
-                    }
-                }
-                
-                if (blacklistCheckedNode !== null) {
-                    currentNode = blacklistCheckedNode;
-                    domTreeModelPointer.childNodes = [{
-                        childNodes: null
-                    }];
-                    domTreeModelPointerStack.push(domTreeModelPointer);
-                    domTreeModelPointer = domTreeModelPointer.childNodes[0];
-                    continue;
-                }
-            }
-
-            // If we have sibling node
-            if (currentNode.nextElementSibling !== null) {
-
-                var nextSibling = currentNode.nextElementSibling;
-                while (nextSibling !== null) {
-                    if (checkNodeIsBlacklisted(currentNode.nextElementSibling) === false) {
-                        blacklistCheckedNode = nextSibling;
-                        break;
-                    }
-                    nextSibling = nextSibling.nextElementSibling;
-                }
-                if (blacklistCheckedNode !== null) {
-                    currentNode = blacklistCheckedNode;
-                    var parentNode = domTreeModelPointerStack[domTreeModelPointerStack.length -1];
-                    var newDOMTreeModelNode = {
-                        childNodes: null
-                    };
-                    parentNode.childNodes.push(newDOMTreeModelNode);
-                    domTreeModelPointer = newDOMTreeModelNode;
-                    continue;
-                }
-
-            } 
-
-            currentNode = currentNode.parentNode;
-
-            // If we does not have parent node
-            if (domTreeModelPointerStack.length === 0)
-                break;
-            domTreeModelPointer = domTreeModelPointerStack.pop();
+        function* yieldNodeChilds (node) {
+            for (let child of node.children)
+                yield child;
         }
-        domTreeModelPointer = domTreeModelRoot;
 
-        return JSON.stringify({
+        for (let {node, levelChange} of yieldTreeNodes(rootDOMnode, yieldNodeChilds, 't')) {
+
+            if (levelChange <= 0)
+                for (let i = 0; i < -levelChange +1; i++)
+                    domModelStack.pop();
+
+            let newNode = {childNodes: []};
+            MakingDOMcopyOnModel (node, newNode);
+            domModelStack[domModelStack.length -1].childNodes.push(newNode);
+            domModelStack.push(newNode);
+        }
+
+        return {
             url: document.location.href,
-            domTreeModel: domTreeModelRoot
-        });
+            domSnapshot: domModel.childNodes[0]
+        };
     }
 
     return main();
 };
+
+// ====================================================================================================================
+
+module.exports.GenerateDOMCopy = GenerateDOMCopy;

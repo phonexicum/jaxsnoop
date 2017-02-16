@@ -27,6 +27,7 @@ const args = argparse.parseArgs();
 // Includes & Setup
 
 const childProcess = require('child_process');
+const deepcopy = require('deepcopy');
 
 // const webdriverio = require('webdriverio');
 const webdriver = require('selenium-webdriver'),
@@ -42,6 +43,8 @@ const ClientProxy = require('ClientProxy');
 
 const crawlerSettings = require('../' + args.settings_file);
 const crawlerLogger = require('../utils/logging.js').crawlerLogger(args.log_level);
+
+const utils = require('../utils/utils.js');
 
 const GenerateDOMCopy = require('./crawler-routine/copying-DOM.js').GenerateDOMCopy;
 
@@ -59,7 +62,6 @@ class WebAppModel {
 
     // ================================================================================================================
 }
-
 
 // ====================================================================================================================
 class Crawler {
@@ -214,20 +216,53 @@ class Crawler {
     }
 
     // ================================================================================================================
+    // Function converting domModel into html-string
+    rebuildDOM(domModel, level = 0) {
+
+        let dom = '';
+        dom += ' '.repeat(level) + '<' + domModel.tagName + ' ';
+        for (let attr of domModel.attributes)
+            dom += attr.attrName + '="' + attr.attrValue + '" ';
+        
+        dom += 'clickables="' + domModel.clickables.join(' ') + '"';
+        dom += '>\n';
+
+        // node text
+        if (domModel.nodeValues.length > 0)
+            dom += ' '.repeat(level + 4) + domModel.nodeValues.join(' ') + '\n';
+
+        if (domModel.childNodes !== null)
+            for (let child of domModel.childNodes)
+                dom += this.rebuildDOM(child, level + 4);
+
+        dom += ' '.repeat(level) + '</' + domModel.tagName + '>\n';
+        return dom;
+    }
+
+    // ================================================================================================================
     listenCommands() {
+        'use strict';
         process.on('message', m => {
 
             if (m.command === 'crawlCurrentState') {
                 crawlerLogger.trace('Command for crawling web-application came.');
 
-                // Crawl ?
+                // this.logout();
+                // this.login();
 
-                this.logout();
-                this.login();
+                // this._browserClient.get(crawlerSettings.homePageUrl);
+                this._browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/html/test_resources/test_dom.html');
 
-                this._browserClient.get(crawlerSettings.homePageUrl);
-
-                
+                this.snapshotingDOM()
+                .then(result => {
+                    let {url, domSnapshot} = result;
+                    console.log(domSnapshot);
+                    console.log(this.rebuildDOM(domSnapshot));
+                    return domSnapshot;
+                })
+                .then(domSnapshot => {
+                    this.detectTemplate(domSnapshot, domSnapshot);
+                });
 
                 this._browserClient.controlFlow().execute(result => {
                     console.log('client ready');
@@ -286,6 +321,27 @@ class Crawler {
     }
 
     // ================================================================================================================
+    // This function returns selenium-promise
+    snapshotingDOM() {
+        return this._browserClient.executeScript(GenerateDOMCopy, utils.yieldTreeNodes);
+    }
+
+    // ================================================================================================================
+    // Function compares two DOM models, extracts templates from first one and returns decomposed DOM model and detected templates
+    detectTemplate(domModel1, domModel2) {
+
+        // function must detect similarities:
+        //      1) similarities on one page (e.g. two forums on one webpage; crawler must be interested to crawl only one of them)
+        //      2) similar pages (e.g. habrahabr articles of different users)
+        //      3) similarities between pages (e.g. status bar (login, logout, settings, etc))
+
+        let selfDetecting = domModel1 === domModel2;
+
+        let domModel = deepcopy(domModel1);
+
+    }
+
+    // ================================================================================================================
 }
 
 
@@ -307,136 +363,6 @@ let workflowPromise = webCrawler
 
 
 
-
-// // ==================================================================================================================================================
-// //                                                                                                         JaxsnoopCrawler::openNextUsersWebPageState
-// // ==================================================================================================================================================
-// JaxsnoopCrawler.prototype.openNextUsersWebPageState = function openNextUsersWebPageState(/*some parameter selecting action for opening new web page state*/) {
-//     var self = this;
-    
-//     // Making user-step
-//     // By default I only logging in user
-//     // var promise = self.login(self.page);
-//     var promise = crawler_test_utils.openTestPage (self.page);
-
-//     // TODO: Not default behaviour (indeed making user-step)
-//     // 
-
-//     // Getting web-page model
-//     promise = promise.then((message) => {
-
-//         var jsonUsersWebPageState = self.page.evaluate(webPageModelGenerator.GenerateWebPageModel);
-//         var usersWebPageState = JSON.parse(jsonUsersWebPageState);
-
-
-//         debugLogger.log (JSON.stringify(usersWebPageState, null, 2));
-//         var promise = this.domTreeModelConvolution(usersWebPageState);
-
-
-//         return promise;
-
-//     }, (err) => {
-//         logging.error('Error in opening next users web state: ' + err);
-//     });
-    
-//     return promise;
-// };
-
-
-// // ==================================================================================================================================================
-// //                                                                                                           JaxsnoopCrawler::domTreeModelConvolution
-// // ==================================================================================================================================================
-// // 
-// // function must detect similarities:
-// //      1) similarities on one page (e.g. two forums on one webpage; crawler must be interested to crawl only one of them)
-// //      2) similar pages (e.g. habrahabr articles of different users)
-// //      3) similarities between pages (e.g. status bar (login, logout, settings, etc))
-// // 
-// JaxsnoopCrawler.prototype.domTreeModelConvolution = function domTreeModelConvolution(usersWebPageState){
-
-//     var userWebAppCurrentState = {
-//         nodeNumber: undefined,
-//         url: usersWebPageState.url,
-//         domTreeModel: usersWebPageState.domTreeModel
-//     };
-
-//     var promise = new Promise(function(res, rej){res('success');});
-
-//     var distance = -1;
-//     // For jqgram distance =
-//     //      0 - equal trees
-//     //      1 - different trees
-
-//     var treeComparizonParameters = {
-//         'tagsSpecifics': {
-//             'unknown': [
-//                 'tagName'
-//             ],
-//             'a': [
-//                 ''
-//             ]
-//         }
-//     };
-
-//     var nodeHandlerFn = {
-//         // For 'compare' function there is assumption, that a1 and a2 are nodes with tagNames is appropriate
-//         'a': {
-//             compare: function(a1, a2){
-//                 return ;
-//             }
-//         },
-//         'DEFAULT': {}
-//     };
-
-//     var compareSubTrees = function compareSubTrees(promise, roota, rootb) {
-//         return promise.then(function(status){
-//             return new Promise(function(res, rej){
-
-//                 var lableFunction = function lableFunction(node){
-//                     return node;
-//                 };
-
-//                 var childFunction = function childFunction(node){
-//                     return node.childNodes;
-//                 };
-
-//                 var compareFn = function compareFn(a1,a2) {
-//                     if (a1.length !== a2.length){ return false; }
-//                     for (var i = 0; i < a2.length; i++) {
-//                         if (a1[i] !== a2[i]){ return false; }
-//                     }
-//                     return true;
-//                 };
-
-//                 jqgram.distance({
-//                     root: roota,
-//                     lfn: lableFunction,
-//                     cfn: childFunction
-//                 }, {
-//                     root: rootb,
-//                     lfn: lableFunction,
-//                     cfn: childFunction
-//                 }, {
-//                     p:2,
-//                     q:3,
-//                     depth:100
-//                 }, function(result){
-//                     distance = result.distance;
-//                     res('success');
-
-//                 }, compareFn);
-//             });
-//         });
-//     };
-//     promise = compare(promise, userWebAppCurrentState.domTreeModel.childNodes[0], userWebAppCurrentState.domTreeModel.childNodes[1]);
-
-//     promise.then(function(status){
-//         console.log(distance);
-//     });
-
-//     return promise;
-
-// };
 
 
 // // ==================================================================================================================================================
