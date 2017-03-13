@@ -45,7 +45,7 @@ describe('utils', () => {
             for (let n of utils.yieldTreeNodes(tree, yieldTreeChilds, 'b')) {
                 sequence.push([n.node.k, n.levelChange]);
             }
-            assert.deepStrictEqual(sequence, [[4, 2], [5, 0], [2, -1], [6, 1], [3, -1], [1, -1]]);
+            assert.deepStrictEqual(sequence, [[4, 3], [5, 0], [2, -1], [6, 1], [3, -1], [1, -1]]);
         });
 
         it('check "extended prufer sequence ButtomUp" mode', () => {
@@ -53,7 +53,7 @@ describe('utils', () => {
             for (let n of utils.yieldTreeNodes(tree, yieldTreeChilds, 'e')) {
                 sequence.push([n.node.k, n.levelChange]);
             }
-            assert.deepStrictEqual(sequence, [[4, 2], [2, -1], [5, 1], [2, -1], [1, -1], [6, 2], [3, -1], [1, -1]]);
+            assert.deepStrictEqual(sequence, [[4, 3], [2, -1], [5, 1], [2, -1], [1, -1], [6, 2], [3, -1], [1, -1]]);
         });
 
         it('check "sequenctial (topDown)" mode', () => {
@@ -65,7 +65,6 @@ describe('utils', () => {
         });
 
         it('check skipping tree nodes in "topFirst" mode', () => {
-            let sequence = [];
             let gen = utils.yieldTreeNodes(tree, yieldTreeChilds);
             let {node, levelChange} = gen.next().value;
             assert.deepStrictEqual([node.k, levelChange], [1, 1]);
@@ -76,6 +75,21 @@ describe('utils', () => {
             ({node, levelChange} = gen.next().value);
             assert.deepStrictEqual([node.k, levelChange], [6, 1]);
             assert.deepStrictEqual(gen.next(), { value: undefined, done: true });
+        });
+
+        it('check skipping root node in "topFirst" mode', () => {
+            let gen = utils.yieldTreeNodes(tree, yieldTreeChilds);
+            let {node, levelChange} = gen.next(false).value;
+            assert.deepStrictEqual([node.k, levelChange], [1, 1]);
+            assert.deepStrictEqual(gen.next(false), { value: undefined, done: true });
+        });
+
+        it ('check stack reconstruction in "topFirst" mode', () => {
+            let sequence = [];
+            for (let n of utils.yieldTreeNodes(tree, yieldTreeChilds, 't', [tree, tree.child[0], tree.child[0].child[1]])) { // 1 2 5
+                sequence.push([n.node.k, n.levelChange]);
+            }
+            assert.deepStrictEqual(sequence, [[3, 2], [6, 1]]);
         });
     });
 });

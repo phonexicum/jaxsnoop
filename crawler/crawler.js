@@ -27,7 +27,6 @@ const args = argparse.parseArgs();
 // Includes & Setup
 
 const childProcess = require('child_process');
-const deepcopy = require('deepcopy');
 
 // const webdriverio = require('webdriverio');
 const webdriver = require('selenium-webdriver'),
@@ -45,23 +44,10 @@ const crawlerSettings = require('../' + args.settings_file);
 const crawlerLogger = require('../utils/logging.js').crawlerLogger(args.log_level);
 
 const utils = require('../utils/utils.js');
+const model = require('../model/model.js');
 
 const GenerateDOMCopy = require('./crawler-routine/copying-DOM.js').GenerateDOMCopy;
 
-// ====================================================================================================================
-class WebAppModel {
-
-    // ================================================================================================================
-    constructor() {
-
-        this.ctrlTemplates = [];
-        this.newTemplates = [];
-        this.webappStateModel = {};
-        this.knownUrls = [];
-    }
-
-    // ================================================================================================================
-}
 
 // ====================================================================================================================
 class Crawler {
@@ -216,30 +202,6 @@ class Crawler {
     }
 
     // ================================================================================================================
-    // Function converting domModel into html-string
-    rebuildDOM(domModel, level = 0) {
-
-        let dom = '';
-        dom += ' '.repeat(level) + '<' + domModel.tagName + ' ';
-        for (let attr of domModel.attributes)
-            dom += attr.attrName + '="' + attr.attrValue + '" ';
-        
-        dom += 'clickables="' + domModel.clickables.join(' ') + '"';
-        dom += '>\n';
-
-        // node text
-        if (domModel.nodeValues.length > 0)
-            dom += ' '.repeat(level + 4) + domModel.nodeValues.join(' ') + '\n';
-
-        if (domModel.childNodes !== null)
-            for (let child of domModel.childNodes)
-                dom += this.rebuildDOM(child, level + 4);
-
-        dom += ' '.repeat(level) + '</' + domModel.tagName + '>\n';
-        return dom;
-    }
-
-    // ================================================================================================================
     listenCommands() {
         'use strict';
         process.on('message', m => {
@@ -247,25 +209,29 @@ class Crawler {
             if (m.command === 'crawlCurrentState') {
                 crawlerLogger.trace('Command for crawling web-application came.');
 
+                let webAppModel = new model.WebAppModel();
+
                 // this.logout();
                 // this.login();
 
                 // this._browserClient.get(crawlerSettings.homePageUrl);
                 this._browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/html/test_resources/test_dom.html');
 
-                this.snapshotingDOM()
+                this.snapshotingDom()
                 .then(result => {
                     let {url, domSnapshot} = result;
-                    console.log(domSnapshot);
-                    console.log(this.rebuildDOM(domSnapshot));
-                    return domSnapshot;
+                    let domModel = new model.DOMmodel(url, domSnapshot);
+                    console.log(domModel.domSnapshot);
+                    console.log(domModel.rebuildDom());
+                    return domModel;
                 })
-                .then(domSnapshot => {
-                    this.detectTemplate(domSnapshot, domSnapshot);
+                .then(domModel => {
+                    // webAppModel.addDomModel(domModel);
                 });
 
                 this._browserClient.controlFlow().execute(result => {
                     console.log('client ready');
+                    global.gc();
                 });
 
                 // this._browserClient.get('http://www.google.com/ncr');
@@ -322,23 +288,9 @@ class Crawler {
 
     // ================================================================================================================
     // This function returns selenium-promise
-    snapshotingDOM() {
-        return this._browserClient.executeScript(GenerateDOMCopy, utils.yieldTreeNodes);
-    }
-
-    // ================================================================================================================
-    // Function compares two DOM models, extracts templates from first one and returns decomposed DOM model and detected templates
-    detectTemplate(domModel1, domModel2) {
-
-        // function must detect similarities:
-        //      1) similarities on one page (e.g. two forums on one webpage; crawler must be interested to crawl only one of them)
-        //      2) similar pages (e.g. habrahabr articles of different users)
-        //      3) similarities between pages (e.g. status bar (login, logout, settings, etc))
-
-        let selfDetecting = domModel1 === domModel2;
-
-        let domModel = deepcopy(domModel1);
-
+    snapshotingDom() {
+        return this._browserClient.executeScript(GenerateDOMCopy,
+            utils.yieldTreeNodes, 'function ' + model.DOMmodel.getDomNodeDraft.toString());
     }
 
     // ================================================================================================================

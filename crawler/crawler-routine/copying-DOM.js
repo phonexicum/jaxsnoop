@@ -1,9 +1,13 @@
 // Module containing functions executed in browser's javascript context
 
 // ====================================================================================================================
-function GenerateDOMCopy(yieldTreeNodes) {
+function GenerateDOMCopy(yieldTreeNodes, getDomNodeDraft) {
+    // All function prameters are strings
     
-    eval(yieldTreeNodes); // converting string to function
+    // converting strings to functions
+    eval(yieldTreeNodes);
+    eval(getDomNodeDraft);
+    // DOMmodel = (new Function(DOMmodel + "; return DOMmodel;"))(); // converting string to class
 
     // ================================================================================================================
     // This array contains several functions each checking if the node must be ignored
@@ -88,9 +92,7 @@ function GenerateDOMCopy(yieldTreeNodes) {
 
         let rootDOMnode = document.getElementsByTagName('body')[0];
 
-        let domModel = {
-            childNodes: []
-        };
+        let domModel = getDomNodeDraft();
         let domModelStack = [domModel];
 
         function* yieldNodeChilds (node) {
@@ -104,7 +106,7 @@ function GenerateDOMCopy(yieldTreeNodes) {
                 for (let i = 0; i < -levelChange +1; i++)
                     domModelStack.pop();
 
-            let newNode = {childNodes: []};
+            let newNode = getDomNodeDraft();
             MakingDOMcopyOnModel (node, newNode);
             domModelStack[domModelStack.length -1].childNodes.push(newNode);
             domModelStack.push(newNode);
