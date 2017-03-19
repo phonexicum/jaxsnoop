@@ -6,6 +6,9 @@
 const assert = require('assert');
 const deepcopy = require('deepcopy');
 
+const utils = require('../utils/utils.js');
+const nodeHandlers = require('./node-handlers.js');
+
 // ====================================================================================================================
 class DOMmodel {
     constructor(url = null, domSnapshot = null){
@@ -17,10 +20,9 @@ class DOMmodel {
     // ================================================================================================================
     static getDomNodeDraft(){
         return {
-            tagName: null,
-            attributes: [],
-            nodeValues: null,
-            childNodes: []
+            childNodes: [],
+            clickables: undefined,
+            props: undefined
         };
     }
 
@@ -42,25 +44,41 @@ class DOMmodel {
 
     // ================================================================================================================
     // Function converting domModel into html-string
-    rebuildDom(domModel = this.domSnapshot, level = 0) {
+    rebuildDom(level = 0, tabulation = 2) {
 
-        let dom = '';
-        dom += ' '.repeat(level) + '<' + domModel.tagName + ' ';
-        for (let attr of domModel.attributes)
-            dom += attr.attrName + '="' + attr.attrValue + '" ';
+        function* yieldNodeChilds (node) {
+            for (let child of node.childNodes)
+                yield child;
+        }
         
-        dom += 'clickables="' + domModel.clickables.join(' ') + '"';
-        dom += '>\n';
+        let dom = '';
+        let stack = [];
+        for (let {node, levelChange} of utils.yieldTreeNodes(this.domSnapshot, yieldNodeChilds, 't')) {
+            if (levelChange === 1) {
+                stack.push(node);
+                dom += nodeHandlers.stringifyNodeBeginning(node, level, tabulation);
+                level += 1;
+            } else if (levelChange < 0) {
+                for (let i = 0; i < -levelChange; i++) {
+                    level -= 1;
+                    dom += nodeHandlers.stringifyNodeEnding(stack[stack.length -1], level, tabulation);
+                    stack.pop();
+                }
+            }
+            if (levelChange <= 0) {
+                dom += nodeHandlers.stringifyNodeEnding(stack[stack.length -1], level -1, tabulation);
+                stack.pop();
+                dom += nodeHandlers.stringifyNodeBeginning(node, level -1, tabulation);
+                stack.push(node);
+            }
+        }
 
-        // node text
-        if (domModel.nodeValues.length > 0)
-            dom += ' '.repeat(level + 4) + domModel.nodeValues.join(' ') + '\n';
-
-        if (domModel.childNodes !== null)
-            for (let child of domModel.childNodes)
-                dom += this.rebuildDom(child, level + 4);
-
-        dom += ' '.repeat(level) + '</' + domModel.tagName + '>\n';
+        for (let i = stack.length -1; i >= 0; i--) {
+            level -= 1;
+            dom += nodeHandlers.stringifyNodeEnding(stack[stack.length -1], level, tabulation);
+            stack.pop();
+        }
+        
         return dom;
     }
 

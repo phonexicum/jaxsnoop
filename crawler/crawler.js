@@ -45,8 +45,9 @@ const crawlerLogger = require('../utils/logging.js').crawlerLogger(args.log_leve
 
 const utils = require('../utils/utils.js');
 const model = require('../model/model.js');
+const nodeHandlers = require('../model/node-handlers.js');
 
-const GenerateDOMCopy = require('./crawler-routine/copying-DOM.js').GenerateDOMCopy;
+const GenerateDOMCopy = require('./copying-DOM.js').GenerateDOMCopy;
 
 
 // ====================================================================================================================
@@ -221,7 +222,7 @@ class Crawler {
                 .then(result => {
                     let {url, domSnapshot} = result;
                     let domModel = new model.DOMmodel(url, domSnapshot);
-                    console.log(domModel.domSnapshot);
+                    // console.log(JSON.stringify(domModel.domSnapshot, null, 2));
                     console.log(domModel.rebuildDom());
                     return domModel;
                 })
@@ -290,7 +291,8 @@ class Crawler {
     // This function returns selenium-promise
     snapshotingDom() {
         return this._browserClient.executeScript(GenerateDOMCopy,
-            utils.yieldTreeNodes, 'function ' + model.DOMmodel.getDomNodeDraft.toString());
+            utils.yieldTreeNodes, 'function ' + model.DOMmodel.getDomNodeDraft.toString(),
+            nodeHandlers.checkNodeIsBlacklisted, nodeHandlers.getPropertiesOfDOMnode);
     }
 
     // ================================================================================================================

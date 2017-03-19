@@ -7,8 +7,8 @@ const fs = require('fs');
 const bunyan = require('bunyan');
 
 // logging directory
-if (!fs.existsSync('./log')){
-    fs.mkdirSync('./log');
+if (!fs.existsSync('./_log')){
+    fs.mkdirSync('./_log');
 }
 
 // ====================================================================================================================
@@ -26,7 +26,7 @@ module.exports = {
                 },
                 {
                     level: logLevel,
-                    path: './log/ctrl.log'
+                    path: './_log/ctrl.log'
                 },
             ],
             serializers: bunyan.stdSerializers
@@ -42,7 +42,7 @@ module.exports = {
                 },
                 {
                     level: logLevel,
-                    path: './log/crawlers.log'
+                    path: './_log/crawlers.log'
                 },
             ],
             serializers: bunyan.stdSerializers
@@ -58,7 +58,7 @@ module.exports = {
                 },
                 {
                     level: logLevel,
-                    path: './log/proxies.log'
+                    path: './_log/proxies.log'
                 },
             ],
             serializers: bunyan.stdSerializers

@@ -47,7 +47,7 @@ class Jaxsnoop {
 
         for (let user in crawlerSettings.users) {
             let crawlerInst = childProcess.fork('./crawler/crawler.js',
-                ['--expose-gc', '--settings-file', crawlerSettingsPath, '--user-name', user, '--log-level', jaxsnoopSettings.logLevel],
+                ['--settings-file', crawlerSettingsPath, '--user-name', user, '--log-level', jaxsnoopSettings.logLevel],
                 {stdio: 'inherit'}
             );
             waitLoadingCrawlers.push(

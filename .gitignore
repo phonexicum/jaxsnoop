@@ -1,8 +1,8 @@
 # Project specific
-log
-proxy-cert
+_log
+_proxy-cert
 selenium-server-standalone
-html
+_html
 .vscode
 
 # Logs
