@@ -216,24 +216,31 @@ class Crawler {
                 // this.login();
 
                 // this._browserClient.get(crawlerSettings.homePageUrl);
-                this._browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/html/test_resources/test_dom.html');
+                this._browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/test1-dom.html');
 
                 this.snapshotingDom()
-                .then(result => {
-                    let {url, domSnapshot} = result;
-                    let domModel = new model.DOMmodel(url, domSnapshot);
-                    // console.log(JSON.stringify(domModel.domSnapshot, null, 2));
-                    console.log(domModel.rebuildDom());
-                    return domModel;
-                })
                 .then(domModel => {
-                    // webAppModel.addDomModel(domModel);
+                    // console.log(JSON.stringify(domModel.domSnapshot, null, 2));
+                    console.log(
+                        webAppModel.rebuildDom({
+                            type: 'webPage',
+                            name: '-1',
+                            url: domModel.url,
+                            domRoot: domModel.domSnapshot
+                        })[0].dom
+                    );
+                    
+                    webAppModel.addDomModel(domModel);
+                    console.log(webAppModel.rebuildDom(webAppModel.webAppPageList[0])[0].dom);
                 });
 
                 this._browserClient.controlFlow().execute(result => {
                     console.log('client ready');
                     global.gc();
                 });
+
+                this._browserClient.close();
+                this._browserClient.quit();
 
                 // this._browserClient.get('http://www.google.com/ncr');
                 // this._browserClient.findElement(wdBy.name('q')).sendKeys('webdriver', webdriver.Key.ENTER);
@@ -291,7 +298,7 @@ class Crawler {
     // This function returns selenium-promise
     snapshotingDom() {
         return this._browserClient.executeScript(GenerateDOMCopy,
-            utils.yieldTreeNodes, 'function ' + model.DOMmodel.getDomNodeDraft.toString(),
+            utils.yieldTreeNodes, 'function ' + model.NodeProcessing.getDomNodeDraft.toString(),
             nodeHandlers.checkNodeIsBlacklisted, nodeHandlers.getPropertiesOfDOMnode);
     }
 

@@ -2,10 +2,10 @@
 
 // ====================================================================================================================
 // Includes & Setup
-
+const assert = require('assert');
 
 // ====================================================================================================================
-// Check if DOM node is blacklisted and must not be added into model
+// Check if DOM node is blacklisted and must not be added into model (global objects must not be used)
 function checkNodeIsBlacklisted(node) {
 
     // This array contains several functions each checking if the node must be ignored
@@ -22,14 +22,11 @@ function checkNodeIsBlacklisted(node) {
     return nodeBlacklist.some(val => val(node));
 }
 
-
 // ====================================================================================================================
-// Making model from DOM node
+// Making model from DOM node (global objects must not be used)
 //  return object:
-//  {
-//      properties: {...},
-//      clickables: [...]
-//  }
+//      {   props: {...},
+//          clickables: [...]   }
 function getPropertiesOfDOMnode(currentNode) {
 
     // ================================================================================================================
@@ -42,7 +39,6 @@ function getPropertiesOfDOMnode(currentNode) {
 
         attributes: node => {
             // returns array of dictionaries representing node attributes
-
             return Array.from(node.attributes, attr => {
                 return {
                     attrName: attr.nodeName,
@@ -53,7 +49,6 @@ function getPropertiesOfDOMnode(currentNode) {
 
         nodeValues: node => {
             // returns array of "#text" childNodes .nodeValue
-            
             let nodeValues = [];
             for (let subnode of node.childNodes) {
                 if (subnode.nodeName === '#text' && ! /^\s*$/g.test(subnode.nodeValue)) {
@@ -111,9 +106,26 @@ function stringifyNodeEnding(node, level = 0, tabulation = 4) {
 }
 
 // ====================================================================================================================
+function compareNodes(n1, n2){
+    try {
+        if (n1.props.tagName !== n2.props.tagName) return false;
+        assert.deepStrictEqual(n1.props.attributes === n2.props.attributes);
+        // assert.deepStrictEqual(n1.props.nodeValues === n2.props.nodeValues);
+        assert.deepStrictEqual(n1.clickables, n2.clickables);
+    } catch (err) {
+        if (err.name === 'AssertionError')
+            return false;
+        else
+            throw err;
+    }
+    return true;
+}
+
+// ====================================================================================================================
 module.exports = {
     checkNodeIsBlacklisted: checkNodeIsBlacklisted,
     getPropertiesOfDOMnode: getPropertiesOfDOMnode,
     stringifyNodeBeginning: stringifyNodeBeginning,
-    stringifyNodeEnding: stringifyNodeEnding
+    stringifyNodeEnding: stringifyNodeEnding,
+    compareNodes: compareNodes
 };

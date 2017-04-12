@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 
 // ====================================================================================================================
@@ -29,7 +31,7 @@ describe('crawler', () => {
             browser.get('file://' + __dirname + '/../_resources/test1-dom.html');
 
             browser.executeScript(GenerateDOMCopy, utils.yieldTreeNodes,
-                'function ' + model.DOMmodel.getDomNodeDraft.toString(),
+                'function ' + model.NodeProcessing.getDomNodeDraft.toString(),
                 nodeHandlers.checkNodeIsBlacklisted, nodeHandlers.getPropertiesOfDOMnode);
 
             browser.close();

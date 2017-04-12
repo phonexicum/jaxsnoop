@@ -12,9 +12,11 @@
 // nodeStack array can be used to start `yieldTreeNodes` function from middle state, nodeStack must contain nodes,
 //      each following node is child of previous node, and `nodeStack[0]` === `tree`
 //
-// Function yields objects: {node: treeNode, levelChange: node position relatively to previous node}
+// Function yields object: {node: treeNode, levelChange: node position relatively to previous node, parent: pointer to node's parent}
 //
-function* yieldTreeNodes(tree, yieldNodeChilds, mode = 't', middleStack = undefined) {
+function* yieldTreeNodes(tree /*node*/, yieldNodeChilds, mode = 't', middleStack = undefined) {
+
+    let checkStackElemUndef = x => x === undefined ? x : x.n;
 
     let nodeStack = [];
     let levelChange = 0;
@@ -28,7 +30,7 @@ function* yieldTreeNodes(tree, yieldNodeChilds, mode = 't', middleStack = undefi
         levelChange ++;
 
         if (mode === 't' || mode === 's') {
-            skipNode = yield {node: tree, levelChange: levelChange};
+            skipNode = yield {node: tree, levelChange: levelChange, parent: checkStackElemUndef(nodeStack[nodeStack.length -2])};
             levelChange = 0;
             if (skipNode !== undefined) {
                 nodeStack.pop(); levelChange--;
@@ -73,7 +75,7 @@ function* yieldTreeNodes(tree, yieldNodeChilds, mode = 't', middleStack = undefi
         if (done === false) {
             
             if (mode === 'e' && e_justGotUpward === true){
-                skipNode = yield {node: nodeStack[nodeStack.length -1].n, levelChange: -1};
+                skipNode = yield {node: nodeStack[nodeStack.length -1].n, levelChange: -1, parent: checkStackElemUndef(nodeStack[nodeStack.length -2])};
                 levelChange = 0;
                 if (skipNode !== undefined) {
                     nodeStack.pop(); levelChange--;
@@ -87,7 +89,7 @@ function* yieldTreeNodes(tree, yieldNodeChilds, mode = 't', middleStack = undefi
             levelChange ++;
 
             if (mode === 't' || mode === 's') {
-                skipNode = yield {node: nodeStack[nodeStack.length -1].n, levelChange: levelChange};
+                skipNode = yield {node: nodeStack[nodeStack.length -1].n, levelChange: levelChange, parent: checkStackElemUndef(nodeStack[nodeStack.length -2])};
                 levelChange = 0;
                 if (skipNode !== undefined) {
                     nodeStack.pop(); levelChange--;
@@ -98,7 +100,7 @@ function* yieldTreeNodes(tree, yieldNodeChilds, mode = 't', middleStack = undefi
         } else { // there is no remaining children in current node
             
             if (mode === 'b' || mode === 'e') {
-                skipNode = yield {node: nodeStack[nodeStack.length -1].n, levelChange: levelChange};
+                skipNode = yield {node: nodeStack[nodeStack.length -1].n, levelChange: levelChange, parent: checkStackElemUndef(nodeStack[nodeStack.length -2])};
                 levelChange = 0;
                 if (skipNode !== undefined) {
                     nodeStack.pop(); levelChange--;
@@ -110,7 +112,7 @@ function* yieldTreeNodes(tree, yieldNodeChilds, mode = 't', middleStack = undefi
             nodeStack.pop(); levelChange --;
             
             if (mode === 's' && nodeStack.length > 0) {
-                skipNode = yield {node: nodeStack[nodeStack.length -1].n, levelChange: levelChange};
+                skipNode = yield {node: nodeStack[nodeStack.length -1].n, levelChange: levelChange, parent: checkStackElemUndef(nodeStack[nodeStack.length -2])};
                 levelChange = 0;
                 if (skipNode !== undefined) {
                     nodeStack.pop(); levelChange--;
@@ -121,6 +123,22 @@ function* yieldTreeNodes(tree, yieldNodeChilds, mode = 't', middleStack = undefi
     }
 }
 
+// ====================================================================================================================
+function arraySimilarity(arr1, arr2) {
+    if (arr1.length === arr2.length &&
+        arr1.every(function(e, i) {
+            return e === arr2[i];
+        })
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// ====================================================================================================================
+
 module.exports = {
-    yieldTreeNodes: yieldTreeNodes
+    yieldTreeNodes: yieldTreeNodes,
+    arraySimilarity: arraySimilarity
 };
