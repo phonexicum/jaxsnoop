@@ -1,9 +1,8 @@
 # Project specific
+_html
 _log
 _proxy-cert
 selenium-server-standalone
-_html
-.vscode
 
 # Logs
 logs

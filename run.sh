@@ -1,2 +1,3 @@
 #! /bin/bash
-node --expose-gc --harmony main.js --settings-dir=./settings/pyforum | bunyan -o short --color
+
+node --expose-gc --harmony ./main.js --settings-file=./settings/pyforum.js --user-name=member_1 | bunyan -o short --color

@@ -122,6 +122,10 @@ https://github.com/cheeriojs/cheerio
 
 ## Choosing technologies
 
+#### Single-threated
+
+For now I am solving the problem of detecting authorization vulnerabilities. Thus I will use my crawler from only two different users. Thus I can not make more then x2 parallelizm. Meaning this is not critical acceleration and I will lay down the idea of parallel crawling till the better time.
+
 #### Selenium
 
 All browser tries to support remoute management (mainly for sites test purposes). Obvious leader in driving browsers are **selenium**.

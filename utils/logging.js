@@ -16,22 +16,6 @@ if (!fs.existsSync('./_log')){
 // fatal, error, warn, info, debug, trace
 
 module.exports = {
-    ctrlLogger: function (logLevel) {
-        return bunyan.createLogger({
-            name: 'ctrlLogger',
-            streams: [
-                {
-                    level: logLevel,
-                    stream: process.stdout
-                },
-                {
-                    level: logLevel,
-                    path: './_log/ctrl.log'
-                },
-            ],
-            serializers: bunyan.stdSerializers
-        });
-    },
     crawlerLogger: function (logLevel) {
         return bunyan.createLogger({
             name: 'crawlerLogger',

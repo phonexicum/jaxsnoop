@@ -17,10 +17,6 @@ argparse.addArgument(
     ['-u', '--user-name'],
     {help: 'user name', required: true}
 );
-argparse.addArgument(
-    ['-l', '--log-level'],
-    {help: 'logging level', required: true}
-);
 const args = argparse.parseArgs();
 
 // ====================================================================================================================
@@ -38,10 +34,8 @@ const webdriver = require('selenium-webdriver'),
 const wdBy = webdriver.By,
     wdUntil = webdriver.until;
 
-const ClientProxy = require('ClientProxy');
-
 const crawlerSettings = require('../' + args.settings_file);
-const crawlerLogger = require('../utils/logging.js').crawlerLogger(args.log_level);
+const crawlerLogger = require('../utils/logging.js').crawlerLogger(crawlerSettings.logLevel);
 
 const utils = require('../utils/utils.js');
 const model = require('../model/model.js');
@@ -68,11 +62,6 @@ class Crawler {
         .then(result => {
             return this._webDriverSetup();
         })
-        .then(result => {
-            process.send({
-                report: 'crawlerReady'
-            });
-        })
         .catch(error => {
             crawlerLogger.error('Error setting up crawler', this.userName);
             return Promise.reject(error);
@@ -83,7 +72,10 @@ class Crawler {
     _webProxySetup() {
         crawlerLogger.trace('Crawler', this.userName, '_webProxySetup started.');
         return new Promise((resolve, reject) => {
-            this._webProxyChild = childProcess.fork(__dirname + '/proxy.js', ['-l', args.log_level], {stdio: 'inherit'});
+            this._webProxyChild = childProcess.fork(__dirname + '/proxy.js',
+                                                    ['-l', crawlerSettings.logLevel],
+                                                    {stdio: 'inherit', execArgv: ['--debug=' + 5859]} // Solves problems with debugging ports
+                                                   );
 
             this._webProxyChild.on('message', m => {
                 if (m.report === 'proxyPort') {
@@ -204,75 +196,62 @@ class Crawler {
 
     // ================================================================================================================
     listenCommands() {
-        'use strict';
-        process.on('message', m => {
+        crawlerLogger.trace('Command for crawling web-application came.');
 
-            if (m.command === 'crawlCurrentState') {
-                crawlerLogger.trace('Command for crawling web-application came.');
+        let webAppModel = new model.WebAppModel();
 
-                let webAppModel = new model.WebAppModel();
+        // this.logout();
+        // this.login();
 
-                // this.logout();
-                // this.login();
+        // this._browserClient.get(crawlerSettings.homePageUrl);
+        this._browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/test1-dom.html');
 
-                // this._browserClient.get(crawlerSettings.homePageUrl);
-                this._browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/test1-dom.html');
-
-                this.snapshotingDom()
-                .then(domModel => {
-                    // console.log(JSON.stringify(domModel.domSnapshot, null, 2));
-                    console.log(
-                        webAppModel.rebuildDom({
-                            type: 'webPage',
-                            name: '-1',
-                            url: domModel.url,
-                            domRoot: domModel.domSnapshot
-                        })[0].dom
-                    );
-                    
-                    webAppModel.addDomModel(domModel);
-                    console.log(webAppModel.rebuildDom(webAppModel.webAppPageList[0])[0].dom);
-                });
-
-                this._browserClient.controlFlow().execute(result => {
-                    console.log('client ready');
-                    global.gc();
-                });
-
-                this._browserClient.close();
-                this._browserClient.quit();
-
-                // this._browserClient.get('http://www.google.com/ncr');
-                // this._browserClient.findElement(wdBy.name('q')).sendKeys('webdriver', webdriver.Key.ENTER);
-                // // this._browserClient.findElement(wdBy.name('btnG')).click();
-                // this._browserClient.wait(wdUntil.titleIs('webdriver - Google Search'), 1000);
-                // this._browserClient.quit();
-
-                // this._browserClient
-                //     .init()
-                //     .url('http://duckduckgo.com/')
-                //     .setValue('#search_form_input_homepage', 'WebdriverIO')        
-                //     .click('#search_button_homepage')
-                //     .getTitle().then(function(title) {
-                //         console.log('Title is: ' + title);
-                //     })
-                //     .end();
-
-                // setTimeout(()=>{
-                //     process.send({
-                //         report: 'crawlingDone',
-                //         cycleNum: m.cycleNum
-                //     });
-                // }, 1000);
-
-            } else {
-                crawlerLogger.error({
-                    crawlerUser: this.userName,
-                    error: 'Unknown command from controller.'
-                });
-            }
-
+        this.snapshotingDom()
+        .then(domModel => {
+            // console.log(JSON.stringify(domModel.domSnapshot, null, 2));
+            console.log(
+                webAppModel.rebuildDom({
+                    type: 'webPage',
+                    name: '-1',
+                    url: domModel.url,
+                    domRoot: domModel.domSnapshot
+                })[0].dom
+            );
+            
+            webAppModel.addDomModel(domModel);
+            console.log(webAppModel.rebuildDom(webAppModel.webAppPageList[0])[0].dom);
         });
+
+        this._browserClient.controlFlow().execute(result => {
+            console.log('client ready');
+            global.gc();
+        });
+
+        this._browserClient.close();
+        this._browserClient.quit();
+
+        // this._browserClient.get('http://www.google.com/ncr');
+        // this._browserClient.findElement(wdBy.name('q')).sendKeys('webdriver', webdriver.Key.ENTER);
+        // // this._browserClient.findElement(wdBy.name('btnG')).click();
+        // this._browserClient.wait(wdUntil.titleIs('webdriver - Google Search'), 1000);
+        // this._browserClient.quit();
+
+        // this._browserClient
+        //     .init()
+        //     .url('http://duckduckgo.com/')
+        //     .setValue('#search_form_input_homepage', 'WebdriverIO')        
+        //     .click('#search_button_homepage')
+        //     .getTitle().then(function(title) {
+        //         console.log('Title is: ' + title);
+        //     })
+        //     .end();
+
+        // setTimeout(()=>{
+        //     process.send({
+        //         report: 'crawlingDone',
+        //         cycleNum: m.cycleNum
+        //     });
+        // }, 1000);
     }
 
     // ================================================================================================================

@@ -13,13 +13,16 @@ function userLoginAction(login, passwd) {
     };
 }
 
-
 function userLogoutAction(driver) {
     driver.get('http://localhost:8000/pyforum/default/logout');
 }
 
 
 module.exports = {
+    webAppName: 'pyforum',
+    logLevel: 'trace', // One of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
+
+
     homePageUrl: 'http://localhost:8000/pyforum/default/index',
     urlWhiteList: [ // Array of regexp parameters
         {
