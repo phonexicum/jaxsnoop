@@ -3,7 +3,7 @@ AJAX web-crawler based on nodejs and selenium-webdriver.
 
 *Nothing works, project still in its first stages.*
 
-Theory basis for this project can be found at https://phonexicum.github.io/infosec/webcrawler.html
+Theory basis for this project can be found at https://phonexicum.github.io/infosec/jaxsnoop.html
 
 ## Table of Contents
 

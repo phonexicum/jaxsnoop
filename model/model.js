@@ -3,7 +3,8 @@
 // ====================================================================================================================
 // Includes & Setup
 
-// const deepcopy = require('deepcopy');
+const fs = require('fs');
+const path = require('path');
 
 const utils = require('../utils/utils.js');
 const nodeHandlers = require('./node-handlers.js');
@@ -70,7 +71,7 @@ class NodeProcessing {
     // ================================================================================================================
     // return boolean;
     static checkSubtreesPairToBeTmpl(equalNodesArr) {
-        if (equalNodesArr.length >= this.minSize){
+        if (equalNodesArr.length >= NodeProcessing.minSize){
             return true;
         } else {
             return false;
@@ -80,7 +81,7 @@ class NodeProcessing {
     // ================================================================================================================
     // return boolean;
     static checkSubtreeToBeTmpl(subTree) {
-        if (subTree.length >= this.minSize)
+        if (subTree.length >= NodeProcessing.minSize)
             return true;
         else
             return false;
@@ -88,6 +89,9 @@ class NodeProcessing {
 
     // ================================================================================================================
 }
+
+// NodeProcessing static variables
+NodeProcessing.minSize = 3;
 
 // ====================================================================================================================
 class WebAppModel {
@@ -99,10 +103,8 @@ class WebAppModel {
     
     constructor() {
 
-        this.tmplCount = 0;
-        this.webPageCount = 0;
-
-        this.minSize = 3;
+        this.tmplCount = 1;
+        this.webPageCount = 1;
 
         this.templates = []; // [{tmpl, tmplParents}, ...]
         this.webAppGraph = undefined; // { domModel: {}, nextModels: [{}, ...] }
@@ -194,7 +196,8 @@ class WebAppModel {
         let domLevel = i_domLevelChange;
         let tmplLevel = i_tmplLevelChange;
         let match = false;
-        let stackDOMreconstruction = [];
+        let tmplRecovery = false;
+        let stackTmplReconstruction = [];
 
         while (true) {
             if (shiftDom_i === false && shiftTmpl_i === false)
@@ -206,43 +209,25 @@ class WebAppModel {
                     yield {
                         domNode: i_domNode,
                         tmplNode: i_tmplNode,
-                        levelChange: domLevel - stackDOMreconstruction.length
+                        levelChange: domLevel - stackTmplReconstruction.length
                     };
 
-                    while (stackDOMreconstruction.length >= domLevel)
-                        stackDOMreconstruction.pop();
-                    stackDOMreconstruction.push(i_domNode);
+                    while (stackTmplReconstruction.length >= tmplLevel)
+                        stackTmplReconstruction.pop();
+                    stackTmplReconstruction.push(i_tmplNode);
 
                     shiftDom_i = true;
                     shiftTmpl_i = true;
                     match = true;
                 } else {
-                    shiftDom_i = true;
+                    shiftTmpl_i = true;
                 }
             
-            if (shiftTmpl_i === true) {
-                let value, done;
-                if (match) {
-                    ({value, done} = tmplTreeGen.next());
-                    // match = false; // no! match will be falsed after domNode shifting below
-                } else {
-                    ({value, done} = tmplTreeGen.next(false));
-                }
-                if (done === false) {
-                    ({node: i_tmplNode, levelChange: i_tmplLevelChange} = value);
-                    tmplLevel += i_tmplLevelChange;
-
-                    shiftTmpl_i = false;
-                } else {
-                    break;
-                }
-            }
-
             if (shiftDom_i === true) {
                 let value, done;
                 if (match) {
                     ({value, done} = domTreeGen.next());
-                    match = false;
+                    // match = false; // no! match will be falsed after tmplNode shifting below
                 } else {
                     ({value, done} = domTreeGen.next(false));
                 }
@@ -250,20 +235,45 @@ class WebAppModel {
                     ({node: i_domNode, levelChange: i_domLevelChange} = value);
                     domLevel += i_domLevelChange;
 
-                    if (domLevel < tmplLevel) {
-                        shiftTmpl_i = true;
-                    } else if (domLevel > tmplLevel) {
+                    shiftDom_i = false;
+                } else {
+                    break;
+                }
+            }
+
+            if (shiftTmpl_i === true) {
+                let value, done;
+                if (match || tmplRecovery) {
+                    ({value, done} = tmplTreeGen.next());
+                    match = false;
+                    tmplRecovery = false;
+                } else {
+                    ({value, done} = tmplTreeGen.next(false));
+                }
+                if (done === false) {
+                    ({node: i_tmplNode, levelChange: i_tmplLevelChange} = value);
+                    tmplLevel += i_tmplLevelChange;
+
+                    if (domLevel > tmplLevel) {
                         shiftDom_i = true;
+
+                        tmplTreeGen = utils.yieldTreeNodes(tmplTreeRoot, yieldNodeChilds, 't', stackTmplReconstruction);
+                        tmplLevel = 0;
+                        tmplRecovery = true;
+                        shiftTmpl_i = true;
+                    } else if (domLevel < tmplLevel) {
+                        shiftTmpl_i = true;
                     } else {
-                        shiftDom_i = false;
+                        shiftTmpl_i = false;
                     }
 
                 } else {
                     shiftDom_i = true;
-                    shiftTmpl_i = true;
 
-                    domTreeGen = utils.yieldTreeNodes(domTreeRoot, yieldNodeChilds, 't', stackDOMreconstruction);
-                    domLevel = stackDOMreconstruction.length;
+                    tmplTreeGen = utils.yieldTreeNodes(tmplTreeRoot, yieldNodeChilds, 't', stackTmplReconstruction);
+                    tmplLevel = 0;
+                    tmplRecovery = true;
+                    shiftTmpl_i = true;
                 }
             }
         }
@@ -275,7 +285,7 @@ class WebAppModel {
     _getEqualSubRootPartsArr(domTreeRoot, tmplTreeRoot) {
         
         let equalNodesArr = [];
-        for (let pair of _walkTwoTreesSynchronously(domTreeRoot, tmplTreeRoot, NodeProcessing.compareNodes, NodeProcessing.getYieldNodeChilds()))
+        for (let pair of this._walkTwoTreesSynchronously(domTreeRoot, tmplTreeRoot, NodeProcessing.compareNodes, NodeProcessing.getYieldNodeChilds()))
             equalNodesArr.push(pair);
 
         if (NodeProcessing.checkSubtreesPairToBeTmpl(equalNodesArr)) {
@@ -299,9 +309,9 @@ class WebAppModel {
             stackDOMreconstruction.push(domSubRoot1);
 
             let domTreeGen2 = utils.yieldTreeNodes(domModelRoot, NodeProcessing.getYieldNodeChilds(), 't', stackDOMreconstruction);
-            domTreeGen2.next();
             for (let {node:domSubRoot2} of domTreeGen2) {
-            if (NodeProcessing.compareNodes(domSubRoot1, domSubRoot2) === true) {
+            if (NodeProcessing.compareNodes(domSubRoot1, domSubRoot2) === true &&
+                ! domSubRoot1.tmplRoutine.color.some(c_val => domSubRoot1.tmplRoutine[c_val] === domSubRoot2)) {
 
                 let equalNodesArr = this._getEqualSubRootPartsArr(domSubRoot1, domSubRoot2);
                 if (equalNodesArr !== undefined) {
@@ -309,17 +319,17 @@ class WebAppModel {
                         pair.domNode.tmplRoutine[this.addRoutine.color] = pair.tmplNode;
                         pair.domNode.tmplRoutine.color.push(this.addRoutine.color);
                         pair.tmplNode.tmplRoutine[this.addRoutine.color +1] = pair.domNode;
-                        pair.tmplNode.tmplRoutine.color.push(this.addRoutine.color);
+                        pair.tmplNode.tmplRoutine.color.push(this.addRoutine.color +1);
                     }
                     this.addRoutine.colorCompliance[this.addRoutine.color] = {
-                        context: "sameDOMmodel"//,
+                        context: "sameDOMmodel",
                         // rootNode: domSubRoot2,
-                        // pairColor: this.addRoutine.color +1
+                        pairColor: this.addRoutine.color +1
                     };
                     this.addRoutine.colorCompliance[this.addRoutine.color +1] = {
-                        context: "sameDOMmodel"//,
+                        context: "sameDOMmodel",
                         // rootNode: domSubRoot1,
-                        // pairColor: this.addRoutine.color
+                        pairColor: this.addRoutine.color
                     };
                     this.addRoutine.color += 2;
                 }
@@ -330,18 +340,22 @@ class WebAppModel {
         for (let tmplModel of this.templates) {
             for (let {node:domSubRoot} of utils.yieldTreeNodes(domModelRoot, NodeProcessing.getYieldNodeChilds())) {
             for (let {node:tmplSubRoot} of utils.yieldTreeNodes(tmplModel.tmplRoot, NodeProcessing.getYieldNodeChilds())) {
-            if (NodeProcessing.compareNodes(domSubRoot, tmplSubRoot) === true) {
+            if (NodeProcessing.compareNodes(domSubRoot, tmplSubRoot) === true &&
+                ! domSubRoot.tmplRoutine.color.some(c_val => domSubRoot.tmplRoutine[c_val] === tmplSubRoot)) {
 
                 let equalNodesArr = this._getEqualSubRootPartsArr(domSubRoot, tmplSubRoot);
                 if (equalNodesArr !== undefined) {
                     for (let pair of equalNodesArr) {
                         pair.domNode.tmplRoutine[this.addRoutine.color] = pair.tmplNode;
                         pair.domNode.tmplRoutine.color.push(this.addRoutine.color);
+                        pair.tmplNode.tmplRoutine[this.addRoutine.color] = pair.domNode;
+                        pair.tmplNode.tmplRoutine.color.push(this.addRoutine.color);
                     }
                     this.addRoutine.colorCompliance[this.addRoutine.color] = {
                         context: "tmpl",
                         // rootNode: tmplSubRoot,
-                        tmpl: tmplModel
+                        tmpl: tmplModel,
+                        pairColor: this.addRoutine.color
                     };
                     this.addRoutine.color++;
                 }
@@ -352,39 +366,41 @@ class WebAppModel {
         // Search for sub-templates between domModel and other domModels
         let subPage_queue = [];
         this.webAppPageList.forEach(val => {
-            models_queue.push(val.domRoot);
+            subPage_queue.push(val.domRoot);
         });
         while (subPage_queue.length > 0) {
             let domModel2Root = subPage_queue.pop();
 
-            for (let {node:domSubRoot1} of utils.yieldTreeNodes(domModelRoot, NodeProcessing.getYieldNodeChilds())) {
-            for (let {node:domSubRoot2} of utils.yieldTreeNodes(domModel2Root, NodeProcessing.getYieldNodeChilds())) {
-            
-            if (domSubRoot2.type !== undefined) {
-
+            for (let {node:domSubRoot2} of utils.yieldTreeNodes(domModel2Root, NodeProcessing.getYieldNodeChilds()))
                 if (domSubRoot2.type === 'tmpl') {
-                    domSubRoot2.nodeChilds.forEach(val => {
-                        models_queue.push(val.child);
+                    domSubRoot2.childNodes.forEach(val => {
+                        subPage_queue.push(val.child);
                     });
                 }
-                else throw new Error('Unknown node type in _labelNodeProcessing during searching for equal sub-trees between new domModel and already stored domModels.');
-                
-            } else if (NodeProcessing.compareNodes(domSubRoot1, domSubRoot2) === true) {
 
-                let equalNodesArr = this._getEqualSubRootPartsArr(domSubRoot1, domSubRoot2);
-                if (equalNodesArr !== undefined) {
-                    for (let pair of equalNodesArr) {
-                        pair.domNode.tmplRoutine[this.addRoutine.color] = pair.tmplNode;
-                        pair.domNode.tmplRoutine.color.push(this.addRoutine.color);
+            for (let {node:domSubRoot1} of utils.yieldTreeNodes(domModelRoot, NodeProcessing.getYieldNodeChilds())) {
+            for (let {node:domSubRoot2} of utils.yieldTreeNodes(domModel2Root, NodeProcessing.getYieldNodeChilds())) {
+                if (domSubRoot2.type === undefined &&
+                    NodeProcessing.compareNodes(domSubRoot1, domSubRoot2) === true &&
+                    ! domSubRoot1.tmplRoutine.color.some(c_val => domSubRoot1.tmplRoutine[c_val] === domSubRoot2)) {
+                    let equalNodesArr = this._getEqualSubRootPartsArr(domSubRoot1, domSubRoot2);
+                    if (equalNodesArr !== undefined) {
+                        for (let pair of equalNodesArr) {
+                            pair.domNode.tmplRoutine[this.addRoutine.color] = pair.tmplNode;
+                            pair.domNode.tmplRoutine.color.push(this.addRoutine.color);
+                            pair.tmplNode.tmplRoutine[this.addRoutine.color] = pair.domNode;
+                            pair.tmplNode.tmplRoutine.color.push(this.addRoutine.color);
+                        }
+                        this.addRoutine.colorCompliance[this.addRoutine.color] = {
+                            context: "domModel",
+                            // rootNode: domSubRoot2,
+                            pairColor: this.addRoutine.color
+                        };
+                        this.addRoutine.color++;
                     }
-                    this.addRoutine.colorCompliance[this.addRoutine.color] = {
-                        context: "domModel"//,
-                        // rootNode: domSubRoot2
-                    };
-                    this.addRoutine.color++;
-                }
 
-            }}}
+                }
+            }}
         }
     }
 
@@ -394,39 +410,57 @@ class WebAppModel {
         tmpl.tmplParents.push(curRootNode);
 
         let parent = curRootNode.parent;
+        
         NodeProcessing.nullifyDomNode(curRootNode);
+        
         curRootNode.type = 'tmpl';
         curRootNode.childNodes = [];
         curRootNode.parent = parent;
         curRootNode.tmpl = tmpl;
         curRootNode.tmplRoutine = tmpl.tmplRoot.tmplRoutine;
+        
+        tmplSinks.forEach((val, i) => {
+            if (tmplSinks[i] === curRootNode)
+                tmplSinks[i] = tmpl.tmplRoot;
+        });
+
         tmplSinkChilds.forEach((val, i) => {
             curRootNode.childNodes.push({
                 tmplNode: tmplSinks[i],
-                child: val
+                child: tmplSinkChilds[i]
             });
-            val.parent = curRootNode;
+            tmplSinkChilds[i].parent = curRootNode;
         });
     };
 
     // ================================================================================================================
-    // Search for tree-sink nodes of tmplRootNode template pointed from equalDomNodesArr by color
+    // Search for tree-sink nodes of pairedRootNode template pointed from equalDomNodesArr by color
     // function can not be used to gets sinks of equalDomNodesArr directly, only its colored images in other structures
-    _getTmplSinks(equalDomNodesArr, color, tmplRootNode) {
-        let tmplGen = utils.yieldTreeNodes(tmplRootNode, NodeProcessing.getYieldNodeChilds());
-        let {value:{node, levelChange, parent}, done} = tmplGen.next();
+    _getTmplSinks(equalDomNodesArr, color, pairedRootNode) {
+        
+        let pairColor = this.addRoutine.colorCompliance[color].pairColor;
+
+        let tmplGen = utils.yieldTreeNodes(pairedRootNode, NodeProcessing.getYieldNodeChilds());
+        let value;
+        let {value:{node}, done} = tmplGen.next();
         let tmplSinkChilds = [];
         let tmplSinks = []; // tmplSinkChilds parents
         let i = 0;
-        while (done === false) { // && i < equalDomNodesArr.length) {
+        while (done === false) {
             
-            if (equalDomNodesArr[i].domNode.tmplRoutine[color] === node) {
-                ({value:{node, levelChange, parent}, done} = tmplGen.next());
+            if (i < equalDomNodesArr.length && equalDomNodesArr[i].domNode.tmplRoutine[color] === node) {
+                ({value, done} = tmplGen.next());
+                if (value !== undefined) node = value.node;
                 i++;
             } else {
                 tmplSinkChilds.push(node);
-                tmplSinks.push(parent);
-                ({value:{node, levelChange, parent}, done} = tmplGen.next(false));
+                if (node.parent !== pairedRootNode)
+                    tmplSinks.push(node.parent.tmplRoutine[pairColor]);
+                else
+                    tmplSinks.push(equalDomNodesArr[0].domNode); // alternative way to get tmplRoot
+                
+                ({value, done} = tmplGen.next(false));
+                if (value !== undefined) node = value.node;
             }
         }
         if (done !== true || i !== equalDomNodesArr.length)
@@ -445,6 +479,7 @@ class WebAppModel {
             // generating `equalDomNodesArr` pairs with equal colors and `tmplSinks`
             // ====================
 
+            // Case if first element is tmpl
             let curRootNode = process_queue.splice(0, 1)[0];
             if (curRootNode.type === 'tmpl') {
                 for (let child of curRootNode.childNodes)
@@ -453,7 +488,8 @@ class WebAppModel {
             }
             let tmplGen = utils.yieldTreeNodes(curRootNode, NodeProcessing.getYieldNodeChilds());
 
-            let value = undefined;
+            // Collect equally-colored sub-tree nodes
+            let value;
             let {value:{node, levelChange, parent}, done} = tmplGen.next();
             let equalDomNodesArr = [];
             let tmplSinkChilds = [];
@@ -475,11 +511,13 @@ class WebAppModel {
                 }
             }
 
-            process_queue = process_queue.push(...tmplSinkChilds);
+            process_queue.push(...tmplSinkChilds);
             
-            if (NodeProcessing.checkSubtreeToBeTmpl(equalDomNodesArr)) {
-                // if (curRootNode.some(val => this.addRoutine.colorCompliance[val.tmplRoutine.color].context === 'tmpl')) {
-                //     // new tmpl is part of some other tmpl
+            if (curRootNode.tmplRoutine.color.length !== 0 && NodeProcessing.checkSubtreeToBeTmpl(equalDomNodesArr)) {
+
+                // TODO: Every time new template is constructed and placed instead of other tmpl places even if template will be absolutely equal or if ther is only one other place for template to be merged to or if there is many such places
+                //      Maybe some optimization of process can be done?
+                //      Any way structure of new template is already in memory and it must go through merge process with other templates
 
                 // ====================
                 // Create new template
@@ -487,149 +525,159 @@ class WebAppModel {
                 let tmplRoot = Object.assign({}, curRootNode);
                 let tmpl = this._init_newTmpl(tmplRoot, []);
                 this.templates.push(tmpl);
+
                 this._initTmplNode(curRootNode, tmpl, tmplSinkChilds, tmplSinks);
-                tmplRoot.parent = undefined;
                 tmplSinks.forEach((val, i) => {
-                    let j = val.childNodes.indexOf(tmplSinkChilds[i]);
-                    val.childNodes.splice(i, 1);
+                    let j = tmplSinks[i].childNodes.indexOf(tmplSinkChilds[i]);
+                    tmplSinks[i].childNodes.splice(j, 1);
                 });
+                tmplRoot.parent = undefined;
+                for (let childNode of tmpl.tmplRoot.childNodes)
+                    childNode.parent = tmpl.tmplRoot;
+                
+                equalDomNodesArr[0].domNode = tmplRoot;
 
                 // ====================
                 // Insert new template into all other correlated places (shown by colors)
                 // ====================
                 for (let color of curRootNode.tmplRoutine.color) {
+                    for (let curTmplNode of equalDomNodesArr)
+                        NodeProcessing.mergeEqualNodes(curTmplNode.domNode, curTmplNode.domNode.tmplRoutine[color]);
+
                     if (this.addRoutine.colorCompliance[color].context === 'tmpl') {
 
                         // Taking apart template
                         let curTmpl = this.addRoutine.colorCompliance[color].tmpl;
 
-                        // let curTmplGen = utils.yieldTreeNodes(curTmpl.tmplRoot, NodeProcessing.getYieldNodeChilds());
-                        // let {value:{node, levelChange, parent}, done} = curTmplGen.next();
-                        // let tmplParentNode = undefined;
-                        // while (done === false) {
-                        //     if (node === tmpl.tmplRoot.tmplRoutine[color]) {
-                        //         tmplParentNode = parent;
-                        //         break;
-                        //     }
-                        //     ({value:{node, levelChange, parent}, done} = curTmplGen.next());
-                        // }
-
                         ({tmplSinkChilds, tmplSinks} = this._getTmplSinks(equalDomNodesArr, color, tmpl.tmplRoot.tmplRoutine[color]));
-                        let new_tmpls = tmplSinkChilds.map(val => {
-                            val.parent = undefined;
-                            return this._init_newTmpl(val, []);
-                        }); // TODO: If new_tmpl is too small and its NodeProcessing.checkSubtreeToBeTmpl === false, then it must be shifted from templates category to domModels
+                        let new_tmpls = tmplSinkChilds.map((val, i) => this._init_newTmpl(tmplSinkChilds[i], []) );
+                        // TODO: If new_tmpl is too small and its NodeProcessing.checkSubtreeToBeTmpl === false, then it must be shifted from templates category to domModels
 
                         let complex = false;
                         if (tmpl.tmplRoot.tmplRoutine[color] !== curTmpl.tmplRoot)
                             complex = true;
-                        
-                        for (let curTmplParent_i = curTmpl.tmplParents.length -1; curTmplParent_i >= 0; curTmplParent_i--) {
 
-                            let curTmplParent = curTmpl.tmplParents[curTmplParent_i];
-                            let i_nt = 0; // current new_tmpls counter
-                            let i_ctpcn = 0; // current curTmplParent.childNodes counter
-                            
-                            let tmplGen = utils.yieldTreeNodes(tmpl.tmplRoot, NodeProcessing.getYieldNodeChilds());
+                        // ============================================================================
+                        // Merge with other template-pointers, holding various subtrees, hooked to
+                        // processed template and his similarities
+                        // ============================================================================
+                        for (let curTmplParent_i = curTmpl.tmplParents.length -1; curTmplParent_i >= 0; curTmplParent_i--) {
+                            let curTmplParent = curTmpl.tmplParents[curTmplParent_i]
+
+                            let ctpcn = curTmplParent.childNodes;
+                            curTmplParent.childNodes = [];
+
+                            let tmplPointer;
+                            if (complex) {
+                                tmplPointer = {};
+                                this._initTmplNode(tmplPointer, tmpl, [], []);
+                                tmplPointer.parent = curTmplParent;
+                            } else {
+                                tmplPointer = curTmplParent;
+                                curTmpl.tmplParents.splice(curTmplParent_i, 1);
+                                this._initTmplNode(tmplPointer, tmpl, [], []);
+                            }
+
+                            let subTmplPointers = new_tmpls.map((val, i) => {
+                                let subTmplPointer = {};
+                                this._initTmplNode(subTmplPointer, new_tmpls[i], [], []);
+                                subTmplPointer.parent = tmplPointer;
+                                return subTmplPointer;
+                            });
+                            let i_nt = 0; // new_tmpls counter
+
+                            let tmplGen = utils.yieldTreeNodes(tmpl.tmplRoot, NodeProcessing.getYieldNodeChilds(), 's');
                             let {value:{node:nextTmplNode}, done} = tmplGen.next();
-                            
+                            let nextTmplNode_prev = undefined;
+
                             let pos = complex ? 'h' : 'in'; // higher or inside tmpl
-                            let tmplPointer = undefined;
-                            let subTmplPointer = undefined;
-                            for (let {node, levelChange, parent} of utils.yieldTreeNodes(curTmpl.tmplRoot, NodeProcessing.getYieldNodeChilds())) {
-                                if (node === nextTmplNode.tmplRoutine[color]) {
+                            for (let {node, levelChange, parent} of utils.yieldTreeNodes(curTmpl.tmplRoot, NodeProcessing.getYieldNodeChilds(), 's')) {
+                                if (node === nextTmplNode.tmplRoutine[color] || (nextTmplNode_prev !== undefined && node === nextTmplNode_prev.tmplRoutine[color])) {
+                                    
+                                    let tmplNode;
+                                    if (node === nextTmplNode.tmplRoutine[color]) tmplNode = nextTmplNode;
+                                    else tmplNode = nextTmplNode_prev;
+
                                     if (pos === 'h') {
-                                        tmplPointer = {};
-                                        this._initTmplNode(tmplPointer, tmpl, [], []);
-                                        tmplPointer.parent = curTmplParent;
-                                        curTmplParent.childNodes.splice(i_ctpcn, 0, {tmplNode: parent, child: tmplPointer});
+                                        curTmplParent.childNodes.push({
+                                            tmplNode: parent,
+                                            child: tmplPointer
+                                        });
                                     } else if (pos === 'l') {
+                                        tmplPointer.childNodes.push({
+                                            tmplNode: tmplNode,
+                                            child: subTmplPointers[i_nt]
+                                        });
                                         i_nt ++;
                                     }
                                     pos = 'in';
+                                    
+                                    while (ctpcn.length > 0 && node === ctpcn[0].tmplNode) {
+                                        tmplPointer.childNodes.push({
+                                            tmplNode: tmplNode,
+                                            child: ctpcn[0].child
+                                        });
+                                        ctpcn[0].child.parent = tmplPointer;
+                                        ctpcn.shift();
+                                    }
 
-                                    if (node === curTmplParent.childNodes[i_ctpcn].tmplNode) {
-                                        if (complex) {
-                                            let child = curTmplParent.childNodes[i_ctpcn].child;
-                                            tmplPointer.childNodes.push({
-                                                tmplNode: nextTmplNode,
-                                                child: child
-                                            });
-                                            child.parent = tmplPointer;
-                                            curTmplParent.childNodes.splice(i_ctpcn, 1);
-                                        } else {
-                                            curTmplParent.childNodes[i_ctpcn].tmplNode = nextTmplNode;
-                                            curTmpl.tmplParents.splice(curTmplParent_i, 0);
-                                            i_ctpcn ++;
+                                    if (node === nextTmplNode.tmplRoutine[color]) {
+                                        ({value, done} = tmplGen.next());
+                                        if (done === false) {
+                                            nextTmplNode_prev = nextTmplNode;
+                                            nextTmplNode = value.node;
                                         }
                                     }
-                                    if (node === tmplSinks[i_nt]) {
-                                        subTmplPointer = {};
-                                        this._initTmplNode(subTmplPointer, new_tmpls[i_nt], [], []);
-                                        subTmplPointer.parent = tmplPointer;
-                                        tmplPointer.childNodes.push({
-                                            tmplNode: nextTmplNode,
-                                            child: new_tmpls[i_nt]
-                                        });
-                                    }
-
-                                    NodeProcessing._mergeEqualNodes(nextTmplNode, node);
-                                    ({value, done} = tmplGen.next());
-                                    if (value !== undefined) nextTmplNode = value.node;
 
                                 } else {
-                                    if (done === true) pos = 'h';
-                                    else if (pos === 'in') pos = 'l';
+                                    if (done === true)
+                                        pos = 'h';
+                                    else if (pos === 'in')
+                                        pos = 'l';
                                     
                                     if (pos === 'h') {
-                                        if (node === curTmplParent.childNodes[i_ctpcn].tmplNode)
-                                            i_ctpcn ++;
+                                        while (ctpcn.length > 0 && node === ctpcn[0].tmplNode)
+                                            curTmplParent.childNodes.push(ctpcn.shift());
                                     } else if (pos === 'l') {
-                                        if (node === curTmplParent.childNodes[i_ctpcn].tmplNode) {
-                                            let child_struct = curTmplParent.childNodes.splice(i_ctpcn, 1)[0];
-                                            subTmplPointer.childNodes.push(child_struct);
-                                            child_struct.child.parent = subTmplPointer;
+                                        
+                                        while (ctpcn.length > 0 && node === ctpcn[0].tmplNode) {
+                                            let child_struct = ctpcn.shift();
+                                            subTmplPointers[i_nt].childNodes.push(child_struct);
+                                            child_struct.child.parent = subTmplPointers[i_nt];
                                         }
                                     }
                                 }
                             }
                         }
 
+                        // ============================================================================
+                        // Cleanup places from where new subtrees and their similarities were moved from
+                        // ============================================================================
+                        if (complex) {
+                            let tmplInCurTmpl = tmpl.tmplRoot.tmplRoutine[color];
+                            if (tmplInCurTmpl.parent.type === undefined)
+                                tmplInCurTmpl.parent.childNodes.splice(tmplInCurTmpl.parent.childNodes.indexOf(tmplInCurTmpl), 1);
+                            else if (tmplInCurTmpl.parent.type === 'tmpl')
+                                tmplInCurTmpl.parent.childNodes.splice(tmplInCurTmpl.parent.childNodes.findIndex(val => val.child === tmplInCurTmpl), 1);
+                            tmplInCurTmpl.parent = undefined;
+                        }
+                        for (let new_tmpl of new_tmpls) {
+                            if (new_tmpl.tmplRoot.parent.type === undefined)
+                                new_tmpl.tmplRoot.parent.childNodes.splice(new_tmpl.tmplRoot.parent.childNodes.indexOf(new_tmpl), 1);
+                            else if (new_tmpl.tmplRoot.parent.type === 'tmpl')
+                                new_tmpl.tmplRoot.parent.childNodes.splice(new_tmpl.tmplRoot.parent.childNodes.findIndex(val => val.child === new_tmpl), 1);
+                            new_tmpl.tmplRoot.parent = undefined;
+                        }
+
                         this.templates.push(...new_tmpls);
 
                     } else {
                         let pairRootNode = curRootNode.tmplRoutine[color];
-                        
+
                         ({tmplSinkChilds, tmplSinks} = this._getTmplSinks(equalDomNodesArr, color, pairRootNode));
                         this._initTmplNode(pairRootNode, tmpl, tmplSinkChilds, tmplSinks);
                     }
                 }
-
-                // } else {
-                //     // construct fully new template
-                    
-                //     let tmplRoot = Object.assign({}, curRootNode);
-                //     let tmpl = {
-                //         tmplRoot: tmplRoot,
-                //         tmplParents: []
-                //     };
-                //     this.templates.push(tmpl);
-                    
-                //     this._initTmplNode(curRootNode, tmpl, tmplSinkChilds, tmplSinks);
-
-                //     tmplSinks.forEach((val, i) => {
-                //         let j = val.childNodes.indexOf(tmplSinkChilds[i]);
-                //         val.childNodes.splice(i, 1);
-                //     });
-
-                //     // glue constructed template into all other places shown by colors
-                //     for (let color of curRootNode.tmplRoutine.color) {
-                //         let pairRootNode = curRootNode.tmplRoutine[color];
-                        
-                //         ({tmplSinkChilds, tmplSinks} = this._getTmplSinks(equalDomNodesArr, color, pairRootNode));
-                //         this._initTmplNode(pairRootNode, tmpl, tmplSinkChilds, tmplSinks);
-                //     }
-                // }
             }
         }
     }
@@ -643,8 +691,8 @@ class WebAppModel {
         for (let {node, levelChange, parent} of utils.yieldTreeNodes(domModel.domSnapshot, NodeProcessing.getYieldNodeChilds()))
             node.parent = parent;
 
-        let colorCompliance = this._labelNodeProcessing(domModel.domSnapshot);
-        this._extractTemplates(domModel.domSnapshot, colorCompliance);
+        this._labelNodeProcessing(domModel.domSnapshot);
+        this._extractTemplates(domModel.domSnapshot);
         this.webAppPageList.push(this._init_newWebPage(domModel.url, domModel.domSnapshot));
 
         this._cleanup_addRoutine();
@@ -652,7 +700,7 @@ class WebAppModel {
 
     // ================================================================================================================
     // Function converting WebAppModel into html-views
-    rebuildDom( webAppPage = null,    // If undefined - all web-pages will be printed, or only specified webPage
+    rebuildDom( webAppPage = null,      // If undefined - all web-pages will be printed, or only specified webPage
                 withTmpl = true,        // If false - webPages will be printed skipping templates
                 level = 0,              // initial indentation
                 tabulation = 2) {
@@ -661,7 +709,8 @@ class WebAppModel {
             if (node.type === undefined) {
                 return nodeHandlers.stringifyNodeBeginning(node, level, tabulation);
             } else if (node.type === 'tmpl') {
-                return ' '.repeat(level*tabulation) + '<iframe src="./tmpl-' + node.tmpl.name + '.html">No template.</iframe>\n' + ' '.repeat(level*tabulation) + '<iframeChilds>';
+                return  ' '.repeat(level*tabulation) + '<iframe src="./tmpl-' + node.tmpl.name + '.html">No template.</iframe>\n' +
+                        ' '.repeat(level*tabulation) + '<iframeChilds>\n';
             }
         }
 
@@ -669,7 +718,7 @@ class WebAppModel {
             if (node.type === undefined) {
                 return nodeHandlers.stringifyNodeEnding(node, level, tabulation);
             } else if (node.type === 'tmpl') {
-                return ' '.repeat(level*tabulation) + '</iframeChilds>';
+                return ' '.repeat(level*tabulation) + '</iframeChilds>\n';
             }
         }
 
@@ -681,14 +730,19 @@ class WebAppModel {
         let processedTmplNames = [];
         while (queue.length > 0) {
             let webPage = queue.splice(0, 1)[0];
-            if (webPage.type === 'tmpl') processedTmplNames.push(webPage.name);
+            if (webPage.type === 'tmpl') {
+                if (withTmpl && processedTmplNames.indexOf(webPage.name) === -1)
+                    processedTmplNames.push(webPage.name);
+                else
+                    continue;
+            }
             let domRoot = webPage.type === 'webPage' ? webPage.domRoot : (webPage.type === 'tmpl' ? webPage.tmplRoot : undefined);
 
             let dom = '';
             let stack = [];
             for (let {node, levelChange} of utils.yieldTreeNodes(domRoot, NodeProcessing.getYieldNodeChilds('tmpl'), 't')) {
 
-                if (node.type === 'tmpl' && withTmpl && processedTmplNames.indexOf(node.tmpl.name) === -1)
+                if (node.type === 'tmpl')
                     queue.push(node.tmpl);
 
                 if (levelChange === 1) {
@@ -724,6 +778,20 @@ class WebAppModel {
         }
         
         return doms;
+    }
+
+    // ================================================================================================================
+    dumpWebAppModel(dir_path) {
+        for (let html of this.rebuildDom())
+            fs.writeFileSync(
+                path.join(dir_path, html.name),
+                "<!DOCTYPE html>\n<html>\n<head></head>\n" + html.dom + "</html>",
+                {
+                    encoding: 'utf8',
+                    flag: 'w',
+                    mode: 0o666
+                }
+            );
     }
 
     // ================================================================================================================

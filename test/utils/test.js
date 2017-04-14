@@ -88,10 +88,10 @@ describe('utils', () => {
 
         it ('check stack reconstruction in "topFirst" mode', () => {
             let sequence = [];
-            for (let n of utils.yieldTreeNodes(tree, yieldTreeChilds, 't', [tree, tree.child[0], tree.child[0].child[1]])) { // 1 2 5
+            for (let n of utils.yieldTreeNodes(tree, yieldTreeChilds, 't', [tree, tree.child[0], tree.child[0].child[0]])) { // 1 2 4
                 sequence.push([n.node.k, n.levelChange, n.parent.k]);
             }
-            assert.deepStrictEqual(sequence, [[3, 2, 1], [6, 1, 3]]);
+            assert.deepStrictEqual(sequence, [[5, 3, 2], [3, -1, 1], [6, 1, 3]]);
         });
     });
 });

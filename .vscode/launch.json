@@ -8,17 +8,28 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceRoot}/main.js",
             "runtimeExecutable": "${workspaceRoot}/debug.sh",
+            "program": "${workspaceRoot}/main.js",
+            "cwd": "${workspaceRoot}",
             "args":[
                 "--settings-file", "./settings/pyforum.js",
-                "--user-name", "member_1"
+                "--user-name", "member_1",
+                "--debug", "true"
             ],
-            "cwd": "${workspaceRoot}",
             "runtimeArgs": [
                 "--expose-gc",
                 "--harmony"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program Tests",
+            "runtimeExecutable": "${workspaceRoot}/debug-mocha.sh",
+            "program": "",
+            "cwd": "${workspaceRoot}",
+            "args": [],
+            "runtimeArgs": []
         },
         {
             "type": "node",

@@ -109,8 +109,8 @@ function stringifyNodeEnding(node, level = 0, tabulation = 4) {
 function compareNodes(n1, n2){
     try {
         if (n1.props.tagName !== n2.props.tagName) return false;
-        assert.deepStrictEqual(n1.props.attributes === n2.props.attributes);
-        // assert.deepStrictEqual(n1.props.nodeValues === n2.props.nodeValues);
+        assert.deepStrictEqual(n1.props.attributes, n2.props.attributes);
+        // assert.deepStrictEqual(n1.props.nodeValues, n2.props.nodeValues);
         assert.deepStrictEqual(n1.clickables, n2.clickables);
     } catch (err) {
         if (err.name === 'AssertionError')

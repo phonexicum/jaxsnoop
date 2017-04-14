@@ -17,6 +17,10 @@ argparse.addArgument(
     ['-u', '--user-name'],
     {help: 'user name', required: true}
 );
+argparse.addArgument(
+    ['-d', '--debug'],
+    {help: 'detect debug mode for avoiding debug port collisions', requied: false, defaultValue: 'false'}
+);
 const args = argparse.parseArgs();
 
 // ====================================================================================================================
@@ -74,7 +78,9 @@ class Crawler {
         return new Promise((resolve, reject) => {
             this._webProxyChild = childProcess.fork(__dirname + '/proxy.js',
                                                     ['-l', crawlerSettings.logLevel],
-                                                    {stdio: 'inherit', execArgv: ['--debug=' + 5859]} // Solves problems with debugging ports
+                                                    args.debug === 'false' ?
+                                                        {stdio: 'inherit'} :
+                                                        {stdio: 'inherit', execArgv: ['--debug=' + 5859]} // Solves problems with debugging ports
                                                    );
 
             this._webProxyChild.on('message', m => {
@@ -204,11 +210,11 @@ class Crawler {
         // this.login();
 
         // this._browserClient.get(crawlerSettings.homePageUrl);
-        this._browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/test1-dom.html');
+        this._browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/test-dom.html');
 
         this.snapshotingDom()
         .then(domModel => {
-            // console.log(JSON.stringify(domModel.domSnapshot, null, 2));
+            console.log(JSON.stringify(domModel.domSnapshot));
             console.log(
                 webAppModel.rebuildDom({
                     type: 'webPage',
@@ -219,7 +225,8 @@ class Crawler {
             );
             
             webAppModel.addDomModel(domModel);
-            console.log(webAppModel.rebuildDom(webAppModel.webAppPageList[0])[0].dom);
+            for (let html of webAppModel.rebuildDom(webAppModel.webAppPageList[0]))
+                console.log(html.name, '\n', html.dom);
         });
 
         this._browserClient.controlFlow().execute(result => {
