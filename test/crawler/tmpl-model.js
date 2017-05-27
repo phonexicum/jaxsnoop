@@ -14,8 +14,8 @@ const tmplModel = require('../../model/tmpl-model.js');
 const nodeHandlers = require('../../model/node-handlers.js');
 
 // ====================================================================================================================
-describe('crawler', () => {
-    describe('#checkModelConstruction()', () => {
+describe('tmpl-model', () => {
+    describe.only('#checkModelConstruction', () => {
         let browser = null;
         
         before(() => {
