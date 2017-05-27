@@ -14,12 +14,8 @@ argparse.addArgument(
     {help: 'relative path to settings file', required: true}
 );
 argparse.addArgument(
-    ['-u', '--user-name'],
-    {help: 'user name', required: true}
-);
-argparse.addArgument(
     ['-d', '--debug'],
-    {help: 'detect debug mode for avoiding debug port collisions', requied: false, defaultValue: 'false'}
+    {help: 'detect debug mode for avoiding tcp debug port collisions', requied: false, defaultValue: 'false'}
 );
 const args = argparse.parseArgs();
 
@@ -35,14 +31,13 @@ const webdriver = require('selenium-webdriver'),
     chrome = require('selenium-webdriver/chrome'),
     firefox = require('selenium-webdriver/firefox');
 
-const wdBy = webdriver.By,
-    wdUntil = webdriver.until;
+const wdBy = webdriver.By, wdUntil = webdriver.until;
 
 const crawlerSettings = require('../' + args.settings_file);
 const crawlerLogger = require('../utils/logging.js').crawlerLogger(crawlerSettings.logLevel);
 
 const utils = require('../utils/utils.js');
-const model = require('../model/model.js');
+const tmplModel = require('../model/tmpl-model.js');
 const nodeHandlers = require('../model/node-handlers.js');
 
 const GenerateDOMCopy = require('./copying-DOM.js').GenerateDOMCopy;
@@ -70,6 +65,14 @@ class Crawler {
             crawlerLogger.error('Error setting up crawler', this.userName);
             return Promise.reject(error);
         });
+    }
+
+    // ================================================================================================================
+    shutdown() {
+        this.browserClient.close();
+        this.browserClient.quit();
+
+        this._webProxyChild.kill('SIGTERM');
     }
 
     // ================================================================================================================
@@ -171,22 +174,23 @@ class Crawler {
             // .setProxy(proxyConfig);     // err: Does not work properly, can not set proxy
 
         // err: Does not work properly, can not set proxy
-        // let capabilities = webdriver.Capabilities.firefox()
-        //     // .set(webdriver.Capability.ACCEPT_SSL_CERTS, true)
-        //     // .set(webdriver.Capability.SECURE_SSL, false)
-        //     .set(webdriver.Capability.PROXY, proxyConfig);
+        // let capabilities = webdriver.Capabilities.firefox() // chrome()
+        //     .set(webdriver.Capability.ACCEPT_SSL_CERTS, true)
+        //     .set(webdriver.Capability.SECURE_SSL, false);
+        //     // .set(webdriver.Capability.PROXY, proxyConfig);
         //     // .setProxy(proxyConfig);
 
-        this._browserClient = new webdriver.Builder()
+        this.browserClient = new webdriver.Builder()
             // .withCapabilities(capabilities) // err: Does not work properly
 
             // There is some problems with chrome and my handwritten proxy, there is some network problems and it works unstable
-            // .forBrowser('chrome')
-            // .setChromeOptions(chromeOptions)
+            .forBrowser('chrome')
+            .setChromeOptions(chromeOptions)
             
             // Firefox proxy problems: http://stackoverflow.com/questions/41089511/getting-request-and-response-using-browsermobproxy-selenium-firefox-marionett/41373808#41373808
-            .forBrowser('firefox')
-            .setFirefoxOptions(firefoxOptions)
+            //      it is needed to use selenium of version not more then 3.0.0-beta-3
+            // .forBrowser('firefox')
+            // .setFirefoxOptions(firefoxOptions)
 
             // .setProxy(wdProxy.manual({
             //     http: this._webProxyIP + ':' + this._webProxyPort,
@@ -195,76 +199,15 @@ class Crawler {
             .usingServer('http://localhost:4444/wd/hub')
             .build();
         
-        // this._browserClient.manage().window().setSize(1000,600);
+        // this.browserClient.manage().window().setSize(1000,600);
 
         crawlerLogger.trace('Crawler', this.userName, '_webDriverSetup success.');
     }
 
     // ================================================================================================================
-    listenCommands() {
-        crawlerLogger.trace('Command for crawling web-application came.');
-
-        let webAppModel = new model.WebAppModel();
-
-        // this.logout();
-        // this.login();
-
-        // this._browserClient.get(crawlerSettings.homePageUrl);
-        this._browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/test-dom.html');
-
-        this.snapshotingDom()
-        .then(domModel => {
-            console.log(JSON.stringify(domModel.domSnapshot));
-            console.log(
-                webAppModel.rebuildDom({
-                    type: 'webPage',
-                    name: '-1',
-                    url: domModel.url,
-                    domRoot: domModel.domSnapshot
-                })[0].dom
-            );
-            
-            webAppModel.addDomModel(domModel);
-            for (let html of webAppModel.rebuildDom(webAppModel.webAppPageList[0]))
-                console.log(html.name, '\n', html.dom);
-        });
-
-        this._browserClient.controlFlow().execute(result => {
-            console.log('client ready');
-            global.gc();
-        });
-
-        this._browserClient.close();
-        this._browserClient.quit();
-
-        // this._browserClient.get('http://www.google.com/ncr');
-        // this._browserClient.findElement(wdBy.name('q')).sendKeys('webdriver', webdriver.Key.ENTER);
-        // // this._browserClient.findElement(wdBy.name('btnG')).click();
-        // this._browserClient.wait(wdUntil.titleIs('webdriver - Google Search'), 1000);
-        // this._browserClient.quit();
-
-        // this._browserClient
-        //     .init()
-        //     .url('http://duckduckgo.com/')
-        //     .setValue('#search_form_input_homepage', 'WebdriverIO')        
-        //     .click('#search_button_homepage')
-        //     .getTitle().then(function(title) {
-        //         console.log('Title is: ' + title);
-        //     })
-        //     .end();
-
-        // setTimeout(()=>{
-        //     process.send({
-        //         report: 'crawlingDone',
-        //         cycleNum: m.cycleNum
-        //     });
-        // }, 1000);
-    }
-
-    // ================================================================================================================
     waitFullPageLoad() {
-        this._browserClient.wait(() => {
-            return this._browserClient.executeScript(function(){
+        this.browserClient.wait(() => {
+            return this.browserClient.executeScript(function(){
                 return document.readyState === 'complete';
             });
         });
@@ -272,20 +215,23 @@ class Crawler {
 
     // ================================================================================================================
     login() {
-        crawlerSettings.users[this.userName].login(this._browserClient, this.userName);
+        return crawlerSettings.users[this.userName].login(this.browserClient);
     }
 
     // ================================================================================================================
     logout() {
-        crawlerSettings.users[this.userName].logout(this._browserClient);
+        return crawlerSettings.users[this.userName].logout(this.browserClient);
     }
 
     // ================================================================================================================
     // This function returns selenium-promise
     snapshotingDom() {
-        return this._browserClient.executeScript(GenerateDOMCopy,
-            utils.yieldTreeNodes, 'function ' + model.NodeProcessing.getDomNodeDraft.toString(),
-            nodeHandlers.checkNodeIsBlacklisted, nodeHandlers.getPropertiesOfDOMnode);
+        return this.browserClient.executeScript(GenerateDOMCopy,
+            utils.yieldTreeNodes, 'function ' + tmplModel.NodeProcessing.getDomNodeDraft.toString(),
+            nodeHandlers.checkNodeIsBlacklisted, nodeHandlers.getPropertiesOfDOMnode)
+            .then((result) => {
+                return JSON.parse(result);
+            });
     }
 
     // ================================================================================================================
@@ -293,48 +239,104 @@ class Crawler {
 
 
 // ====================================================================================================================
-// Main
+class CrawlingCtrl {
 
-let webCrawler = new Crawler(args.user_name);
-let workflowPromise = webCrawler
-.setup()
-.then(result => {
-    webCrawler.listenCommands();
-})
-.catch(error => {
-    crawlerLogger.error('Fatal Error setting up crawler:', error);
-});
+    // ================================================================================================================
+    constructor () {
+        crawlerLogger.trace('Create web-crawler instances.');
+        
+        this.webCrawlers = [];
+        for (let userName in crawlerSettings.users) {
+            let webCrawler = new Crawler(userName);
+            this.webCrawlers.push(webCrawler);
+        }
+    }
 
+    // ================================================================================================================
+    setupWebBrowsers () {
+        crawlerLogger.info('Setup web-crawlers (browser\'s web-drivers).');
 
+        return Promise.all(this.webCrawlers.map(webCrawler => webCrawler.setup()))
+        .then(results => {
+            return Promise.all(this.webCrawlers.map(webCrawler => webCrawler.login()));
+        })
+        .catch(error => {
+            crawlerLogger.fatal('Fatal Error setting up web-crawlers: ', error);
+            throw 'setupWebBrowsers error';
+        });
+    }
 
+    // ================================================================================================================
+    shutdownWebBrowsers () {
+        crawlerLogger.info('Shutting down web-crawlers (browser\'s web-drivers).');
 
+        return Promise.all(this.webCrawlers.map(webCrawler => webCrawler.shutdown()))
+        .catch(error => {
+            crawlerLogger.error('Error shutting down web-crawlers: ', error);
+            throw 'shutdownWebBrowsers error';
+        });
+    }
+    
 
+    // ================================================================================================================
+    // crawler - element of this.webCrawlers
+    crawlCurrentWebAppState(webCrawler){
+        return new Promise ((resolve, reject) => {
 
+            let workflow = webCrawler.browserClient.get(crawlerSettings.homePageUrl);
+            // this.browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/test-dom.html');
 
+            let webAppState;
 
-// // ==================================================================================================================================================
-// //                                                                                                                   JaxsnoopCrawler::classifyWebpage
-// // ==================================================================================================================================================
-// // 
-// // This function looks on the current opened webpage in the crawler and already generated map of static actions for
-// // current user and breaks it into independent blocks, making tree of this blocks.
-// // The main goal of classification is to identify equal and similar DOM subtrees, so webcrawler will be able to not
-// // trigger the same event several times
-// // 
-// // Types of similarities, which must be picket out
-// //  1) similarities between pages (e.g. status bar (login, logout, settings, etc))
-// //  2) similarities on one page (e.g. two forums on one webpage; crawler must be intrested to crawl only one of them)
-// //  3) similar pages (e.g. habrahabr articles of different users)
-// // 
-// // To be able to differentiate different content, but with the same structure, some identifiers of removed duplicates
-// // must be saved
-// // 
-// // Saved parts of DOM subtrees also must contain information about those elements, which has set on them different
-// // event listeners, such as onclick, ...
-// // 
-// // Before clustering the current webpage, search for differences must be done, between previous webpage state and new
-// // webpage state, and differences must be classified, but not whole webpage
-// // 
-// JaxsnoopCrawler.prototype.classifyWebpage = function classifyWebpage() {
+            // while (true) {
+            {
 
-// };
+                workflow = workflow.then(() => webCrawler.snapshotingDom())
+                .then(domModel => {
+                    // console.log(JSON.stringify(domModel.domSnapshot));
+                    // console.log(
+                    //     WebAppTmplModel.rebuildDom({
+                    //         type: 'webPage',
+                    //         name: '-1',
+                    //         url: domModel.url,
+                    //         domRoot: domModel.domSnapshot
+                    //     })[0].dom
+                    // );
+                    
+                    this.webAppTmplModel.addDomModel(domModel);
+                    this.webAppTmplModel.dumpWebAppTmplModel('./_html/');
+                })
+                .then(() => {
+                    console.log('client ready');
+                    global.gc();
+                    resolve();
+                });
+            }
+        });
+    }
+
+    // ================================================================================================================
+    startCrawling(webCrawlers) {
+        crawlerLogger.info('Starting crawling process.');
+
+        this.webAppTmplModel = new tmplModel.WebAppTmplModel();
+
+        let promise = Promise.all(this.webCrawlers.map(webCrawler => this.crawlCurrentWebAppState(webCrawler)));
+
+        promise = promise.then(() => {
+            crawlerLogger.info('End crawling process.');
+        })
+        .catch((err) => {
+            crawlerLogger.fatal('Error while crawling web-application.');
+        });
+
+        return promise;
+    }
+
+    // ================================================================================================================
+}
+
+module.exports = {
+    CrawlingCtrl: CrawlingCtrl,
+    Crawler: Crawler
+};

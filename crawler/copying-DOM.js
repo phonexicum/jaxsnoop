@@ -35,10 +35,12 @@ function GenerateDOMCopy(yieldTreeNodes, getDomNodeDraft, checkNodeIsBlacklisted
         domModelStack.push(newNode);
     }
 
-    return {
+    // JSON.strinfigy must be used explicitly because alternative used by selenium to pass objects between JS executable contexts will broke
+    //  'undefined' values and replace them with 'null' value
+    return JSON.stringify({
         url: document.location.href,
         domSnapshot: domModel.childNodes[0]
-    };
+    });
 };
 
 // ====================================================================================================================

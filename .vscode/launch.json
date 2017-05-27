@@ -13,7 +13,6 @@
             "cwd": "${workspaceRoot}",
             "args":[
                 "--settings-file", "./settings/pyforum.js",
-                "--user-name", "member_1",
                 "--debug", "true"
             ],
             "runtimeArgs": [

@@ -2,19 +2,22 @@
 
 const webdriver = require('selenium-webdriver');
 const wdBy = webdriver.By;
+const wdUntil = webdriver.until;
 
 
 function userLoginAction(login, passwd) {
-    return function(driver, crawler_user) {
-        driver.get('http://localhost:8000/pyforum/default/login');
-        driver.findElement(wdBy.id('auth_alias')).sendKeys(login);
-        driver.findElement(wdBy.id('passwd')).sendKeys(passwd);
-        driver.findElement(wdBy.id('login_b')).click();
+    return function(driver) {
+        return driver.get('http://localhost:8001/pyforum/default/login')
+        .then(() => {
+            driver.findElement({id: 'auth_alias'}).sendKeys(login);
+            driver.findElement({id: 'passwd'}).sendKeys(passwd);
+            driver.findElement({id: 'login_b'}).click();
+        });
     };
 }
 
 function userLogoutAction(driver) {
-    driver.get('http://localhost:8000/pyforum/default/logout');
+    return driver.get('http://localhost:8001/pyforum/default/logout');
 }
 
 
@@ -23,10 +26,10 @@ module.exports = {
     logLevel: 'trace', // One of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
 
 
-    homePageUrl: 'http://localhost:8000/pyforum/default/index',
+    homePageUrl: 'http://localhost:8001/pyforum/default/index',
     urlWhiteList: [ // Array of regexp parameters
         {
-            source: '^http:\/\/localhost:8000\/pyforum.*$',
+            source: '^http:\/\/localhost:8001\/pyforum.*$',
             flags: 'i'
         }, {
             source: '^file:\/\/.*$',
@@ -41,16 +44,16 @@ module.exports = {
 
     users: {
         // public: {
-        //     login_function: function (page) {
-        //         return new Promise(function(resolve, reject) {resolve('success');});
-        //     },
-        //     logout_function: function (page) {
-        //         return new Promise(function(resolve, reject) {resolve('success');});
-        //     }
+        //     login: () => {},
+        //     logout: () => {}
         // },
-        member_1: {
+        bot1: {
             login: userLoginAction('bot1@bot.ru', 'bot1'),
             logout: userLogoutAction
-        }
+        }//,
+        // admin1: {
+        //     login: userLoginAction('admin1@bot.ru', 'admin1'),
+        //     logout: userLogoutAction
+        // }
     }
 };

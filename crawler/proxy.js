@@ -44,6 +44,8 @@ function getUrl(protocol, req) {
 function Intercepter (req, res) {
     let url = req.url;
 
+    
+
     if (proxyParams.filterWhiteList) {
         if (!proxyParams.urlWhiteList.some((val) => val.test(url))) {
 
@@ -69,18 +71,26 @@ function Intercepter (req, res) {
 
 // ====================================================================================================================
 let webProxy = new ClientProxy((req, res) => {
-        // http intercepter
+        // http request intercepter
         
         let reqUrl = getUrl('http', req);
         proxyLogger.trace('connection on url:', reqUrl.href);
         return Intercepter(req, res);
 
     }, (req, res) => {
-        // https intercepter
+        // https request intercepter
 
         let reqUrl = getUrl('https', req);
         proxyLogger.trace('connection on url:', reqUrl.href);
         return Intercepter(req, res);
+
+    }, (req, res) => {
+        // http response intercepter
+        res.removeHeader('Strict-Transport-Security');
+
+    }, (req, res) => {
+        // https response intercepter
+        res.removeHeader('Strict-Transport-Security');
 
     }, { // CAkeyOptions
         key: '_proxy-cert/proxy.key',

@@ -10,7 +10,7 @@ const webdriver = require('selenium-webdriver'),
 
 const GenerateDOMCopy = require('../../crawler/copying-DOM.js').GenerateDOMCopy;
 const utils = require('../../utils/utils.js');
-const model = require('../../model/model.js');
+const tmplModel = require('../../model/tmpl-model.js');
 const nodeHandlers = require('../../model/node-handlers.js');
 
 // ====================================================================================================================
@@ -127,9 +127,10 @@ describe('crawler', () => {
             browser.get(url);
 
             browser.executeScript(GenerateDOMCopy, utils.yieldTreeNodes,
-                'function ' + model.NodeProcessing.getDomNodeDraft.toString(),
+                'function ' + tmplModel.NodeProcessing.getDomNodeDraft.toString(),
                 nodeHandlers.checkNodeIsBlacklisted, nodeHandlers.getPropertiesOfDOMnode)
             .then(domModel => {
+                domModel = JSON.parse(domModel);
 
                 assert.ok(path.normalize(url) === path.normalize(domModel.url));
 
@@ -139,7 +140,7 @@ describe('crawler', () => {
                 }
 
                 let domModelGen1 = utils.yieldTreeNodes(correctWebModel, yieldNodeChilds);
-                let domModelGen2 = utils.yieldTreeNodes(domModel.domSnapshot, model.NodeProcessing.getYieldNodeChilds());
+                let domModelGen2 = utils.yieldTreeNodes(domModel.domSnapshot, tmplModel.NodeProcessing.getYieldNodeChilds());
 
                 let value;
                 let {value:{node:node1, levelChange:levelChange1}, done:done1} = domModelGen1.next();
@@ -166,23 +167,23 @@ describe('crawler', () => {
             this.timeout(20*1000);
 
             let base = 'file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/crawler/model/';
-            let webAppModel = new model.WebAppModel();
+            let webAppTmplModel = new tmplModel.WebAppTmplModel();
 
             after(function() {
-                webAppModel.dumpWebAppModel('./_html/');
+                webAppTmplModel.dumpWebAppTmplModel('./_html/');
             });
 
             function loadWebPage(webPageUrl) {
                 browser.get(webPageUrl);
                 return browser.executeScript(GenerateDOMCopy, utils.yieldTreeNodes,
-                    'function ' + model.NodeProcessing.getDomNodeDraft.toString(),
+                    'function ' + tmplModel.NodeProcessing.getDomNodeDraft.toString(),
                     nodeHandlers.checkNodeIsBlacklisted, nodeHandlers.getPropertiesOfDOMnode)
             }
 
             function addDomModel(domModel) {
                 // // log domModel before template extraction
                 // console.log(
-                //     webAppModel.rebuildDom({
+                //     webAppTmplModel.rebuildDom({
                 //         type: 'webPage',
                 //         name: '-1',
                 //         url: domModel.url,
@@ -190,23 +191,23 @@ describe('crawler', () => {
                 //     })[0].dom
                 // );
 
-                webAppModel.addDomModel(domModel);
+                webAppTmplModel.addDomModel(domModel);
                 
-                // log webAppModel
-                // for (let html of webAppModel.rebuildDom())
+                // log webAppTmplModel
+                // for (let html of webAppTmplModel.rebuildDom())
                 //     console.log(html.name + '\n' + html.dom);
             }
 
             function makeConsistancyChecks() {
                 
                 // ===============================
-                // Make various webAppModel checks
+                // Make various webAppTmplModel checks
                 // ===============================
                 
                 let allNodeObjects = [];
                 let seenTmpl = {};
-                for (let webPage of webAppModel.webAppPageList) {
-                    for (let {node, levelChange, parent} of utils.yieldTreeNodes(webPage.domRoot, model.NodeProcessing.getYieldNodeChilds('tmpl'))) {
+                for (let webPage of webAppTmplModel.webAppPageList) {
+                    for (let {node, levelChange, parent} of utils.yieldTreeNodes(webPage.domRoot, tmplModel.NodeProcessing.getYieldNodeChilds('tmpl'))) {
                         allNodeObjects.push(node);
 
                         // Check node type
@@ -236,7 +237,7 @@ describe('crawler', () => {
                         if (node.type === 'tmpl') {
                             for (let childPointer of node.childNodes) {
                                 let exists = false;
-                                for (let {node:tmplNode} of utils.yieldTreeNodes(node.tmpl.tmplRoot, model.NodeProcessing.getYieldNodeChilds()))
+                                for (let {node:tmplNode} of utils.yieldTreeNodes(node.tmpl.tmplRoot, tmplModel.NodeProcessing.getYieldNodeChilds()))
                                     if (childPointer.tmplNode === tmplNode) {
                                         exists = true;
                                         break;
@@ -248,16 +249,16 @@ describe('crawler', () => {
                     }
                 }
 
-                // Check if webAppModel.templates does not contain redundant templates
-                assert.strictEqual(webAppModel.templates.length, Object.getOwnPropertyNames(seenTmpl).length);
+                // Check if webAppTmplModel.templates does not contain redundant templates
+                assert.strictEqual(webAppTmplModel.templates.length, Object.getOwnPropertyNames(seenTmpl).length);
                 for (let tmplName in seenTmpl) {
                     assert.strictEqual(seenTmpl[tmplName].parentNodes.length, seenTmpl[tmplName].tmpl.tmplParents.length);
                     if (! seenTmpl[tmplName].parentNodes.every(val => seenTmpl[tmplName].tmpl.tmplParents.indexOf(val) !== -1))
                         assert(false, 'Some template lost at least one pointer to tmplParents.');
                 }
 
-                for (let tmpl of webAppModel.templates) {
-                    for (let {node, parent} of utils.yieldTreeNodes(tmpl.tmplRoot, model.NodeProcessing.getYieldNodeChilds())) {
+                for (let tmpl of webAppTmplModel.templates) {
+                    for (let {node, parent} of utils.yieldTreeNodes(tmpl.tmplRoot, tmplModel.NodeProcessing.getYieldNodeChilds())) {
                         allNodeObjects.push(node);
 
                         // Check node type
@@ -276,15 +277,16 @@ describe('crawler', () => {
                     }
                 }
 
-                // Check that there is no webAppModel nodes present at two places simultaneously
+                // Check that there is no webAppTmplModel nodes present at two places simultaneously
                 for (let i = 0; i < allNodeObjects.length; i++) {
                     if (allNodeObjects.indexOf(allNodeObjects[i], i +1) !== -1)
-                        assert(false, 'Some node present in webAppModel in two places simultaneously');
+                        assert(false, 'Some node present in webAppTmplModel in two places simultaneously');
                 }
             }
 
             it('adding add-dom1.html', function(done) {
                 loadWebPage(base + 'add-dom1.html').then(domModel => {
+                    domModel = JSON.parse(domModel);
                     addDomModel(domModel);
                     makeConsistancyChecks();
                 })
@@ -293,6 +295,7 @@ describe('crawler', () => {
 
             it('adding add-dom2.html', function(done) {
                 loadWebPage(base + 'add-dom2.html').then(domModel => {
+                    domModel = JSON.parse(domModel);
                     addDomModel(domModel);
                     makeConsistancyChecks();
                 })
@@ -301,6 +304,7 @@ describe('crawler', () => {
 
             it('adding add-dom3.html', function(done) {
                 loadWebPage(base + 'add-dom3.html').then(domModel => {
+                    domModel = JSON.parse(domModel);
                     addDomModel(domModel);
                     makeConsistancyChecks();
                 })
@@ -309,6 +313,7 @@ describe('crawler', () => {
 
             it('adding add-dom4.html', function(done) {
                 loadWebPage(base + 'add-dom4.html').then(domModel => {
+                    domModel = JSON.parse(domModel);
                     addDomModel(domModel);
                     makeConsistancyChecks();
                 })

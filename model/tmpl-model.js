@@ -20,6 +20,7 @@ class NodeProcessing {
     // ================================================================================================================
     static getDomNodeDraft(){
         return {
+            type: undefined,
             childNodes: [],
             parent: undefined, // Object
             clickables: undefined, // Array
@@ -72,7 +73,11 @@ class NodeProcessing {
     // return boolean;
     static checkSubtreesPairToBeTmpl(equalNodesArr) {
         if (equalNodesArr.length >= NodeProcessing.minSize){
-            return true;
+            // Check if future template have any clickable, or there is no need to extract template
+            if (equalNodesArr.some(val => (val.domNode.clickables.length > 0 || val.domNode.tagName === 'A' || val.domNode.tagName === 'FORM')))
+                return true;
+            else
+                return false;
         } else {
             return false;
         }
@@ -81,20 +86,25 @@ class NodeProcessing {
     // ================================================================================================================
     // return boolean;
     static checkSubtreeToBeTmpl(subTree) {
-        if (subTree.length >= NodeProcessing.minSize)
-            return true;
-        else
+        if (subTree.length >= NodeProcessing.minSize) {
+            // Check if future template have any clickable, or there is no need to extract template
+            if (subTree.some(val => (val.domNode.clickables.length > 0 || val.domNode.tagName === 'A' || val.domNode.tagName === 'FORM')))
+                return true;
+            else
+                return false;
+        } else {
             return false;
+        }
     }
 
     // ================================================================================================================
 }
 
 // NodeProcessing static variables
-NodeProcessing.minSize = 3;
+NodeProcessing.minSize = 4;
 
 // ====================================================================================================================
-class WebAppModel {
+class WebAppTmplModel {
     
     // function must detect similarities:
     //      1) similarities on one page (e.g. two forums on one webpage; crawler must be interested to crawl only one of them)
@@ -107,7 +117,7 @@ class WebAppModel {
         this.webPageCount = 1;
 
         this.templates = []; // [{tmpl, tmplParents}, ...]
-        this.webAppGraph = undefined; // { domModel: {}, nextModels: [{}, ...] }
+        // this.webAppGraph = undefined; // { domModel: {}, nextModels: [{}, ...] }
         this.webAppPageList = []; // [{domRoot: {}}, ...]
 
         this._init_addRoutine();
@@ -479,7 +489,7 @@ class WebAppModel {
             // generating `equalDomNodesArr` pairs with equal colors and `tmplSinks`
             // ====================
 
-            // Case if first element is tmpl
+            // Case if next element is tmpl
             let curRootNode = process_queue.splice(0, 1)[0];
             if (curRootNode.type === 'tmpl') {
                 for (let child of curRootNode.childNodes)
@@ -515,7 +525,7 @@ class WebAppModel {
             
             if (curRootNode.tmplRoutine.color.length !== 0 && NodeProcessing.checkSubtreeToBeTmpl(equalDomNodesArr)) {
 
-                // TODO: Every time new template is constructed and placed instead of other tmpl places even if template will be absolutely equal or if ther is only one other place for template to be merged to or if there is many such places
+                // TODO: Every time new template is constructed and placed instead of other tmpl places even if template will be absolutely equal or if there is only one other place for template to be merged to or if there is many such places
                 //      Maybe some optimization of process can be done?
                 //      Any way structure of new template is already in memory and it must go through merge process with other templates
 
@@ -683,6 +693,53 @@ class WebAppModel {
     }
 
     // ================================================================================================================
+    _wrapInTemplates(domModelRoot) {
+
+        // let process_queue = [domModelRoot];
+        // while (process_queue.length > 0) {
+
+        //     // ====================
+        //     // searching DOM-subtrees of web-page, not inserted in any template
+        //     // ====================
+
+        //     // Case if next element is tmpl
+        //     let curRootNode = process_queue.splice(0, 1)[0];
+        //     if (curRootNode.type === 'tmpl') {
+        //         for (let child of curRootNode.childNodes)
+        //             process_queue.push(child.child);
+        //         continue;
+        //     }
+        //     let tmplGen = utils.yieldTreeNodes(curRootNode, NodeProcessing.getYieldNodeChilds());
+
+        //     // Collect equally-colored sub-tree nodes
+        //     let value;
+        //     let {value:{node, levelChange, parent}, done} = tmplGen.next();
+        //     let domNodesArr = [];
+        //     let tmplSinkChilds = [];
+        //     let tmplSinks = []; // tmplSinkChilds parents
+        //     while (done === false) {
+        //         if (node.type === undefined) {
+        //             domNodesArr.push({
+        //                 domNode: node,
+        //                 levelChange: levelChange
+        //             });
+        //             ({value, done} = tmplGen.next());
+        //             if (value !== undefined) ({node, levelChange, parent} = value);
+        //         } else {
+        //             tmplSinkChilds.push(node);
+        //             tmplSinks.push(parent);
+        //             ({value, done} = tmplGen.next(false));
+        //             if (value !== undefined) ({node, levelChange, parent} = value);
+        //         }
+        //     }
+
+        //     process_queue.push(...tmplSinkChilds);
+
+
+        // }
+    }
+
+    // ================================================================================================================
     // function compares two DOM models, extracts templates from first one and returns decomposed DOM model and
     // detected templates ordered trees
     addDomModel(domModel) {
@@ -693,13 +750,17 @@ class WebAppModel {
 
         this._labelNodeProcessing(domModel.domSnapshot);
         this._extractTemplates(domModel.domSnapshot);
-        this.webAppPageList.push(this._init_newWebPage(domModel.url, domModel.domSnapshot));
+        this._wrapInTemplates(domModel.domSnapshot);
+        
+        let webPage = this._init_newWebPage(domModel.url, domModel.domSnapshot);
+        this.webAppPageList.push(webPage);
 
         this._cleanup_addRoutine();
+        return webPage;
     }
 
     // ================================================================================================================
-    // Function converting WebAppModel into html-views
+    // Function converting WebAppTmplModel into html-views
     rebuildDom( webAppPage = null,      // If undefined - all web-pages will be printed, or only specified webPage
                 withTmpl = true,        // If false - webPages will be printed skipping templates
                 level = 0,              // initial indentation
@@ -781,7 +842,7 @@ class WebAppModel {
     }
 
     // ================================================================================================================
-    dumpWebAppModel(dir_path) {
+    dumpWebAppTmplModel(dir_path) {
         for (let html of this.rebuildDom())
             fs.writeFileSync(
                 path.join(dir_path, html.name),
@@ -799,5 +860,5 @@ class WebAppModel {
 
 module.exports = {
     NodeProcessing: NodeProcessing,
-    WebAppModel: WebAppModel
+    WebAppTmplModel: WebAppTmplModel
 };

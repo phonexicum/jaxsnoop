@@ -1,3 +1,4 @@
 'use strict';
 
-require('./model.js');
+require('./crawler.js');
+require('./tmpl-model.js');
