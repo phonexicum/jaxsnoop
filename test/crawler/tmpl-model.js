@@ -165,6 +165,7 @@ describe('tmpl-model', () => {
 
         describe('check adding domModels into webApp model (checking correct template extraction)', function() {
             this.timeout(20*1000);
+            tmplModel.NodeProcessing.minSize = 3;
 
             let base = 'file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/crawler/model/';
             let webAppTmplModel = new tmplModel.WebAppTmplModel();
@@ -266,10 +267,10 @@ describe('tmpl-model', () => {
 
                         // Check parent pointer consistency
                         if (node === tmpl.tmplRoot)
-                            assert.ok(node.parent === undefined, 'Parent must not exist for root node in some template');
+                            assert.ok(node.parent === tmpl, 'Parent of root node in any template must point to template.');
                         else {
                             if (node.parent === parent)
-                                assert.ok(node.parent === parent, 'Wrong parent pointer for some node in some template');
+                                assert.ok(node.parent === parent, 'Wrong parent pointer for some node in any template');
                             else {
                                 let kkk = 12;
                             }

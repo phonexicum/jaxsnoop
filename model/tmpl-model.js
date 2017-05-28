@@ -45,7 +45,7 @@ class NodeProcessing {
             if (node.type === undefined)
                 for (let child of node.childNodes)
                     yield child;
-            else if (node.type === 'tmpl' && rest.indexOf('tmpl') !== -1)
+            else if ((node.type === 'tmpl' && rest.indexOf('tmpl') !== -1))
                 for (let child of node.childNodes)
                     yield child.child;
         }
@@ -73,11 +73,7 @@ class NodeProcessing {
     // return boolean;
     static checkSubtreesPairToBeTmpl(equalNodesArr) {
         if (equalNodesArr.length >= NodeProcessing.minSize){
-            // Check if future template have any clickable, or there is no need to extract template
-            if (equalNodesArr.some(val => (val.domNode.clickables.length > 0 || val.domNode.tagName === 'A' || val.domNode.tagName === 'FORM')))
-                return true;
-            else
-                return false;
+            return true;
         } else {
             return false;
         }
@@ -85,16 +81,26 @@ class NodeProcessing {
 
     // ================================================================================================================
     // return boolean;
-    static checkSubtreeToBeTmpl(subTree) {
-        if (subTree.length >= NodeProcessing.minSize) {
+    static checkSubtreeHasClickable(subtree) {
+        return subtree.some(val => (val.domNode.clickables.length > 0 || val.domNode.props.tagName === 'a' || val.domNode.props.tagName === 'form'));
+    }
+
+    // ================================================================================================================
+    // return boolean;
+    static checkSubtreeArrToBeTmpl(subtreeArr) {
+        if (subtreeArr.length >= NodeProcessing.minSize) {
             // Check if future template have any clickable, or there is no need to extract template
-            if (subTree.some(val => (val.domNode.clickables.length > 0 || val.domNode.tagName === 'A' || val.domNode.tagName === 'FORM')))
-                return true;
-            else
-                return false;
+            return NodeProcessing.checkSubtreeHasClickable(subtreeArr);
         } else {
             return false;
         }
+    }
+
+    // ================================================================================================================
+    // return boolean;
+    static checkSubtreeToBeTmpl(tmpl) {
+        let subtreeArr = Array.from(utils.yieldTreeNodes(tmpl, NodeProcessing.getYieldNodeChilds()));
+        return NodeProcessing.checkSubtreeArrToBeTmpl(subtreeArr);
     }
 
     // ================================================================================================================
@@ -348,6 +354,7 @@ class WebAppTmplModel {
 
         // Search for sub-templates between domModel and already found templates
         for (let tmplModel of this.templates) {
+            if (tmplModel.corrupted !== true) {
             for (let {node:domSubRoot} of utils.yieldTreeNodes(domModelRoot, NodeProcessing.getYieldNodeChilds())) {
             for (let {node:tmplSubRoot} of utils.yieldTreeNodes(tmplModel.tmplRoot, NodeProcessing.getYieldNodeChilds())) {
             if (NodeProcessing.compareNodes(domSubRoot, tmplSubRoot) === true &&
@@ -370,7 +377,7 @@ class WebAppTmplModel {
                     this.addRoutine.color++;
                 }
 
-            }}}
+            }}}}
         }
 
         // Search for sub-templates between domModel and other domModels
@@ -433,8 +440,8 @@ class WebAppTmplModel {
             let j = subtreeSinks[i].childNodes.indexOf(subtreeSinkChilds[i]);
             subtreeSinks[i].childNodes.splice(j, 1);
         });
-        // root-node of template has no parent node, template parents are stored separately
-        tmplRoot.parent = undefined;
+        // root-node of template has as its parent template header
+        tmplRoot.parent = tmpl;
         // patch parent for all child-nodes of our new root-node of template
         for (let childNode of tmpl.tmplRoot.childNodes)
             childNode.parent = tmpl.tmplRoot;
@@ -547,14 +554,16 @@ class WebAppTmplModel {
     };
 
     // ================================================================================================================
-    _breakApartCorrelatedTemplate(similarNodesArr, color, tmpl, subtreeSinkChilds, subtreeSinks) {
+    _breakApartCorrelatedTemplate(similarNodesArr, color, tmpl/*, subtreeSinkChilds, subtreeSinks*/) {
+
+        // tmpl - is our new template we are extracting
+        // curTmpl - is an old template we are breaking apart into:
 
         let curTmpl = this.addRoutine.colorCompliance[color].tmpl;
-        // curTmpl - is template we are going to break apart
 
         let {pairedSubtreeSinkChilds} = this._getPairedSubtreeSinks(similarNodesArr, color, tmpl.tmplRoot.tmplRoutine[color]);
-        let new_tmpls = pairedSubtreeSinkChilds.map((val, i) => this._init_newTmpl(subtreeSinkChilds[i], []) );
-        // TODO: If new_tmpl is too small and its NodeProcessing.checkSubtreeToBeTmpl === false, then it must be shifted from templates category to domModels
+        let new_tmpls = pairedSubtreeSinkChilds.map((val, i) => this._init_newTmpl(pairedSubtreeSinkChilds[i], []));
+        // TODO: If new_tmpl is too small and its NodeProcessing.checkSubtreeArrToBeTmpl === false, then it must be shifted from templates category to domModels
 
         let complex = false;
         if (tmpl.tmplRoot.tmplRoutine[color] !== curTmpl.tmplRoot)
@@ -595,11 +604,14 @@ class WebAppTmplModel {
             let nextTmplNode_prev = undefined;
 
             let pos = complex ? 'h' : 'in'; // higher or inside tmpl
+            let level_in = 0;
             for (let {node, levelChange, parent} of utils.yieldTreeNodes(curTmpl.tmplRoot, NodeProcessing.getYieldNodeChilds(), 's')) {
-                if (node === nextTmplNode.tmplRoutine[color] || (nextTmplNode_prev !== undefined && node === nextTmplNode_prev.tmplRoutine[color])) {
+                level_in += levelChange;
+                if ((nextTmplNode !== undefined && node === nextTmplNode.tmplRoutine[color]) ||
+                    (nextTmplNode_prev !== undefined && node === nextTmplNode_prev.tmplRoutine[color])) {
                     
                     let tmplNode;
-                    if (node === nextTmplNode.tmplRoutine[color]) tmplNode = nextTmplNode;
+                    if (nextTmplNode !== undefined && node === nextTmplNode.tmplRoutine[color]) tmplNode = nextTmplNode;
                     else tmplNode = nextTmplNode_prev;
 
                     if (pos === 'h') {
@@ -607,6 +619,8 @@ class WebAppTmplModel {
                             tmplNode: parent,
                             child: tmplPointer
                         });
+
+                        level_in = 0;
                     } else if (pos === 'l') {
                         tmplPointer.childNodes.push({
                             tmplNode: tmplNode,
@@ -625,16 +639,19 @@ class WebAppTmplModel {
                         ctpcn.shift();
                     }
 
-                    if (node === nextTmplNode.tmplRoutine[color]) {
+                    if (nextTmplNode !== undefined && node === nextTmplNode.tmplRoutine[color]) {
                         ({value, done} = tmplGen.next());
                         if (done === false) {
                             nextTmplNode_prev = nextTmplNode;
                             nextTmplNode = value.node;
+                        } else {
+                            nextTmplNode_prev = nextTmplNode;
+                            nextTmplNode = undefined;
                         }
                     }
 
                 } else {
-                    if (done === true)
+                    if (done === true && level_in < 0)
                         pos = 'h';
                     else if (pos === 'in')
                         pos = 'l';
@@ -659,18 +676,32 @@ class WebAppTmplModel {
         // ============================================================================
         if (complex) {
             let tmplInCurTmpl = tmpl.tmplRoot.tmplRoutine[color];
+            
             if (tmplInCurTmpl.parent.type === undefined)
                 tmplInCurTmpl.parent.childNodes.splice(tmplInCurTmpl.parent.childNodes.indexOf(tmplInCurTmpl), 1);
             else if (tmplInCurTmpl.parent.type === 'tmpl')
                 tmplInCurTmpl.parent.childNodes.splice(tmplInCurTmpl.parent.childNodes.findIndex(val => val.child === tmplInCurTmpl), 1);
-            tmplInCurTmpl.parent = undefined;
+            
+            tmplInCurTmpl.parent = tmpl;
+
+            if (! NodeProcessing.checkSubtreeToBeTmpl(curTmpl)) {
+                curTmpl.corrupted = true;
+                // TODO: merge corrupte templates if and only if they are fully-equal
+            }
         }
         for (let new_tmpl of new_tmpls) {
+            
             if (new_tmpl.tmplRoot.parent.type === undefined)
                 new_tmpl.tmplRoot.parent.childNodes.splice(new_tmpl.tmplRoot.parent.childNodes.indexOf(new_tmpl), 1);
             else if (new_tmpl.tmplRoot.parent.type === 'tmpl')
                 new_tmpl.tmplRoot.parent.childNodes.splice(new_tmpl.tmplRoot.parent.childNodes.findIndex(val => val.child === new_tmpl), 1);
-            new_tmpl.tmplRoot.parent = undefined;
+            
+            new_tmpl.tmplRoot.parent = new_tmpl;
+
+            if (! NodeProcessing.checkSubtreeToBeTmpl(new_tmpl)) {
+                new_tmpl.corrupted = true;
+                // TODO: merge corrupte templates if and only if they are fully-equal
+            }
         }
 
         this.templates.push(...new_tmpls);
@@ -692,11 +723,13 @@ class WebAppTmplModel {
 
             // Get possible new template
             let {subtreeNodesArr: similarDomNodesArr, subtreeSinkChilds, subtreeSinks} =
-                this._getSubtreeFromRootNode(curRootNode, node => utils.arraySimilarity(curRootNode.tmplRoutine.color, node.tmplRoutine.color));
+                this._getSubtreeFromRootNode(curRootNode, node => {
+                    return utils.arraySimilarity(curRootNode.tmplRoutine.color, node.tmplRoutine.color);
+                });
 
             process_queue.push(...subtreeSinkChilds);
             
-            if (curRootNode.tmplRoutine.color.length !== 0 && NodeProcessing.checkSubtreeToBeTmpl(similarDomNodesArr)) {
+            if (curRootNode.tmplRoutine.color.length !== 0 && NodeProcessing.checkSubtreeArrToBeTmpl(similarDomNodesArr)) {
 
                 // TODO: Every time new template is constructed and placed instead of other tmpl places even if template will be absolutely equal or
                 // if there is only one other place for template to be merged to or if there is many such places
@@ -718,7 +751,7 @@ class WebAppTmplModel {
 
                     if (this.addRoutine.colorCompliance[color].context === 'tmpl') {
 
-                        this._breakApartCorrelatedTemplate(similarDomNodesArr, color, tmpl, subtreeSinkChilds, subtreeSinks);
+                        this._breakApartCorrelatedTemplate(similarDomNodesArr, color, tmpl/*, subtreeSinkChilds, subtreeSinks*/);
 
                     } else {
                         
@@ -735,46 +768,34 @@ class WebAppTmplModel {
     // ================================================================================================================
     _wrapInTemplates(domModelRoot) {
 
-        // let process_queue = [domModelRoot];
-        // while (process_queue.length > 0) {
+        let process_queue = [domModelRoot];
+        while (process_queue.length > 0) {
 
-        //     // searching DOM-subtrees of web-page, not inserted in any template
+            // if next element is template-pointer, then skip it and proceed with childs
+            let curRootNode = process_queue.splice(0, 1)[0];
+            if (curRootNode.type === 'tmpl') {
+                for (let child of curRootNode.childNodes)
+                    process_queue.push(child.child);
+                continue;
+            }
 
-        //     // Case if next element is tmpl
-        //     let curRootNode = process_queue.splice(0, 1)[0];
-        //     if (curRootNode.type === 'tmpl') {
-        //         for (let child of curRootNode.childNodes)
-        //             process_queue.push(child.child);
-        //         continue;
-        //     }
-        //     let tmplGen = utils.yieldTreeNodes(curRootNode, NodeProcessing.getYieldNodeChilds());
+            // Get possible new template
+            let {subtreeNodesArr: similarDomNodesArr, subtreeSinkChilds, subtreeSinks} =
+                this._getSubtreeFromRootNode(curRootNode, node => node.type === undefined);
 
-        //     // Collect equally-colored sub-tree nodes
-        //     let value;
-        //     let {value:{node, levelChange, parent}, done} = tmplGen.next();
-        //     let domNodesArr = [];
-        //     let tmplSinkChilds = [];
-        //     let tmplSinks = []; // tmplSinkChilds parents
-        //     while (done === false) {
-        //         if (node.type === undefined) {
-        //             domNodesArr.push({
-        //                 domNode: node,
-        //                 levelChange: levelChange
-        //             });
-        //             ({value, done} = tmplGen.next());
-        //             if (value !== undefined) ({node, levelChange, parent} = value);
-        //         } else {
-        //             tmplSinkChilds.push(node);
-        //             tmplSinks.push(parent);
-        //             ({value, done} = tmplGen.next(false));
-        //             if (value !== undefined) ({node, levelChange, parent} = value);
-        //         }
-        //     }
+            process_queue.push(...subtreeSinkChilds);
 
-        //     process_queue.push(...tmplSinkChilds);
+            if (NodeProcessing.checkSubtreeHasClickable(similarDomNodesArr)) {
 
-
-        // }
+                let tmpl = this._carryOutSubtreeRootIntoTmpl(curRootNode, subtreeSinkChilds, subtreeSinks);
+                similarDomNodesArr[0].domNode = tmpl.tmplRoot;
+                
+                if (! NodeProcessing.checkSubtreeArrToBeTmpl(similarDomNodesArr)) {
+                    tmpl.corrupted = true;
+                    // TODO: merge corrupte templates if and only if they are fully-equal
+                }
+            }
+        }
     }
 
     // ================================================================================================================

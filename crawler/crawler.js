@@ -286,7 +286,14 @@ class CrawlingCtrl {
             let workflow = webCrawler.browserClient.get(crawlerSettings.homePageUrl);
             // this.browserClient.get('file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/test-dom.html');
 
-            let webAppState;
+            let i_pstate = 0;
+
+            let webAppState = {
+                num: i_pstate,
+                tmplSet: new Set() // add, delete, has, clear
+            };
+
+            let maxDepth = 10;
 
             // while (true) {
             {
@@ -303,8 +310,12 @@ class CrawlingCtrl {
                     //     })[0].dom
                     // );
                     
-                    this.webAppTmplModel.addDomModel(domModel);
-                    this.webAppTmplModel.dumpWebAppTmplModel('./_html/');
+                    let webPageModel = this.webAppTmplModel.addDomModel(domModel);
+
+
+
+
+                    // this.webAppTmplModel.dumpWebAppTmplModel('./_html/');
                 })
                 .then(() => {
                     console.log('client ready');
@@ -320,6 +331,10 @@ class CrawlingCtrl {
         crawlerLogger.info('Starting crawling process.');
 
         this.webAppTmplModel = new tmplModel.WebAppTmplModel();
+
+        this.i_pstate = 0;
+
+
 
         let promise = Promise.all(this.webCrawlers.map(webCrawler => this.crawlCurrentWebAppState(webCrawler)));
 
