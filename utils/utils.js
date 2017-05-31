@@ -124,6 +124,26 @@ function* yieldTreeNodes(tree /*node*/, yieldNodeChilds, mode = 't', middleStack
 }
 
 // ====================================================================================================================
+function promise_for(f_check, f_iter, f_body) {
+
+    if (f_check()) {
+        return new Promise((res, rej) => { // reject - means 'break', resolve means 'continue'
+            try {
+                let retVal = f_body(res, rej);
+                Promise.resolve(retVal)
+                .catch(err => { rej(err); }); // asynchronous errors
+            } catch (err) {
+                rej(err); // synchronous errors
+            }
+        })
+        .then(() => {
+            f_iter();
+            return promise_for(f_check, f_iter, f_body);
+        });
+    }
+}
+
+// ====================================================================================================================
 function arraySimilarity(arr1, arr2) {
     if (arr1.length === arr2.length &&
         arr1.every(function(e, i) {
@@ -140,5 +160,6 @@ function arraySimilarity(arr1, arr2) {
 
 module.exports = {
     yieldTreeNodes: yieldTreeNodes,
-    arraySimilarity: arraySimilarity
+    arraySimilarity: arraySimilarity,
+    promise_for: promise_for
 };

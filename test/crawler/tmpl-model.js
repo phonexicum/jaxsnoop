@@ -8,7 +8,7 @@ const webdriver = require('selenium-webdriver'),
     wdCapabilities = require('selenium-webdriver/lib/capabilities'),
     firefox = require('selenium-webdriver/firefox');
 
-const GenerateDOMCopy = require('../../crawler/copying-DOM.js').GenerateDOMCopy;
+const browserUtils = require('../../crawler/browser-utils.js');
 const utils = require('../../utils/utils.js');
 const tmplModel = require('../../model/tmpl-model.js');
 const nodeHandlers = require('../../model/node-handlers.js');
@@ -38,7 +38,7 @@ describe('tmpl-model', () => {
             let correctWebModel = {
                 "clickables": [], "childNodes": [{
                     "clickables": [], "childNodes": [{
-                        "clickables": [], "childNodes": [],
+                        "clickables": [{"clk": "a"}], "childNodes": [],
                         "props": {
                             "attributes": [{"attrName": "href", "attrValue": "./test_dom.html"}],
                             "nodeValues": ["test1"],
@@ -59,7 +59,7 @@ describe('tmpl-model', () => {
                     }
                 },{
                     "clickables": [], "childNodes": [{
-                        "clickables": [], "childNodes": [],
+                        "clickables": [{"clk": "a"}], "childNodes": [],
                         "props": {
                             "attributes": [{"attrName": "href", "attrValue": "./test_dom.html"}],
                             "nodeValues": ["test2"],
@@ -80,7 +80,7 @@ describe('tmpl-model', () => {
                     }
                 },{
                     "clickables": [], "childNodes": [{
-                        "clickables": [],"childNodes": [],
+                        "clickables": [{"clk": "a"}],"childNodes": [],
                         "props": {
                             "attributes": [{"attrName": "href", "attrValue": "./lolz.html"}],
                             "nodeValues": ["testing"],
@@ -102,7 +102,7 @@ describe('tmpl-model', () => {
                 },
                 {
                     "clickables": [], "childNodes": [{
-                        "clickables": ["onclick"], "childNodes": [],
+                        "clickables": [/*{"clk": "onclick"}*/], "childNodes": [],
                         "props": {
                             "attributes": [{"attrName": "onclick", "attrValue": "alert(1)"}],
                             "nodeValues": ["Click me"],
@@ -126,7 +126,7 @@ describe('tmpl-model', () => {
 
             browser.get(url);
 
-            browser.executeScript(GenerateDOMCopy, utils.yieldTreeNodes,
+            browser.executeScript(browserUtils.generateDOMCopy, utils.yieldTreeNodes,
                 'function ' + tmplModel.NodeProcessing.getDomNodeDraft.toString(),
                 nodeHandlers.checkNodeIsBlacklisted, nodeHandlers.getPropertiesOfDOMnode)
             .then(domModel => {
@@ -176,7 +176,7 @@ describe('tmpl-model', () => {
 
             function loadWebPage(webPageUrl) {
                 browser.get(webPageUrl);
-                return browser.executeScript(GenerateDOMCopy, utils.yieldTreeNodes,
+                return browser.executeScript(browserUtils.generateDOMCopy, utils.yieldTreeNodes,
                     'function ' + tmplModel.NodeProcessing.getDomNodeDraft.toString(),
                     nodeHandlers.checkNodeIsBlacklisted, nodeHandlers.getPropertiesOfDOMnode)
             }
@@ -215,12 +215,9 @@ describe('tmpl-model', () => {
                         assert.ok(node.type === undefined || node.type === 'tmpl', 'Wrong node type in web-page model');
 
                         // Check parent pointer consistency
-                        if (node === webPage.domRoot) assert.ok(node.parent === undefined, 'Parent must not exist for root node of web-page model');
+                        if (node === webPage.domRoot) assert.ok(node.parent === webPage, 'Parent must not exist for root node of web-page model');
                         else {
-                            if (node.parent === parent)
-                                assert.ok(node.parent === parent, 'Wrong parent pointer for some node in some web-page model');
-                            else
-                                assert.ok(node.parent === parent, 'Wrong parent pointer for some node in some web-page model');
+                            assert.ok(node.parent === parent, 'Wrong parent pointer for some node in some web-page model');
                         }
 
                         // Memorize nodes, pointing to templates
@@ -269,11 +266,7 @@ describe('tmpl-model', () => {
                         if (node === tmpl.tmplRoot)
                             assert.ok(node.parent === tmpl, 'Parent of root node in any template must point to template.');
                         else {
-                            if (node.parent === parent)
-                                assert.ok(node.parent === parent, 'Wrong parent pointer for some node in any template');
-                            else {
-                                let kkk = 12;
-                            }
+                            assert.ok(node.parent === parent, 'Wrong parent pointer for some node in any template');
                         }
                     }
                 }

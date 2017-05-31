@@ -28,6 +28,9 @@ let proxyParams = {
 
     filterBlackList: false,
     urlBlackList: [],
+
+    allowPosts: true,
+    postsCounter: 0
 };
 
 // ====================================================================================================================
@@ -41,10 +44,8 @@ function getUrl(protocol, req) {
 }
 
 // ====================================================================================================================
-function Intercepter (req, res) {
-    let url = req.url;
-
-    
+function Intercepter (req, res, connectionType) {
+    let url = getUrl(connectionType, req).href;
 
     if (proxyParams.filterWhiteList) {
         if (!proxyParams.urlWhiteList.some((val) => val.test(url))) {
@@ -67,6 +68,19 @@ function Intercepter (req, res) {
             return false;
         }
     }
+
+    if (req.method === 'POST' || req.method === 'DELETE' || req.method === 'PUT' || req.method === 'PATCH') {
+        proxyParams.postsCounter ++;
+
+        if (proxyParams.allowPosts === false) {
+            proxyLogger.debug('Request dropped (no posts):', url);
+            res.statusCode = 423;
+            res.statusMessage = 'Locked';
+            res.end();
+            return false;
+        }
+    }
+
 }
 
 // ====================================================================================================================
@@ -75,14 +89,14 @@ let webProxy = new ClientProxy((req, res) => {
         
         let reqUrl = getUrl('http', req);
         proxyLogger.trace('connection on url:', reqUrl.href);
-        return Intercepter(req, res);
+        return Intercepter(req, res, 'http');
 
     }, (req, res) => {
         // https request intercepter
 
         let reqUrl = getUrl('https', req);
         proxyLogger.trace('connection on url:', reqUrl.href);
-        return Intercepter(req, res);
+        return Intercepter(req, res, 'https');
 
     }, (req, res) => {
         // http response intercepter
@@ -139,5 +153,22 @@ process.on('message', m => {
         webProxy.once('listening', () => {
             process.send({report: 'listening'});
         });
+    }
+    else if (m.command === 'allow-posts') {
+        proxyParams.allowPosts = true;
+        proxyLogger.trace('POSTs allowed.');
+        process.send({report: 'allow-posts'});
+    }
+    else if (m.command === 'forbid-posts') {
+        proxyParams.allowPosts = false;
+        proxyLogger.trace('POSTs forbided.');
+        process.send({report: 'forbid-posts'});
+    }
+    else if (m.command === 'drop-posts-counter') {
+        proxyParams.postsCounter = 0;
+        process.send({report: 'drop-posts-counter'});
+    }
+    else if (m.command === 'get-posts-counter') {
+        process.send({report: 'posts-counter', postsCounter: proxyParams.postsCounter});
     }
 });

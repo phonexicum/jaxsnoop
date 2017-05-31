@@ -10,16 +10,18 @@ const levenshtein = require('../utils/levenshtein.js');
 function checkNodeIsBlacklisted(node) {
 
     // This array contains several functions each checking if the node must be ignored
+    //  ATTENTION: nodes must be blacklisted carefully, because it can break css navigation for finding
+    //      clickables on opened webPage and click them
     let nodeBlacklist = [
-        node => {
-            // Check if element is hidden https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
-            return node.offsetParent === null; // node.hidden === true || node.style.display === 'none'
-        },
+        // node => {
+        //     // Check if element is hidden https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+        //     return node.offsetParent === null; // node.hidden === true || node.style.display === 'none'
+        // },
         node => {
             return node.nodeName === '#text';
         },
         node => {
-            return node.nodeName === 'SCRIPT';
+            return node.nodeName === 'SCRIPT' || node.nodeName === 'BR';
         }
     ];
     
@@ -65,7 +67,7 @@ function getPropertiesOfDOMnode(currentNode) {
 
     // ================================================================================================================
     // Names of clickables, which has to be memorized if they are available.
-    let nodeClickablesOfInterest = ['onclick'];
+    let nodeClickablesOfInterest = ['skip-it-for-a-debugging-purposes onclick'];
 
     // ================================================================================================================
     let properties = {};
@@ -76,10 +78,26 @@ function getPropertiesOfDOMnode(currentNode) {
     }
 
     let clickables = [];
-    for (let clickable of nodeClickablesOfInterest) {
-        if (currentNode[clickable] !== null) {
-            clickables.push(clickable);
+    
+    // If element is hidden we must know about it for correct navigation, but its clickables must not be studyed
+
+    // Check if element is hidden https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+    if (currentNode.offsetParent !== null && // node.hidden === true || node.style.display === 'none'
+            // For Pyforum:
+            (currentNode.title !== 'Logout' && currentNode.title !== 'Forum Administration')
+        ) {
+        
+        for (let clickable of nodeClickablesOfInterest) {
+            if (currentNode[clickable] !== undefined && currentNode[clickable] !== null) {
+                clickables.push({
+                    clk: clickable
+                });
+            }
         }
+        if (properties.tagName === 'a')
+            clickables.push({clk: 'a'});
+        if (properties.tagName === 'input' && properties.attributes.some(val => val.attrName === 'type' && val.attrValue === 'submit'))
+            clickables.push({clk: 'input_submit'});
     }
 
     return {
@@ -89,17 +107,50 @@ function getPropertiesOfDOMnode(currentNode) {
 }
 
 // ====================================================================================================================
-function stringifyNodeBeginning(node, level = 0, tabulation = 4) {
+// Function for copying valuable model-related attributes from deletable node to other node
+//  node clickable type can be 'g' (get), 'p' (post), 'd' (denial/forbidden)
+function mergeEqualNodes(node, delNode) {
+
+    for (let clickable of delNode.clickables) {
+        let node_clk_i = node.clickables.findIndex(val => val.clk === clickable.clk);
+        if (node_clk_i === -1)
+            node.clickables.push(clickable);
+        else {
+            let users = Object.getOwnPropertyNames(clickable);
+            users.splice(users.indexOf('clk'), 1);
+            for (let user of users) {
+                if (node.clickables[node_clk_i][user] === undefined) {
+                    node.clickables[node_clk_i][user] = clickable[user];
+                } else {
+
+                    // Consistancy checks
+                    if (node.clickables[node_clk_i][user].type  === 'g' || node.clickables[node_clk_i][user].type  === 'p' || node.clickables[node_clk_i][user].type  === 'd') {
+                        if (node.clickables[node_clk_i][user].type !== clickable[user].type)
+                            throw new Error ('The same clickable for the same user in different situations leads to different types of action. This is constraint for web-application. The model can not handle that. Can not merge nodes into single template: ' + nodeHandlers.stringifyNode(node) + ' ' + nodeHandlers.stringifyNode(delNode));
+                    } else if (node.clickables[node_clk_i][user].type !== undefined)
+                        throw new Error('Unknown choice.');
+
+                    node.clickables[node_clk_i][user].type = clickable[user].type;
+                    node.clickables[node_clk_i][user].webAppStates.push(...clickable[user].webAppStates);
+
+                }
+            }
+        }
+    }
+}
+
+// ====================================================================================================================
+function stringifyNodeBeginning(node, level = 0, tabulation = 4, noNodeValues = false) {
 
     let str = '';
     str += ' '.repeat(level*tabulation) + '<' + node.props.tagName + ' ';
     for (let attr of node.props.attributes)
         str += attr.attrName + '="' + attr.attrValue + '" ';
     
-    str += 'clickables="' + node.clickables.join(' ') + '"';
+    str += 'clickables="' + node.clickables.map(val => val.clk).join(' ') + '"';
     str += '>\n';
 
-    if (node.props.nodeValues.length > 0)
+    if (!noNodeValues && node.props.nodeValues.length > 0)
         str += ' '.repeat((level +1)*tabulation) + node.props.nodeValues.join(' ') + '\n';
 
     return str;
@@ -107,6 +158,12 @@ function stringifyNodeBeginning(node, level = 0, tabulation = 4) {
 
 function stringifyNodeEnding(node, level = 0, tabulation = 4) {
     return ' '.repeat(level*tabulation) + '</' + node.props.tagName + '>\n';
+}
+
+function stringifyNode(node) {
+    return stringifyNodeBeginning(node, 0, 4, true).slice(0, -1) +
+        node.props.nodeValues.join(' ') +
+        stringifyNodeEnding(node).slice(0, -1);
 }
 
 // ====================================================================================================================
@@ -152,17 +209,36 @@ function compareNodes(n1, n2){
     // assert.deepStrictEqual(n1.props.nodeValues, n2.props.nodeValues);
 
     // assert.deepStrictEqual(n1.clickables, n2.clickables);
-    if (! n1.clickables.every((val, i) => val === n2.clickables[i]))
+    let n1_clk = n1.clickables.map(val => val.clk);
+    let n2_clk = n2.clickables.map(val => val.clk);
+    if (n1_clk.length !== n2_clk.length ||
+        ! n1_clk.every(val => n2_clk.indexOf(val) !== -1))
         return false;
 
     return true;
 }
 
 // ====================================================================================================================
+function getNodeCssPresentation(node) {
+
+    let importantAttributes = ['href', 'title', 'id'];
+
+    let css_presentation = node.props.tagName;
+    for (let {attrName, attrValue} of node.props.attributes) {
+        if (importantAttributes.indexOf(attrName) !== -1)
+            css_presentation += '[' + attrName + '="' + attrValue + '"]'
+    }
+    return css_presentation;
+}
+
+// ====================================================================================================================
 module.exports = {
     checkNodeIsBlacklisted: checkNodeIsBlacklisted,
     getPropertiesOfDOMnode: getPropertiesOfDOMnode,
+    mergeEqualNodes: mergeEqualNodes,
     stringifyNodeBeginning: stringifyNodeBeginning,
     stringifyNodeEnding: stringifyNodeEnding,
-    compareNodes: compareNodes
+    stringifyNode: stringifyNode,
+    compareNodes: compareNodes,
+    getNodeCssPresentation: getNodeCssPresentation
 };

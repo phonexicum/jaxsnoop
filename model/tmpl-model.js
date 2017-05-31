@@ -5,6 +5,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const EventEmitter = require('events');
 
 const utils = require('../utils/utils.js');
 const nodeHandlers = require('./node-handlers.js');
@@ -64,12 +65,6 @@ class NodeProcessing {
     }
 
     // ================================================================================================================
-    // Function for copying valuable model-related attributes from deletable node to other node
-    static mergeEqualNodes(node, delNode) {
-        // Nothing yet
-    }
-
-    // ================================================================================================================
     // return boolean;
     static checkSubtreesPairToBeTmpl(equalNodesArr) {
         if (equalNodesArr.length >= NodeProcessing.minSize){
@@ -82,7 +77,7 @@ class NodeProcessing {
     // ================================================================================================================
     // return boolean;
     static checkSubtreeHasClickable(subtree) {
-        return subtree.some(val => (val.domNode.clickables.length > 0 || val.domNode.props.tagName === 'a' || val.domNode.props.tagName === 'form'));
+        return subtree.some(val => (val.domNode.clickables.keys().length > 0 || val.domNode.props.tagName === 'a' || val.domNode.props.tagName === 'form'));
     }
 
     // ================================================================================================================
@@ -110,7 +105,7 @@ class NodeProcessing {
 NodeProcessing.minSize = 4;
 
 // ====================================================================================================================
-class WebAppTmplModel {
+class WebAppTmplModel extends EventEmitter {
     
     // function must detect similarities:
     //      1) similarities on one page (e.g. two forums on one webpage; crawler must be interested to crawl only one of them)
@@ -118,6 +113,8 @@ class WebAppTmplModel {
     //      3) similarities between pages (e.g. status bar (login, logout, settings, etc))
     
     constructor() {
+
+        super();
 
         this.tmplCount = 1;
         this.webPageCount = 1;
@@ -142,7 +139,7 @@ class WebAppTmplModel {
     _init_newTmpl(tmplRoot, tmplParents) {
         return {
             name: this.tmplCount ++,
-            type: 'tmpl',
+            type: 'template',
             tmplRoot: tmplRoot,
             tmplParents: tmplParents
         };
@@ -312,9 +309,8 @@ class WebAppTmplModel {
     }
 
     // ================================================================================================================
-    _labelNodeProcessing(domModelRoot) {
-
-        // Search for templates (equal sub-trees) in the context of one domModel
+    // Search for templates (equal sub-trees) in the context of one domModel
+    _labelNodeProcessing_singleDomModelContext(domModelRoot) {
         let domLevel = 0;
         let stackDOMreconstruction = [];
         for (let {node:domSubRoot1, levelChange} of utils.yieldTreeNodes(domModelRoot, NodeProcessing.getYieldNodeChilds())) {
@@ -351,8 +347,11 @@ class WebAppTmplModel {
                 }
             }}
         }
+    }
 
-        // Search for sub-templates between domModel and already found templates
+    // ================================================================================================================
+    // Search for sub-templates between domModel and already found templates
+    _labelNodeProcessing_domModelVStemplates(domModelRoot) {
         for (let tmplModel of this.templates) {
             if (tmplModel.corrupted !== true) {
             for (let {node:domSubRoot} of utils.yieldTreeNodes(domModelRoot, NodeProcessing.getYieldNodeChilds())) {
@@ -379,8 +378,11 @@ class WebAppTmplModel {
 
             }}}}
         }
+    }
 
-        // Search for sub-templates between domModel and other domModels
+    // ================================================================================================================
+    // Search for sub-templates between domModel and other domModels
+    _labelNodeProcessing_domModelVSdomModels(domModelRoot) {
         let subPage_queue = [];
         this.webAppPageList.forEach(val => {
             subPage_queue.push(val.domRoot);
@@ -419,6 +421,15 @@ class WebAppTmplModel {
                 }
             }}
         }
+    }
+
+    // ================================================================================================================
+    _labelNodeProcessing(domModelRoot) {
+
+        this._labelNodeProcessing_singleDomModelContext(domModelRoot);
+        this._labelNodeProcessing_domModelVStemplates(domModelRoot);
+        this._labelNodeProcessing_domModelVSdomModels(domModelRoot);
+
     }
 
     // ================================================================================================================
@@ -554,6 +565,7 @@ class WebAppTmplModel {
     };
 
     // ================================================================================================================
+    //  merging procedure can not garantee correctnes of order for child elements attached to template nodes
     _breakApartCorrelatedTemplate(similarNodesArr, color, tmpl/*, subtreeSinkChilds, subtreeSinks*/) {
 
         // tmpl - is our new template we are extracting
@@ -568,6 +580,8 @@ class WebAppTmplModel {
         let complex = false;
         if (tmpl.tmplRoot.tmplRoutine[color] !== curTmpl.tmplRoot)
             complex = true;
+
+        this.emit('tmplPartition', curTmpl);
 
         // ============================================================================
         // Merge with other template-pointers, holding various subtrees, hooked to
@@ -746,8 +760,7 @@ class WebAppTmplModel {
 
                     // two subtrees is going to be merged into one subtree-template, metainformation of various nodes must not be lost
                     for (let curTmplNode of similarDomNodesArr)
-                        NodeProcessing.mergeEqualNodes(curTmplNode.domNode, curTmplNode.domNode.tmplRoutine[color]);
-
+                        nodeHandlers.mergeEqualNodes(curTmplNode.domNode, curTmplNode.domNode.tmplRoutine[color]);
 
                     if (this.addRoutine.colorCompliance[color].context === 'tmpl') {
 
@@ -806,12 +819,14 @@ class WebAppTmplModel {
         // Reconstruct parent pointers
         for (let {node, levelChange, parent} of utils.yieldTreeNodes(domModel.domSnapshot, NodeProcessing.getYieldNodeChilds()))
             node.parent = parent;
+        
+        let webPage = this._init_newWebPage(domModel.url, domModel.domSnapshot);
+        webPage.domRoot.parent = webPage;
 
         this._labelNodeProcessing(domModel.domSnapshot);
         this._extractTemplates(domModel.domSnapshot);
         this._wrapInTemplates(domModel.domSnapshot);
         
-        let webPage = this._init_newWebPage(domModel.url, domModel.domSnapshot);
         this.webAppPageList.push(webPage);
 
         this._cleanup_addRoutine();
@@ -829,7 +844,7 @@ class WebAppTmplModel {
             if (node.type === undefined) {
                 return nodeHandlers.stringifyNodeBeginning(node, level, tabulation);
             } else if (node.type === 'tmpl') {
-                return  ' '.repeat(level*tabulation) + '<iframe src="./tmpl-' + node.tmpl.name + '.html">No template.</iframe>\n' +
+                return  ' '.repeat(level*tabulation) + '<iframe src="./template-' + node.tmpl.name + '.html">No template.</iframe>\n' +
                         ' '.repeat(level*tabulation) + '<iframeChilds>\n';
             }
         }
@@ -850,13 +865,13 @@ class WebAppTmplModel {
         let processedTmplNames = [];
         while (queue.length > 0) {
             let webPage = queue.splice(0, 1)[0];
-            if (webPage.type === 'tmpl') {
+            if (webPage.type === 'template') {
                 if (withTmpl && processedTmplNames.indexOf(webPage.name) === -1)
                     processedTmplNames.push(webPage.name);
                 else
                     continue;
             }
-            let domRoot = webPage.type === 'webPage' ? webPage.domRoot : (webPage.type === 'tmpl' ? webPage.tmplRoot : undefined);
+            let domRoot = webPage.type === 'webPage' ? webPage.domRoot : (webPage.type === 'template' ? webPage.tmplRoot : undefined);
 
             let dom = '';
             let stack = [];

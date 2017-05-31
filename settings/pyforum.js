@@ -27,6 +27,7 @@ module.exports = {
 
 
     homePageUrl: 'http://localhost:8001/pyforum/default/index',
+    // homePageUrl: 'file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/crawler/mini-webapp/index1.html',
     urlWhiteList: [ // Array of regexp parameters
         {
             source: '^http:\/\/localhost:8001\/pyforum.*$',
@@ -34,10 +35,11 @@ module.exports = {
         }, {
             source: '^file:\/\/.*$',
             flags: 'i'
-        }, {
-            source: '^.*$', // Allow all
-            flags: 'i'
         }
+        // , {
+        //     source: '^.*$', // Allow all
+        //     flags: 'i'
+        // }
     ],
     urlBlackList: [ // Array of regexp parameters
     ],
@@ -50,10 +52,13 @@ module.exports = {
         bot1: {
             login: userLoginAction('bot1@bot.ru', 'bot1'),
             logout: userLogoutAction
-        }//,
+        },
         // admin1: {
         //     login: userLoginAction('admin1@bot.ru', 'admin1'),
         //     logout: userLogoutAction
         // }
     }
 };
+
+module.exports.urlWhiteListCompiled = module.exports.urlWhiteList.map(val => new RegExp(val.source, val.flags));
+module.exports.urlBlackListCompiled = module.exports.urlBlackList.map(val => new RegExp(val.source, val.flags));
