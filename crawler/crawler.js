@@ -516,12 +516,14 @@ class CrawlingCtrl {
         sp.tmplNodeStack = [];
         sp.tmplIt = utils.yieldTreeNodes(sp.tmpl.tmplRoot, tmplModel.NodeProcessing.getYieldNodeChilds());
         ({node: sp.node, clk_i: sp.clk_i} = this._getNextClickableInStack(webCrawler, sp.tmplIt, sp.tmplNodeStack, i_pstate));
+        if (sp.node === undefined || sp.clk_i === undefined)
+            return undefined;
         return sp;
     }
 
     // ================================================================================================================
     _getTargetedClickable_str(cp) {
-        return 'node: "' + nodeHandlers.stringifyNode(cp.node) + ' clickable name: "' + cp.node.clickables[cp.clk_i].clk + '"';
+        return ('node: "' + nodeHandlers.stringifyNode(cp.node) + ' clickable name: "' + cp.node.clickables[cp.clk_i].clk + '"').split('\n').join();
     }
 
     // ================================================================================================================
@@ -615,10 +617,8 @@ class CrawlingCtrl {
             return alert.accept();
         }, err => {
             if (err instanceof wdError.NoSuchAlertError) {
-                // Everything is okey, there is no alert to close
-            } else {
-                throw err;
-            }
+                // Everything is okey, there is no alert window to be closes
+            } else { throw err; }
         })
         .then(() => { return webCrawler.browserClient.getAllWindowHandles(); })
         .then(handles => {
@@ -782,6 +782,7 @@ class CrawlingCtrl {
                                     webPageStack.push(nsp);
                                 } else {
                                     crawlerLogger.trace('Web-page from previously clicked clickable was not enqueued, because it is already fully crawled. Going to search next clickable.');
+                                    searchNextClickable = true;
                                 }
                             } else {
                                 crawlerLogger.trace('Skip clickable because of depth limit.');
@@ -862,8 +863,8 @@ class CrawlingCtrl {
                                                         browserCorrelatedState ++;
                                                     }
                                                 } else {
-                                                    searchNextClickable = true;
                                                     crawlerLogger.trace('New web-page state does not contain unique templates, it will be not queued for future crawling.');
+                                                    searchNextClickable = true;
                                                 }
                                             }
                                             else {
@@ -947,7 +948,7 @@ class CrawlingCtrl {
                 rootWebPage: homePage,
                 webPages: webAppStateWebPages
             };
-            global.gc();
+            global.gc(); // I have seen how it frees 100 Mbytes of memory
             return webAppState;
         });
         

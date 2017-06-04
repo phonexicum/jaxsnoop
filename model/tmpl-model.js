@@ -66,29 +66,36 @@ class NodeProcessing {
 
     // ================================================================================================================
     // return boolean;
-    static checkSubtreesPairToBeTmpl(equalNodesArr) {
-        if (equalNodesArr.length >= NodeProcessing.minSize){
-            return true;
-        } else {
-            return false;
-        }
+    static checkSubtreeArrHasClickable(subtreeArr) {
+        return subtreeArr.some(val => (val.domNode.clickables.length > 0));
     }
 
     // ================================================================================================================
     // return boolean;
-    static checkSubtreeHasClickable(subtree) {
-        return subtree.some(val => (val.domNode.clickables.keys().length > 0 || val.domNode.props.tagName === 'a' || val.domNode.props.tagName === 'form'));
+    static checkSubtreePairsArrHasClickable(equalNodesArr) {
+        return equalNodesArr.some(val => (val.domNode.clickables.length > 0));
     }
 
     // ================================================================================================================
     // return boolean;
     static checkSubtreeArrToBeTmpl(subtreeArr) {
-        if (subtreeArr.length >= NodeProcessing.minSize) {
-            // Check if future template have any clickable, or there is no need to extract template
-            return NodeProcessing.checkSubtreeHasClickable(subtreeArr);
-        } else {
-            return false;
+        if ( subtreeArr.length >= NodeProcessing.minSizeForNonClickables ||
+                ( subtreeArr.length >= NodeProcessing.minSizeForClickables && NodeProcessing.checkSubtreePairsArrHasClickable(subtreeArr))
+           ) {
+            return true;
         }
+        else return false;
+    }
+
+    // ================================================================================================================
+    // return boolean;
+    static checkSubtreePairsArrToBeTmpl(equalNodesArr) {
+        if ( equalNodesArr.length >= NodeProcessing.minSizeForNonClickables ||
+                ( equalNodesArr.length >= NodeProcessing.minSizeForClickables && NodeProcessing.checkSubtreePairsArrHasClickable(equalNodesArr))
+           ) {
+            return true;
+        }
+        else return false;
     }
 
     // ================================================================================================================
@@ -102,7 +109,9 @@ class NodeProcessing {
 }
 
 // NodeProcessing static variables
-NodeProcessing.minSize = 4;
+// NodeProcessing.minSize = 4;
+NodeProcessing.minSizeForClickables = 3;
+NodeProcessing.minSizeForNonClickables = 10;
 
 // ====================================================================================================================
 class WebAppTmplModel extends EventEmitter {
@@ -301,7 +310,7 @@ class WebAppTmplModel extends EventEmitter {
         for (let pair of this._walkTwoTreesSynchronously(domTreeRoot, tmplTreeRoot, NodeProcessing.compareNodes, NodeProcessing.getYieldNodeChilds()))
             equalNodesArr.push(pair);
 
-        if (NodeProcessing.checkSubtreesPairToBeTmpl(equalNodesArr)) {
+        if (NodeProcessing.checkSubtreePairsArrToBeTmpl(equalNodesArr)) {
             return equalNodesArr;
         } else {
             return undefined;
@@ -798,7 +807,7 @@ class WebAppTmplModel extends EventEmitter {
 
             process_queue.push(...subtreeSinkChilds);
 
-            if (NodeProcessing.checkSubtreeHasClickable(similarDomNodesArr)) {
+            if (NodeProcessing.checkSubtreeArrHasClickable(similarDomNodesArr)) {
 
                 let tmpl = this._carryOutSubtreeRootIntoTmpl(curRootNode, subtreeSinkChilds, subtreeSinks);
                 similarDomNodesArr[0].domNode = tmpl.tmplRoot;

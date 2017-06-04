@@ -161,9 +161,9 @@ function stringifyNodeEnding(node, level = 0, tabulation = 4) {
 }
 
 function stringifyNode(node) {
-    return stringifyNodeBeginning(node, 0, 4, true).slice(0, -1) +
+    return stringifyNodeBeginning(node, 0, 4, true) +
         node.props.nodeValues.join(' ') +
-        stringifyNodeEnding(node).slice(0, -1);
+        stringifyNodeEnding(node);
 }
 
 // ====================================================================================================================

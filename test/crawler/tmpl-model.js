@@ -15,7 +15,7 @@ const nodeHandlers = require('../../model/node-handlers.js');
 
 // ====================================================================================================================
 describe('tmpl-model', () => {
-    describe.only('#checkModelConstruction', () => {
+    describe('#checkModelConstruction', () => {
         let browser = null;
         
         before(() => {
@@ -165,13 +165,40 @@ describe('tmpl-model', () => {
 
         describe('check adding domModels into webApp model (checking correct template extraction)', function() {
             this.timeout(20*1000);
-            tmplModel.NodeProcessing.minSize = 3;
 
             let base = 'file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/crawler/model/';
             let webAppTmplModel = new tmplModel.WebAppTmplModel();
 
+            before(function() {
+                tmplModel.NodeProcessing.minSize = 3;
+
+                // ================================================================================================================
+                tmplModel.NodeProcessing.checkSubtreeArrToBeTmpl_original = tmplModel.NodeProcessing.checkSubtreeArrToBeTmpl;
+                tmplModel.NodeProcessing.checkSubtreeArrToBeTmpl = (subtreeArr) => {
+                    if (subtreeArr.length >= tmplModel.NodeProcessing.minSize) {
+                        // Check if future template have any clickable, or there is no need to extract template
+                        return tmplModel.NodeProcessing.checkSubtreeArrHasClickable(subtreeArr);
+                    } else {
+                        return false;
+                    }
+                }
+
+                // ================================================================================================================
+                tmplModel.NodeProcessing.checkSubtreePairsArrToBeTmpl_original = tmplModel.NodeProcessing.checkSubtreePairsArrToBeTmpl;
+                tmplModel.NodeProcessing.checkSubtreePairsArrToBeTmpl = (equalNodesArr) => {
+                    if (equalNodesArr.length >= tmplModel.NodeProcessing.minSize){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+
             after(function() {
                 webAppTmplModel.dumpWebAppTmplModel('./_html/');
+
+                tmplModel.NodeProcessing.checkSubtreeArrToBeTmpl = tmplModel.NodeProcessing.checkSubtreeArrToBeTmpl_original;
+                tmplModel.NodeProcessing.checkSubtreesPairToBeTmpl = tmplModel.NodeProcessing.checkSubtreesPairToBeTmpl_original;
             });
 
             function loadWebPage(webPageUrl) {
