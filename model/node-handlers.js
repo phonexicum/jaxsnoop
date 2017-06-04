@@ -22,6 +22,9 @@ function checkNodeIsBlacklisted(node) {
         },
         node => {
             return node.nodeName === 'SCRIPT' || node.nodeName === 'BR';
+        },
+        node => {
+            return node.nodeName === 'A' && node.href.substr(0, 7) === 'mailto:';
         }
     ];
     

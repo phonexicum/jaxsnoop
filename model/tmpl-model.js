@@ -128,7 +128,9 @@ class WebAppTmplModel extends EventEmitter {
         this.tmplCount = 1;
         this.webPageCount = 1;
 
+        // templates must be correctly ordered according to it appearance in model
         this.templates = []; // [{tmpl, tmplParents}, ...]
+
         // this.webAppGraph = undefined; // { domModel: {}, nextModels: [{}, ...] }
         this.webAppPageList = []; // [{domRoot: {}}, ...]
 
@@ -442,7 +444,7 @@ class WebAppTmplModel extends EventEmitter {
     }
 
     // ================================================================================================================
-    _carryOutSubtreeRootIntoTmpl(rootNode, subtreeSinkChilds, subtreeSinks){
+    _carryOutSubtreeRootIntoTmpl(rootNode, subtreeSinkChilds, subtreeSinks, i_positionForNewTemplate = undefined){
 
         // create new node, being root-node for template
         //      we are not going to use "original"" rootNode, because it is used in structure of some global
@@ -450,7 +452,10 @@ class WebAppTmplModel extends EventEmitter {
         let tmplRoot = Object.assign({}, rootNode);
         // register new template
         let tmpl = this._init_newTmpl(tmplRoot, []);
-        this.templates.push(tmpl);
+        if (i_positionForNewTemplate === undefined)
+            this.templates.push(tmpl);
+        else
+            this.templates.splice(i_positionForNewTemplate, 0, tmpl);
 
         // reinitialize "original" rootNode, setting its type and properties to "template-pointer" node
         //      node's child nodes are initialized accordingly to subtreeSinks of our subtree, 
@@ -590,8 +595,6 @@ class WebAppTmplModel extends EventEmitter {
         if (tmpl.tmplRoot.tmplRoutine[color] !== curTmpl.tmplRoot)
             complex = true;
 
-        this.emit('tmplPartition', curTmpl);
-
         // ============================================================================
         // Merge with other template-pointers, holding various subtrees, hooked to
         // processed template and his similarities
@@ -694,6 +697,8 @@ class WebAppTmplModel extends EventEmitter {
             }
         }
 
+        this.emit('tmplPartition', curTmpl, new Set(new_tmpls.concat(tmpl, curTmpl)));
+
         // ============================================================================
         // Cleanup places from where new subtrees and their similarities were moved from
         // ============================================================================
@@ -759,7 +764,16 @@ class WebAppTmplModel extends EventEmitter {
                 //      Maybe some optimization of process can be done?
                 //      Any way structure of new template is already in memory and it must go through merge process with other templates
 
-                let tmpl = this._carryOutSubtreeRootIntoTmpl(curRootNode, subtreeSinkChilds, subtreeSinks);
+                let i_positionForNewTemplate = Math.min(... Array.from(
+                    curRootNode.tmplRoutine.color.filter(
+                        color => this.addRoutine.colorCompliance[color].context === 'tmpl'
+                    ).map(
+                        color => this.templates.indexOf(this.addRoutine.colorCompliance[color].tmpl)
+                    )
+                ));
+
+                let tmpl = this._carryOutSubtreeRootIntoTmpl(curRootNode, subtreeSinkChilds, subtreeSinks,
+                        i_positionForNewTemplate === Infinity ? undefined : i_positionForNewTemplate);
                 // root node of our subtree became "template-pointer" node, so it must be corrected on substituted node
                 //      after carrying out subtree-root into separate template
                 similarDomNodesArr[0].domNode = tmpl.tmplRoot;
