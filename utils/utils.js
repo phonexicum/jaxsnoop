@@ -141,6 +141,7 @@ function promise_for(f_check, f_iter, f_body) {
             return promise_for(f_check, f_iter, f_body);
         });
     }
+    else return Promise.resolve();
 }
 
 // ====================================================================================================================

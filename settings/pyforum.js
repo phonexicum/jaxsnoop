@@ -26,8 +26,8 @@ module.exports = {
     logLevel: 'trace', // One of 'trace', 'debug', 'info', 'warn', 'error', 'fatal'
 
 
-    // homePageUrl: 'http://localhost:8001/pyforum/default/index',
-    homePageUrl: 'http://localhost:8001/pyforum/default/add_topic/1',
+    homePageUrl: 'http://localhost:8001/pyforum/default/index',
+    // homePageUrl: 'http://localhost:8001/pyforum/default/add_topic/1',
     // homePageUrl: 'file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/crawler/mini-webapp/index1.html',
     urlWhiteList: [ // Array of regexp parameters
         {
