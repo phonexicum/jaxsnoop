@@ -12,11 +12,6 @@ const nodeHandlers = require('./node-handlers.js');
 
 // ====================================================================================================================
 class NodeProcessing {
-    // constructor(url = null, domSnapshot = null){
-
-    //     this.url = url;
-    //     this.domSnapshot = domSnapshot;
-    // }
 
     // ================================================================================================================
     static getDomNodeDraft(){
@@ -108,19 +103,12 @@ class NodeProcessing {
     // ================================================================================================================
 }
 
-// NodeProcessing static variables
-// NodeProcessing.minSize = 4;
 NodeProcessing.minSizeForClickables = 3;
 NodeProcessing.minSizeForNonClickables = 10;
 
 // ====================================================================================================================
 class WebAppTmplModel extends EventEmitter {
-    
-    // function must detect similarities:
-    //      1) similarities on one page (e.g. two forums on one webpage; crawler must be interested to crawl only one of them)
-    //      2) similar pages (e.g. habrahabr articles of different users)
-    //      3) similarities between pages (e.g. status bar (login, logout, settings, etc))
-    
+        
     constructor() {
 
         super();

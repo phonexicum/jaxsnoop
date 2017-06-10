@@ -27,7 +27,6 @@ module.exports = {
 
 
     homePageUrl: 'http://localhost:8001/pyforum/default/index',
-    // homePageUrl: 'http://localhost:8001/pyforum/default/add_topic/1',
     // homePageUrl: 'file:///home/avasilenko/Desktop/jaxsnoop/test/_resources/crawler/mini-webapp/index1.html',
     urlWhiteList: [ // Array of regexp parameters
         {
@@ -58,7 +57,18 @@ module.exports = {
         //     login: userLoginAction('admin1@bot.ru', 'admin1'),
         //     logout: userLogoutAction
         // }
+    },
+
+    usersWepAppStateCrawler_settings: {
+        depthStep: 1,
+        stepsNum: 2
+    },
+
+    webAppStateCrawler_settings: {
+        followTheTrace: 2,
+        maxDepth: 1 * 3
     }
+
 };
 
 module.exports.urlWhiteListCompiled = module.exports.urlWhiteList.map(val => new RegExp(val.source, val.flags));

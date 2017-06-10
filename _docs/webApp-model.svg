@@ -1,0 +1,1370 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Создано Microsoft Visio, экспорт SVG webApp-model.svg Page-1 -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events"
+		xmlns:v="http://schemas.microsoft.com/visio/2003/SVGExtensions/" width="11.6929in" height="8.26772in"
+		viewBox="0 0 841.89 595.276" xml:space="preserve" color-interpolation-filters="sRGB" class="st16">
+	<v:documentProperties v:langID="1049" v:metric="true" v:viewMarkup="false">
+		<v:userDefs>
+			<v:ud v:nameU="msvSubprocessMaster" v:prompt="" v:val="VT4(Rectangle)"/>
+			<v:ud v:nameU="msvNoAutoConnect" v:val="VT0(1):26"/>
+		</v:userDefs>
+	</v:documentProperties>
+
+	<style type="text/css">
+	<![CDATA[
+		.st1 {visibility:visible}
+		.st2 {fill:none;filter:url(#filter_2);stroke:#5b9bd5;stroke-opacity:0.22}
+		.st3 {fill:#5b9bd5;filter:url(#filter_2);font-family:Calibri;font-size:0.833336em;opacity:0.219608}
+		.st4 {fill:none;stroke:#7f7f7f;stroke-width:1.5}
+		.st5 {fill:#000000;font-family:Calibri;font-size:0.833336em}
+		.st6 {fill:none;stroke:#ff0000;stroke-width:1.5}
+		.st7 {fill:none;stroke:#00b050;stroke-width:1.5}
+		.st8 {fill:none;stroke:#0070c0;stroke-width:1.5}
+		.st9 {marker-end:url(#mrkr4-129);stroke:url(#grad0-123);stroke-linecap:round;stroke-linejoin:round;stroke-width:1}
+		.st10 {fill:#5b9bd5;fill-opacity:1;stroke:#5b9bd5;stroke-opacity:1;stroke-width:0.28409090909091}
+		.st11 {fill:#ffffff;stroke:none;stroke-linecap:butt;stroke-width:7.2}
+		.st12 {fill:#4f87bb;font-family:Calibri;font-size:0.833336em}
+		.st13 {marker-end:url(#mrkr4-129);stroke:url(#grad0-143);stroke-linecap:round;stroke-linejoin:round;stroke-width:1}
+		.st14 {fill:#ffffff;stroke:none;stroke-linecap:butt}
+		.st15 {marker-end:url(#mrkr4-380);stroke:url(#grad0-143);stroke-dasharray:7,5;stroke-linecap:round;stroke-linejoin:round;stroke-width:1}
+		.st16 {fill:none;fill-rule:evenodd;font-size:12px;overflow:visible;stroke-linecap:square;stroke-miterlimit:3}
+	]]>
+	</style>
+
+	<defs id="Patterns_And_Gradients">
+		<linearGradient id="grad0-123" x1="0" y1="0" x2="1" y2="0" gradientTransform="rotate(90 0.5 0.5)">
+			<stop offset="0" stop-color="#0070c0" stop-opacity="1"/>
+			<stop offset="1" stop-color="#7f7f7f" stop-opacity="1"/>
+		</linearGradient>
+		<linearGradient id="grad0-143" x1="0" y1="0" x2="1" y2="0" gradientTransform="rotate(90 0.5 0.5)">
+			<stop offset="0" stop-color="#7f7f7f" stop-opacity="1"/>
+			<stop offset="1" stop-color="#0070c0" stop-opacity="1"/>
+		</linearGradient>
+	</defs>
+	<defs id="Markers">
+		<g id="lend4">
+			<path d="M 2 1 L 0 0 L 2 -1 L 2 1 " style="stroke:none"/>
+		</g>
+		<marker id="mrkr4-129" class="st10" v:arrowType="4" v:arrowSize="2" v:setback="7.04" refX="-7.04" orient="auto"
+				markerUnits="strokeWidth" overflow="visible">
+			<use xlink:href="#lend4" transform="scale(-3.52,-3.52) "/>
+		</marker>
+		<marker id="mrkr4-380" class="st10" v:arrowType="4" v:arrowSize="2" v:setback="6.68" refX="-6.68" orient="auto"
+				markerUnits="strokeWidth" overflow="visible">
+			<use xlink:href="#lend4" transform="scale(-3.52,-3.52) "/>
+		</marker>
+	</defs>
+	<defs id="Filters">
+		<filter id="filter_2">
+			<feGaussianBlur stdDeviation="2"/>
+		</filter>
+	</defs>
+	<g v:mID="0" v:index="1" v:groupContext="foregroundPage">
+		<v:userDefs>
+			<v:ud v:nameU="msvThemeOrder" v:val="VT0(0):26"/>
+		</v:userDefs>
+		<title>Страница-1</title>
+		<v:pageProperties v:drawingScale="0.0393701" v:pageScale="0.0393701" v:drawingUnits="24" v:shadowOffsetX="8.50394"
+				v:shadowOffsetY="-8.50394"/>
+		<v:layer v:name="Соединительная линия" v:index="0"/>
+		<g id="shape2-1" v:mID="2" v:groupContext="shape" transform="translate(45.3543,-147.402)">
+			<title>Скругленный прямоугольник</title>
+			<desc>web-application state x</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.1752603505207):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.1752603505207):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.1752603505207):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.1752603505207):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="130.394" cy="380.339" width="260.79" height="429.874"/>
+			<g id="shadow2-2" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M12.62 595.28 L248.17 595.28 A12.6185 12.6185 -180 0 0 260.79 582.66 L260.79 178.02 A12.6185 12.6185 -180
+							 0 0 248.17 165.4 L12.62 165.4 A12.6185 12.6185 -180 0 0 0 178.02 L0 582.66 A12.6185 12.6185 -180 0 0
+							 12.62 595.28 Z" class="st2"/>
+				<text x="83.02" y="178.4" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>web-application state x</text>			</g>
+			<path d="M12.62 595.28 L248.17 595.28 A12.6185 12.6185 -180 0 0 260.79 582.66 L260.79 178.02 A12.6185 12.6185 -180 0
+						 0 248.17 165.4 L12.62 165.4 A12.6185 12.6185 -180 0 0 0 178.02 L0 582.66 A12.6185 12.6185 -180 0 0 12.62
+						 595.28 Z" class="st4"/>
+			<text x="83.02" y="178.4" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>web-application state x</text>		</g>
+		<g id="shape3-9" v:mID="3" v:groupContext="shape" transform="translate(56.6929,-368.504)">
+			<title>Скругленный прямоугольник.3</title>
+			<desc>user’s web-app state (user-x)</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="119.055" cy="502.377" width="238.12" height="185.797"/>
+			<g id="shadow3-10" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M13.27 595.28 L224.84 595.28 A13.2687 13.2687 -180 0 0 238.11 582.01 L238.11 422.75 A13.2687 13.2687 -180
+							 0 0 224.84 409.48 L13.27 409.48 A13.2687 13.2687 -180 0 0 -0 422.75 L0 582.01 A13.2687 13.2687 -180
+							 0 0 13.27 595.28 Z" class="st2"/>
+				<text x="60.05" y="422.48" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>user’s web-app state (user-x)</text>			</g>
+			<path d="M13.27 595.28 L224.84 595.28 A13.2687 13.2687 -180 0 0 238.11 582.01 L238.11 422.75 A13.2687 13.2687 -180 0
+						 0 224.84 409.48 L13.27 409.48 A13.2687 13.2687 -180 0 0 -0 422.75 L0 582.01 A13.2687 13.2687 -180 0 0 13.27
+						 595.28 Z" class="st6"/>
+			<text x="60.05" y="422.48" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>user’s web-app state (user-x)</text>		</g>
+		<g id="shape4-17" v:mID="4" v:groupContext="shape" transform="translate(56.6929,-158.74)">
+			<title>Скругленный прямоугольник.4</title>
+			<desc>user’s web-app state (user-y)</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="119.055" cy="518.74" width="238.12" height="153.071"/>
+			<g id="shadow4-18" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M13.27 595.28 L224.84 595.28 A13.2687 13.2687 -180 0 0 238.11 582.01 L238.11 455.47 A13.2687 13.2687 -180
+							 0 0 224.84 442.2 L13.27 442.2 A13.2687 13.2687 -180 0 0 -0 455.47 L0 582.01 A13.2687 13.2687 -180 0
+							 0 13.27 595.28 Z" class="st2"/>
+				<text x="59.95" y="455.2" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>user’s web-app state (user-y)</text>			</g>
+			<path d="M13.27 595.28 L224.84 595.28 A13.2687 13.2687 -180 0 0 238.11 582.01 L238.11 455.47 A13.2687 13.2687 -180 0
+						 0 224.84 442.2 L13.27 442.2 A13.2687 13.2687 -180 0 0 -0 455.47 L0 582.01 A13.2687 13.2687 -180 0 0 13.27
+						 595.28 Z" class="st7"/>
+			<text x="59.95" y="455.2" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>user’s web-app state (user-y)</text>		</g>
+		<g id="shape5-25" v:mID="5" v:groupContext="shape" transform="translate(56.6929,-338.613)">
+			<title>Скругленный прямоугольник.5</title>
+			<desc>...</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.13956692913386):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.13956692913386):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.13956692913386):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.13956692913386):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="119.055" cy="585.227" width="238.12" height="20.0976"/>
+			<g id="shadow5-26" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M10.05 595.28 L228.06 595.28 A10.0487 10.0487 -180 0 0 238.11 585.23 A10.0487 10.0487 -180 0 0 228.06 575.18
+							 L10.05 575.18 A10.0487 10.0487 -180 0 0 0 585.23 A10.0487 10.0487 -180 0 0 10.05 595.28 Z" class="st2"/>
+				<text x="115.27" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>...</text>			</g>
+			<path d="M10.05 595.28 L228.06 595.28 A10.0487 10.0487 -180 0 0 238.11 585.23 A10.0487 10.0487 -180 0 0 228.06 575.18
+						 L10.05 575.18 A10.0487 10.0487 -180 0 0 0 585.23 A10.0487 10.0487 -180 0 0 10.05 595.28 Z" class="st4"/>
+			<text x="115.27" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>...</text>		</g>
+		<g id="shape7-33" v:mID="7" v:groupContext="shape" transform="translate(65.1969,-436.535)">
+			<title>Скругленный прямоугольник.7</title>
+			<desc>webPage-1&#39;</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="48.189" cy="559.604" width="96.38" height="71.3427"/>
+			<g id="shadow7-34" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M5.37 595.28 L91.01 595.28 A5.37065 5.37065 -180 0 0 96.38 589.9 L96.38 529.3 A5.37065 5.37065 -180 0 0
+							 91.01 523.93 L5.37 523.93 A5.37065 5.37065 -180 0 0 0 529.3 L0 589.9 A5.37065 5.37065 -180 0 0 5.37
+							 595.28 Z" class="st2"/>
+				<text x="24.51" y="536.93" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-1&#39;</text>			</g>
+			<path d="M5.37 595.28 L91.01 595.28 A5.37065 5.37065 -180 0 0 96.38 589.9 L96.38 529.3 A5.37065 5.37065 -180 0 0 91.01
+						 523.93 L5.37 523.93 A5.37065 5.37065 -180 0 0 0 529.3 L0 589.9 A5.37065 5.37065 -180 0 0 5.37 595.28 Z"
+					class="st8"/>
+			<text x="24.51" y="536.93" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-1&#39;</text>		</g>
+		<g id="shape8-41" v:mID="8" v:groupContext="shape" transform="translate(70.8661,-442.205)">
+			<title>Скругленный прямоугольник.8</title>
+			<desc>tmpl-1</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.033106394462789):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.033106394462789):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.033106394462789):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.033106394462789):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="21.3874" cy="572.598" width="42.78" height="45.3543"/>
+			<g id="shadow8-42" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.38 595.28 L40.39 595.28 A2.38362 2.38362 -180 0 0 42.77 592.89 L42.77 552.3 A2.38362 2.38362 -180 0 0
+							 40.39 549.92 L2.38 549.92 A2.38362 2.38362 -180 0 0 0 552.3 L0 592.89 A2.38362 2.38362 -180 0 0 2.38
+							 595.28 Z" class="st2"/>
+				<text x="7.88" y="562.92" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-1</text>			</g>
+			<path d="M2.38 595.28 L40.39 595.28 A2.38362 2.38362 -180 0 0 42.77 592.89 L42.77 552.3 A2.38362 2.38362 -180 0 0 40.39
+						 549.92 L2.38 549.92 A2.38362 2.38362 -180 0 0 0 552.3 L0 592.89 A2.38362 2.38362 -180 0 0 2.38 595.28 Z"
+					class="st4"/>
+			<text x="7.88" y="562.92" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-1</text>		</g>
+		<g id="shape9-49" v:mID="9" v:groupContext="shape" transform="translate(118.8,-465.12)">
+			<title>Скругленный прямоугольник.9</title>
+			<desc>tmpl-2</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow9-50" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28
+							 Z" class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-2</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-2</text>		</g>
+		<g id="shape10-57" v:mID="10" v:groupContext="shape" transform="translate(73.4457,-447.874)">
+			<title>Скругленный прямоугольник.10</title>
+			<desc>tmpl-3</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow10-58" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+						class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-3</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-3</text>		</g>
+		<g id="shape11-65" v:mID="11" v:groupContext="shape" transform="translate(192.756,-484.248)">
+			<title>Скругленный прямоугольник.11</title>
+			<desc>webPage-2&#39;</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.070205740411481):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.070205740411481):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.070205740411481):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.070205740411481):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="45.3543" cy="573.777" width="90.71" height="42.9963"/>
+			<g id="shadow11-66" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M5.05 595.28 L85.65 595.28 A5.05473 5.05473 -180 0 0 90.71 590.22 L90.71 557.33 A5.05473 5.05473 -180 0
+							 0 85.65 552.28 L5.05 552.28 A5.05473 5.05473 -180 0 0 0 557.33 L0 590.22 A5.05473 5.05473 -180 0 0 5.05
+							 595.28 Z" class="st2"/>
+				<text x="21.68" y="565.28" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-2&#39;</text>			</g>
+			<path d="M5.05 595.28 L85.65 595.28 A5.05473 5.05473 -180 0 0 90.71 590.22 L90.71 557.33 A5.05473 5.05473 -180 0 0 85.65
+						 552.28 L5.05 552.28 A5.05473 5.05473 -180 0 0 0 557.33 L0 590.22 A5.05473 5.05473 -180 0 0 5.05 595.28 Z"
+					class="st8"/>
+			<text x="21.68" y="565.28" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-2&#39;</text>		</g>
+		<g id="shape13-73" v:mID="13" v:groupContext="shape" transform="translate(240.945,-489.662)">
+			<title>Скругленный прямоугольник.13</title>
+			<desc>tmpl-6</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow13-74" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28
+							 Z" class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-6</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-6</text>		</g>
+		<g id="shape14-81" v:mID="14" v:groupContext="shape" transform="translate(198.17,-489.662)">
+			<title>Скругленный прямоугольник.14</title>
+			<desc>tmpl-7</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow14-82" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+						class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-7</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-7</text>		</g>
+		<g id="shape15-89" v:mID="15" v:groupContext="shape" transform="translate(194.173,-421.886)">
+			<title>Скругленный прямоугольник.15</title>
+			<desc>webPage-5</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="27.6378" cy="573.777" width="55.28" height="42.9963"/>
+			<g id="shadow15-90" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0
+							 52.2 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08
+							 595.28 Z" class="st2"/>
+				<text x="5.06" y="565.28" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-5</text>			</g>
+			<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0 52.2
+						 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08 595.28 Z"
+					class="st8"/>
+			<text x="5.06" y="565.28" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-5</text>		</g>
+		<g id="shape17-97" v:mID="17" v:groupContext="shape" transform="translate(202.55,-427.3)">
+			<title>Скругленный прямоугольник.17</title>
+			<desc>tmpl-5</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow17-98" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+						class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-5</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-5</text>		</g>
+		<g id="shape18-105" v:mID="18" v:groupContext="shape" transform="translate(114.803,-375.352)">
+			<title>Скругленный прямоугольник.18</title>
+			<desc>webPage-3</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="27.6378" cy="573.777" width="55.28" height="42.9963"/>
+			<g id="shadow18-106" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0
+							 52.2 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08
+							 595.28 Z" class="st2"/>
+				<text x="5.06" y="565.28" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-3</text>			</g>
+			<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0 52.2
+						 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08 595.28 Z"
+					class="st8"/>
+			<text x="5.06" y="565.28" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-3</text>		</g>
+		<g id="shape19-113" v:mID="19" v:groupContext="shape" transform="translate(123.18,-380.766)">
+			<title>Скругленный прямоугольник.19</title>
+			<desc>tmpl-6</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow19-114" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+						class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-6</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-6</text>		</g>
+		<g id="shape21-121" v:mID="21" v:groupContext="shape" v:layerMember="0" transform="translate(112.943,-486.861)">
+			<title>Динамическая соединительная линия</title>
+			<desc>g1</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="39.9066" cy="585.833" width="50" height="20.0036"/>
+			<path d="M0 595.28 L72.96 578.01" class="st9"/>
+			<rect v:rectContext="textBkgnd" x="35.019" y="579.833" width="9.77536" height="12.0001" class="st11"/>
+			<text x="35.02" y="588.83" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>g1</text>		</g>
+		<g id="shape22-132" v:mID="22" v:groupContext="shape" v:layerMember="0" transform="translate(155.906,-475.169)">
+			<title>Динамическая соединительная линия.22</title>
+			<desc>g5</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="19.1339" cy="611.168" width="50" height="20.0036"/>
+			<path d="M0 595.28 L32.85 622.56" class="st9"/>
+			<rect v:rectContext="textBkgnd" x="14.2463" y="605.168" width="9.77536" height="12.0001" class="st11"/>
+			<text x="14.25" y="614.17" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>g5</text>		</g>
+		<g id="shape24-141" v:mID="24" v:groupContext="shape" v:layerMember="0" transform="translate(91.9984,-447.874)">
+			<title>Динамическая соединительная линия.24</title>
+			<desc>g1</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="11.4024" cy="620.787" width="50" height="20.0036"/>
+			<path d="M0 595.28 L19.93 639.87" class="st13"/>
+			<rect v:rectContext="textBkgnd" x="6.51476" y="614.788" width="9.77536" height="12.0001" class="st11"/>
+			<text x="6.51" y="623.79" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>g1</text>		</g>
+		<g id="shape25-151" v:mID="25" v:groupContext="shape" transform="translate(65.1969,-196.77)">
+			<title>Скругленный прямоугольник.25</title>
+			<desc>webPage-1&#39;&#39;</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="48.189" cy="559.604" width="96.38" height="71.3427"/>
+			<g id="shadow25-152" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M5.37 595.28 L91.01 595.28 A5.37065 5.37065 -180 0 0 96.38 589.9 L96.38 529.3 A5.37065 5.37065 -180 0 0
+							 91.01 523.93 L5.37 523.93 A5.37065 5.37065 -180 0 0 0 529.3 L0 589.9 A5.37065 5.37065 -180 0 0 5.37
+							 595.28 Z" class="st2"/>
+				<text x="23.41" y="536.93" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-1&#39;&#39;</text>			</g>
+			<path d="M5.37 595.28 L91.01 595.28 A5.37065 5.37065 -180 0 0 96.38 589.9 L96.38 529.3 A5.37065 5.37065 -180 0 0 91.01
+						 523.93 L5.37 523.93 A5.37065 5.37065 -180 0 0 0 529.3 L0 589.9 A5.37065 5.37065 -180 0 0 5.37 595.28 Z"
+					class="st8"/>
+			<text x="23.41" y="536.93" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-1&#39;&#39;</text>		</g>
+		<g id="shape26-159" v:mID="26" v:groupContext="shape" transform="translate(70.8661,-202.439)">
+			<title>Скругленный прямоугольник.26</title>
+			<desc>tmpl-1</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.033106394462789):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.033106394462789):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.033106394462789):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.033106394462789):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="21.3874" cy="572.598" width="42.78" height="45.3543"/>
+			<g id="shadow26-160" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.38 595.28 L40.39 595.28 A2.38362 2.38362 -180 0 0 42.77 592.89 L42.77 552.3 A2.38362 2.38362 -180 0 0
+							 40.39 549.92 L2.38 549.92 A2.38362 2.38362 -180 0 0 0 552.3 L0 592.89 A2.38362 2.38362 -180 0 0 2.38
+							 595.28 Z" class="st2"/>
+				<text x="7.88" y="562.92" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-1</text>			</g>
+			<path d="M2.38 595.28 L40.39 595.28 A2.38362 2.38362 -180 0 0 42.77 592.89 L42.77 552.3 A2.38362 2.38362 -180 0 0 40.39
+						 549.92 L2.38 549.92 A2.38362 2.38362 -180 0 0 0 552.3 L0 592.89 A2.38362 2.38362 -180 0 0 2.38 595.28 Z"
+					class="st4"/>
+			<text x="7.88" y="562.92" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-1</text>		</g>
+		<g id="shape29-167" v:mID="29" v:groupContext="shape" transform="translate(181.417,-240.468)">
+			<title>Скругленный прямоугольник.29</title>
+			<desc>webPage-2&#39;&#39;</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.070205740411481):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.070205740411481):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.070205740411481):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.070205740411481):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="45.3543" cy="573.777" width="90.71" height="42.9963"/>
+			<g id="shadow29-168" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M5.05 595.28 L85.65 595.28 A5.05473 5.05473 -180 0 0 90.71 590.22 L90.71 557.33 A5.05473 5.05473 -180 0
+							 0 85.65 552.28 L5.05 552.28 A5.05473 5.05473 -180 0 0 0 557.33 L0 590.22 A5.05473 5.05473 -180 0 0 5.05
+							 595.28 Z" class="st2"/>
+				<text x="20.57" y="565.28" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-2&#39;&#39;</text>			</g>
+			<path d="M5.05 595.28 L85.65 595.28 A5.05473 5.05473 -180 0 0 90.71 590.22 L90.71 557.33 A5.05473 5.05473 -180 0 0 85.65
+						 552.28 L5.05 552.28 A5.05473 5.05473 -180 0 0 0 557.33 L0 590.22 A5.05473 5.05473 -180 0 0 5.05 595.28 Z"
+					class="st8"/>
+			<text x="20.57" y="565.28" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-2&#39;&#39;</text>		</g>
+		<g id="shape31-175" v:mID="31" v:groupContext="shape" transform="translate(186.831,-245.882)">
+			<title>Скругленный прямоугольник.31</title>
+			<desc>tmpl-7</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow31-176" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+						class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-7</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-7</text>		</g>
+		<g id="shape34-183" v:mID="34" v:groupContext="shape" transform="translate(182.835,-171.258)">
+			<title>Скругленный прямоугольник.34</title>
+			<desc>webPage-4</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="27.6378" cy="573.777" width="55.28" height="42.9963"/>
+			<g id="shadow34-184" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0
+							 52.2 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08
+							 595.28 Z" class="st2"/>
+				<text x="5.06" y="565.28" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-4</text>			</g>
+			<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0 52.2
+						 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08 595.28 Z"
+					class="st8"/>
+			<text x="5.06" y="565.28" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-4</text>		</g>
+		<g id="shape35-191" v:mID="35" v:groupContext="shape" transform="translate(191.211,-176.672)">
+			<title>Скругленный прямоугольник.35</title>
+			<desc>tmpl-9</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow35-192" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+						class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-9</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-9</text>		</g>
+		<g id="shape36-199" v:mID="36" v:groupContext="shape" v:layerMember="0" transform="translate(112.943,-247.095)">
+			<title>Динамическая соединительная линия.36</title>
+			<desc>g1</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="34.2373" cy="587.84" width="50" height="20.0036"/>
+			<path d="M0 595.28 L61.59 581.9" class="st9"/>
+			<rect v:rectContext="textBkgnd" x="29.3497" y="581.84" width="9.77536" height="12.0001" class="st11"/>
+			<text x="29.35" y="590.84" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>g1</text>		</g>
+		<g id="shape38-208" v:mID="38" v:groupContext="shape" v:layerMember="0" transform="translate(156.161,-212.488)">
+			<title>Динамическая соединительная линия.38</title>
+			<desc>g4</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="13.337" cy="605.141" width="50" height="20.0036"/>
+			<path d="M0 595.28 L21.01 610.82" class="st13"/>
+			<rect v:rectContext="textBkgnd" x="8.4494" y="599.142" width="9.77536" height="12.0001" class="st11"/>
+			<text x="8.45" y="608.14" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>g4</text>		</g>
+		<g id="shape39-217" v:mID="39" v:groupContext="shape" transform="translate(119.055,-202.439)">
+			<title>Скругленный прямоугольник.39</title>
+			<desc>tmpl-4</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow39-218" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28
+							 Z" class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-4</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-4</text>		</g>
+		<g id="shape40-225" v:mID="40" v:groupContext="shape" transform="translate(323.15,-147.402)">
+			<title>Скругленный прямоугольник.40</title>
+			<desc>web-application state x</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.1752603505207):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.1752603505207):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.1752603505207):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.1752603505207):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="130.394" cy="380.339" width="260.79" height="429.874"/>
+			<g id="shadow40-226" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M12.62 595.28 L248.17 595.28 A12.6185 12.6185 -180 0 0 260.79 582.66 L260.79 178.02 A12.6185 12.6185 -180
+							 0 0 248.17 165.4 L12.62 165.4 A12.6185 12.6185 -180 0 0 0 178.02 L0 582.66 A12.6185 12.6185 -180 0 0
+							 12.62 595.28 Z" class="st2"/>
+				<text x="83.02" y="178.4" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>web-application state x</text>			</g>
+			<path d="M12.62 595.28 L248.17 595.28 A12.6185 12.6185 -180 0 0 260.79 582.66 L260.79 178.02 A12.6185 12.6185 -180 0
+						 0 248.17 165.4 L12.62 165.4 A12.6185 12.6185 -180 0 0 0 178.02 L0 582.66 A12.6185 12.6185 -180 0 0 12.62
+						 595.28 Z" class="st4"/>
+			<text x="83.02" y="178.4" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>web-application state x</text>		</g>
+		<g id="shape41-233" v:mID="41" v:groupContext="shape" transform="translate(334.488,-368.504)">
+			<title>Скругленный прямоугольник.41</title>
+			<desc>user’s web-app state (user-x)</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="119.055" cy="502.377" width="238.12" height="185.797"/>
+			<g id="shadow41-234" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M13.27 595.28 L224.84 595.28 A13.2687 13.2687 -180 0 0 238.11 582.01 L238.11 422.75 A13.2687 13.2687 -180
+							 0 0 224.84 409.48 L13.27 409.48 A13.2687 13.2687 -180 0 0 -0 422.75 L0 582.01 A13.2687 13.2687 -180
+							 0 0 13.27 595.28 Z" class="st2"/>
+				<text x="60.05" y="422.48" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>user’s web-app state (user-x)</text>			</g>
+			<path d="M13.27 595.28 L224.84 595.28 A13.2687 13.2687 -180 0 0 238.11 582.01 L238.11 422.75 A13.2687 13.2687 -180 0
+						 0 224.84 409.48 L13.27 409.48 A13.2687 13.2687 -180 0 0 -0 422.75 L0 582.01 A13.2687 13.2687 -180 0 0 13.27
+						 595.28 Z" class="st6"/>
+			<text x="60.05" y="422.48" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>user’s web-app state (user-x)</text>		</g>
+		<g id="shape43-241" v:mID="43" v:groupContext="shape" transform="translate(334.488,-338.613)">
+			<title>Скругленный прямоугольник.43</title>
+			<desc>...</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.13956692913386):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.13956692913386):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.13956692913386):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.13956692913386):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="119.055" cy="585.227" width="238.12" height="20.0976"/>
+			<g id="shadow43-242" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M10.05 595.28 L228.06 595.28 A10.0487 10.0487 -180 0 0 238.11 585.23 A10.0487 10.0487 -180 0 0 228.06 575.18
+							 L10.05 575.18 A10.0487 10.0487 -180 0 0 0 585.23 A10.0487 10.0487 -180 0 0 10.05 595.28 Z" class="st2"/>
+				<text x="115.27" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>...</text>			</g>
+			<path d="M10.05 595.28 L228.06 595.28 A10.0487 10.0487 -180 0 0 238.11 585.23 A10.0487 10.0487 -180 0 0 228.06 575.18
+						 L10.05 575.18 A10.0487 10.0487 -180 0 0 0 585.23 A10.0487 10.0487 -180 0 0 10.05 595.28 Z" class="st4"/>
+			<text x="115.27" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>...</text>		</g>
+		<g id="shape44-249" v:mID="44" v:groupContext="shape" transform="translate(365.669,-434.88)">
+			<title>Скругленный прямоугольник.44</title>
+			<desc>webPage-1&#39;</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="48.189" cy="559.604" width="96.38" height="71.3427"/>
+			<g id="shadow44-250" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M5.37 595.28 L91.01 595.28 A5.37065 5.37065 -180 0 0 96.38 589.9 L96.38 529.3 A5.37065 5.37065 -180 0 0
+							 91.01 523.93 L5.37 523.93 A5.37065 5.37065 -180 0 0 0 529.3 L0 589.9 A5.37065 5.37065 -180 0 0 5.37
+							 595.28 Z" class="st2"/>
+				<text x="24.51" y="536.93" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-1&#39;</text>			</g>
+			<path d="M5.37 595.28 L91.01 595.28 A5.37065 5.37065 -180 0 0 96.38 589.9 L96.38 529.3 A5.37065 5.37065 -180 0 0 91.01
+						 523.93 L5.37 523.93 A5.37065 5.37065 -180 0 0 0 529.3 L0 589.9 A5.37065 5.37065 -180 0 0 5.37 595.28 Z"
+					class="st8"/>
+			<text x="24.51" y="536.93" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-1&#39;</text>		</g>
+		<g id="shape46-257" v:mID="46" v:groupContext="shape" transform="translate(419.272,-443.129)">
+			<title>Скругленный прямоугольник.46</title>
+			<desc>tmpl-2</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow46-258" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28
+							 Z" class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-2</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-2</text>		</g>
+		<g id="shape51-265" v:mID="51" v:groupContext="shape" transform="translate(486.142,-413.858)">
+			<title>Скругленный прямоугольник.51</title>
+			<desc>webPage-5</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="27.6378" cy="573.777" width="55.28" height="42.9963"/>
+			<g id="shadow51-266" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0
+							 52.2 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08
+							 595.28 Z" class="st2"/>
+				<text x="5.06" y="565.28" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-5</text>			</g>
+			<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0 52.2
+						 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08 595.28 Z"
+					class="st8"/>
+			<text x="5.06" y="565.28" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-5</text>		</g>
+		<g id="shape52-273" v:mID="52" v:groupContext="shape" transform="translate(494.518,-419.272)">
+			<title>Скругленный прямоугольник.52</title>
+			<desc>tmpl-5</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow52-274" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+						class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-5</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-5</text>		</g>
+		<g id="shape56-281" v:mID="56" v:groupContext="shape" v:layerMember="0" transform="translate(456.378,-453.177)">
+			<title>Динамическая соединительная линия.56</title>
+			<desc>g5</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="14.8819" cy="604.186" width="50" height="20.0036"/>
+			<path d="M0 595.28 L23.72 609.48" class="st9"/>
+			<rect v:rectContext="textBkgnd" x="9.99429" y="598.186" width="9.77536" height="12.0001" class="st11"/>
+			<text x="9.99" y="607.19" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>g5</text>		</g>
+		<g id="shape58-290" v:mID="58" v:groupContext="shape" transform="translate(360.709,-199.604)">
+			<title>Скругленный прямоугольник.58</title>
+			<desc>webPage-1&#39;&#39;</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.074593599187198):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="48.189" cy="559.604" width="96.38" height="71.3427"/>
+			<g id="shadow58-291" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M5.37 595.28 L91.01 595.28 A5.37065 5.37065 -180 0 0 96.38 589.9 L96.38 529.3 A5.37065 5.37065 -180 0 0
+							 91.01 523.93 L5.37 523.93 A5.37065 5.37065 -180 0 0 0 529.3 L0 589.9 A5.37065 5.37065 -180 0 0 5.37
+							 595.28 Z" class="st2"/>
+				<text x="23.41" y="536.93" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-1&#39;&#39;</text>			</g>
+			<path d="M5.37 595.28 L91.01 595.28 A5.37065 5.37065 -180 0 0 96.38 589.9 L96.38 529.3 A5.37065 5.37065 -180 0 0 91.01
+						 523.93 L5.37 523.93 A5.37065 5.37065 -180 0 0 0 529.3 L0 589.9 A5.37065 5.37065 -180 0 0 5.37 595.28 Z"
+					class="st8"/>
+			<text x="23.41" y="536.93" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-1&#39;&#39;</text>		</g>
+		<g id="shape60-298" v:mID="60" v:groupContext="shape" transform="translate(414.312,-227.951)">
+			<title>Скругленный прямоугольник.60</title>
+			<desc>tmpl-2</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow60-299" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28
+							 Z" class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-2</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-2</text>		</g>
+		<g id="shape63-306" v:mID="63" v:groupContext="shape" transform="translate(476.929,-246.138)">
+			<title>Скругленный прямоугольник.63</title>
+			<desc>webPage-5</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="27.6378" cy="573.777" width="55.28" height="42.9963"/>
+			<g id="shadow63-307" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0
+							 52.2 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08
+							 595.28 Z" class="st2"/>
+				<text x="5.06" y="565.28" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-5</text>			</g>
+			<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0 52.2
+						 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08 595.28 Z"
+					class="st8"/>
+			<text x="5.06" y="565.28" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-5</text>		</g>
+		<g id="shape64-314" v:mID="64" v:groupContext="shape" transform="translate(485.306,-251.552)">
+			<title>Скругленный прямоугольник.64</title>
+			<desc>tmpl-5</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow64-315" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+						class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-5</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-5</text>		</g>
+		<g id="shape65-322" v:mID="65" v:groupContext="shape" transform="translate(477.638,-172.437)">
+			<title>Скругленный прямоугольник.65</title>
+			<desc>webPage-4</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.042781623063246):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="27.6378" cy="573.777" width="55.28" height="42.9963"/>
+			<g id="shadow65-323" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0
+							 52.2 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08
+							 595.28 Z" class="st2"/>
+				<text x="5.06" y="565.28" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-4</text>			</g>
+			<path d="M3.08 595.28 L52.2 595.28 A3.08023 3.08023 -180 0 0 55.28 592.2 L55.28 555.36 A3.08023 3.08023 -180 0 0 52.2
+						 552.28 L3.08 552.28 A3.08023 3.08023 -180 0 0 0 555.36 L0 592.2 A3.08023 3.08023 -180 0 0 3.08 595.28 Z"
+					class="st8"/>
+			<text x="5.06" y="565.28" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>webPage-4</text>		</g>
+		<g id="shape66-330" v:mID="66" v:groupContext="shape" transform="translate(486.014,-177.851)">
+			<title>Скругленный прямоугольник.66</title>
+			<desc>tmpl-9</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow66-331" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+						class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-9</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-9</text>		</g>
+		<g id="shape68-338" v:mID="68" v:groupContext="shape" v:layerMember="0" transform="translate(451.417,-238)">
+			<title>Динамическая соединительная линия.68</title>
+			<desc>g5</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="12.7559" cy="580.457" width="50" height="20.0036"/>
+			<path d="M0 595.28 L20.92 570.97" class="st9"/>
+			<rect v:rectContext="textBkgnd" x="7.8683" y="574.458" width="9.77536" height="12.0001" class="st11"/>
+			<text x="7.87" y="583.46" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>g5</text>		</g>
+		<g id="shape69-347" v:mID="69" v:groupContext="shape" v:layerMember="0" transform="translate(451.672,-215.322)">
+			<title>Динамическая соединительная линия.69</title>
+			<desc>g4</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="12.9827" cy="605.969" width="50" height="20.0036"/>
+			<path d="M0 595.28 L20.53 612.19" class="st13"/>
+			<rect v:rectContext="textBkgnd" x="8.09507" y="599.97" width="9.77536" height="12.0001" class="st11"/>
+			<text x="8.1" y="608.97" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>g4</text>		</g>
+		<g id="shape70-356" v:mID="70" v:groupContext="shape" transform="translate(414.567,-205.274)">
+			<title>Скругленный прямоугольник.70</title>
+			<desc>tmpl-4</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.028718535687071):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="18.5528" cy="585.227" width="37.11" height="20.0976"/>
+			<g id="shadow70-357" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+							 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28
+							 Z" class="st2"/>
+				<text x="5.04" y="588.18" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-4</text>			</g>
+			<path d="M2.07 595.28 L35.04 595.28 A2.0677 2.0677 -180 0 0 37.11 593.21 L37.11 577.25 A2.0677 2.0677 -180 0 0 35.04
+						 575.18 L2.07 575.18 A2.0677 2.0677 -180 0 0 -0 577.25 L0 593.21 A2.0677 2.0677 -180 0 0 2.07 595.28 Z"
+					class="st4"/>
+			<text x="5.04" y="588.18" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>tmpl-4</text>		</g>
+		<g id="shape74-364" v:mID="74" v:groupContext="shape" v:layerMember="0" transform="translate(160.285,-390.815)">
+			<title>Динамическая соединительная линия.74</title>
+			<desc>p6</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="81.4323" cy="609.514" width="50" height="20.0036"/>
+			<path d="M0 595.28 L155.93 622.54" class="st13"/>
+			<rect v:rectContext="textBkgnd" x="76.2711" y="603.514" width="10.3222" height="12.0001" class="st14"/>
+			<text x="76.27" y="612.51" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>p6</text>		</g>
+		<g id="shape75-373" v:mID="75" v:groupContext="shape" v:layerMember="0" transform="translate(259.498,-489.662)">
+			<title>Динамическая соединительная линия.75</title>
+			<desc>p6</desc>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197"/>
+			<v:textRect cx="5.14955" cy="675.467" width="50" height="20.0036"/>
+			<path d="M0 595.28 C-0 627.11 -2.36 667.38 11.88 692.06 C22.24 710 41.36 719.69 56.63 722.04 L56.99 722.06"
+					class="st15"/>
+			<rect v:rectContext="textBkgnd" x="-0.011617" y="669.467" width="10.3222" height="12.0001" class="st11"/>
+			<text x="-0.01" y="678.47" class="st12" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>p6</text>		</g>
+		<g id="shape77-383" v:mID="77" v:groupContext="shape" transform="translate(334.488,-158.74)">
+			<title>Скругленный прямоугольник.77</title>
+			<desc>user’s web-app state (user-y)</desc>
+			<v:userDefs>
+				<v:ud v:nameU="CTypeTopLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeTopRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotLeftSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CTypeBotRightSnip" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="CornerLockHoriz" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockVert" v:prompt="" v:val="VT0(1):5"/>
+				<v:ud v:nameU="CornerLockDiag" v:prompt="" v:val="VT0(0):5"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.15748031496063):24"/>
+				<v:ud v:nameU="visVersion" v:prompt="" v:val="VT0(15):26"/>
+				<v:ud v:nameU="TopLeftOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="TopRightOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="BotLeftOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+				<v:ud v:nameU="BotRightOffset" v:prompt="" v:val="VT0(0.18429006858014):1"/>
+			</v:userDefs>
+			<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" v:verticalAlign="0"/>
+			<v:textRect cx="119.055" cy="518.74" width="238.12" height="153.071"/>
+			<g id="shadow77-384" v:groupContext="shadow" v:shadowOffsetX="0.345598" v:shadowOffsetY="-1.97279" v:shadowType="1"
+					transform="matrix(1,0,0,1,0.345598,1.97279)" class="st1">
+				<path d="M13.27 595.28 L224.84 595.28 A13.2687 13.2687 -180 0 0 238.11 582.01 L238.11 455.47 A13.2687 13.2687 -180
+							 0 0 224.84 442.2 L13.27 442.2 A13.2687 13.2687 -180 0 0 -0 455.47 L0 582.01 A13.2687 13.2687 -180 0
+							 0 13.27 595.28 Z" class="st2"/>
+				<text x="59.95" y="455.2" class="st3" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>user’s web-app state (user-y)</text>			</g>
+			<path d="M13.27 595.28 L224.84 595.28 A13.2687 13.2687 -180 0 0 238.11 582.01 L238.11 455.47 A13.2687 13.2687 -180 0
+						 0 224.84 442.2 L13.27 442.2 A13.2687 13.2687 -180 0 0 -0 455.47 L0 582.01 A13.2687 13.2687 -180 0 0 13.27
+						 595.28 Z" class="st7"/>
+			<text x="59.95" y="455.2" class="st5" v:langID="1033"><v:paragraph v:horizAlign="1"/><v:tabList/>user’s web-app state (user-y)</text>		</g>
+	</g>
+</svg>

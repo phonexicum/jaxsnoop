@@ -24,7 +24,6 @@ const args = argparse.parseArgs();
 
 const childProcess = require('child_process');
 
-// const webdriverio = require('webdriverio');
 const webdriver = require('selenium-webdriver'),
     wdCapabilities = require('selenium-webdriver/lib/capabilities'),
     wdProxy = require('selenium-webdriver/lib/proxy'),
@@ -579,14 +578,61 @@ class CrawlingCtrl {
             return postState;
         });
     }
+
+    // ================================================================================================================
+    //  function can throw err.message === 'click-failed'
+    _shiftBrowserState(clk_searcher, webCrawler, homePageUrl, makeFinalClickable = false) {
+        return Promise.resolve()
+        .then(() => {
+            // reset browser into initial state
+            if (clk_searcher.browserTrace === false) {
+                crawlerLogger.trace('Reset browser\'s current state.');
+                clk_searcher.browserTrace = true;
+                clk_searcher.browserPos = 0;
+                return webCrawler.browserClient.get(homePageUrl);
+            }
+        })
+        .then(() => {
+            crawlerLogger.trace('Move browser\'s state by sequence of clickables.');
+            
+            // while (browserPos +1 < webPageStack.length) {
+            return utils.promise_for(() => clk_searcher.browserPos + !makeFinalClickable < clk_searcher.webPageStack.length, () => {}, (res_t, rej_t) => {
+                let cp = clk_searcher.webPageStack[clk_searcher.browserPos]; // cp - currentPoint
+
+                let initialHandle;
+                return Promise.resolve()
+                .then(() => { return webCrawler.browserClient.getWindowHandle(); })
+                .then(handle => { initialHandle = handle; })
+                .then(() => { return webCrawler.performAction(clk_searcher.getClickableCss(clk_searcher.browserPos), cp.clk_i, cp.node); })
+                .then(() => { return webCrawler.autoAcceptAlert(); })
+                .then(() => { return this._checkHandlesAfterClickable(webCrawler, initialHandle); })
+                .then(() => {
+                    clk_searcher.browserPos ++;
+                    res_t();
+                })
+                .catch(err => {
+                    if (err !== undefined && err.message === 'click-failed') {
+                        crawlerLogger.warn('Error performing action (while shifting browser) by clicking clickable = ' + this._getTargetedClickable_str(cp.node, cp.clk_i));
+                        cp.node.clickables[cp.clk_i][webCrawler.userName].type = 'd';
+                        rej_t(err);
+                    } else {
+                        rej_t(err);
+                        throw err;
+                    }
+                });
+            });
+        });
+    }
     
     // ================================================================================================================
     // webCrawler - element of this.webCrawlers
     // clickables are searched only in templates contained in webpages
     crawlCurrentWebAppState(homePageUrl, webCrawler, i_pstate){
         
-        let depth_step = 1;
-        let steps_num = 3;
+        crawlerLogger.trace('Crawling web-app users state, starting from web-page url: ' + homePageUrl);
+
+        let depth_step = crawlerSettings.usersWepAppStateCrawler_settings.depthStep;
+        let steps_num = crawlerSettings.usersWepAppStateCrawler_settings.stepsNum;
         let depth = depth_step;
 
         let clk_searcher = new clickSearcher.ClickSearcher(depth, i_pstate, webCrawler.userName,
@@ -653,46 +699,7 @@ class CrawlingCtrl {
                     }
 
                     return Promise.resolve()
-                    .then(() => {
-                        // reset browser into initial state
-                        if (clk_searcher.browserTrace === false) {
-                            crawlerLogger.trace('Drop browser\'s current state.');
-                            clk_searcher.browserTrace = true;
-                            clk_searcher.browserPos = 0;
-                            return webCrawler.browserClient.get(homePageUrl);
-                        }
-                    })
-                    .then(() => {
-                        crawlerLogger.trace('Move browser\'s state into appropriate state to test new clickable.');
-                        
-                        // while (browserPos +1 < webPageStack.length) {
-                        return utils.promise_for(() => clk_searcher.browserPos +1 < clk_searcher.webPageStack.length, () => {}, (res_t, rej_t) => {
-                            let cp = clk_searcher.webPageStack[clk_searcher.browserPos]; // cp - currentPoint
-
-                            let initialHandle;
-                            return Promise.resolve()
-                            .then(() => { return webCrawler.browserClient.getWindowHandle(); })
-                            .then(handle => { initialHandle = handle; })
-                            .then(() => { return webCrawler.performAction(clk_searcher.getClickableCss(clk_searcher.browserPos), cp.clk_i, cp.node); })
-                            .then(() => { return webCrawler.autoAcceptAlert(); })
-                            .then(() => { return this._checkHandlesAfterClickable(webCrawler, initialHandle); })
-                            .then(() => {
-                                clk_searcher.browserPos ++;
-                                res_t();
-                            })
-                            .catch(err => {
-                                if (err !== undefined && err.message === 'click-failed') {
-                                    // Click failed, lets just skip this clickable
-                                    crawlerLogger.warn('Error RE-performing action (find the cause and patch it) by clicking clickable = ' + this._getTargetedClickable_str(cp.node, cp.clk_i));
-                                    cp.node.clickables[cp.clk_i][webCrawler.userName].type = 'd';
-                                    rej_t(err);
-                                } else {
-                                    rej_t(err);
-                                    throw err;
-                                }
-                            });
-                        });
-                    })
+                    .then(() => { return this._shiftBrowserState(clk_searcher, webCrawler, homePageUrl); })
                     .catch(err => {
                         if (err !== undefined && err.message === 'click-failed') {
                             // Okey we already processed it
@@ -732,7 +739,7 @@ class CrawlingCtrl {
                                     
                                     if (!tmplsChanged) {
                                         clk_searcher.addWebPageAfterClickable(webPage);
-                                        ckl_searcher.browserPos ++;
+                                        clk_searcher.browserPos ++;
                                     }
                                     else {
                                         crawlerLogger.debug('Some template in currently crawled templates in click-searcher is changed.');
@@ -792,7 +799,8 @@ class CrawlingCtrl {
             let webAppState = {
                 user: webCrawler.userName,
                 i_pstate: i_pstate,
-                tmplSet: clk_searcher.tmpls,
+                tmpls: clk_searcher.tmpls,
+                homePageUrl: homePageUrl,
                 webPageRoot: homePage,
                 webPages: webAppStateWebPages
             };
@@ -801,6 +809,7 @@ class CrawlingCtrl {
         })
         .catch(err => {
             crawlerLogger.error('Error while crawling web-application user-state for user: ' + webCrawler.userName);
+            global.gc();
             throw err;
         });
         
@@ -840,7 +849,8 @@ class CrawlingCtrl {
             for (let {tmpl, i_pstate} of templatesStack[templatesStack.length -1].map(val => Object({tmpl: val.tmpl, i_pstate: val.i_pstate}) )) {
             for (let {node, levelChange} of utils.yieldTreeNodes(tmpl.tmplRoot, tmplModel.NodeProcessing.getYieldNodeChilds())) {
             for (let clk_i = 0; clk_i < node.clickables.length; clk_i++) {
-                if (node.clickables[clk_i][user].type === 'p')
+                if (node.clickables[clk_i][user] !== undefined &&
+                    node.clickables[clk_i][user].type === 'p')
                 {
                     if (node.clickables[clk_i][user].webAppStates === undefined || node.clickables[clk_i][user].webAppStates.length === 0) {
                         
@@ -849,16 +859,17 @@ class CrawlingCtrl {
                             user: user,
                             tmpl: tmpl,
                             node: node,
-                            clk_i: clk_i}); //
+                            clk_i: clk_i
+                        });
 
                     } else {
                         for (let existentWebAppState of node.clickables[clk_i][user].webAppStates) {
                             existentWebAppState = existentWebAppState.webAppStateDst;
-                            for (let user_j of this.users)
-                            for (let tmpl_j of existentWebAppState[user_j].tmpls)
+                            for (let user_j of this.users) {
+                            for (let tmpl_j of existentWebAppState[user_j].tmpls) {
                             if (! consideredTmpls.has(tmpl_j)) {
                                 
-                                templatesStack_nextLevel.push({ //
+                                templatesStack_nextLevel.push({
                                     user: user_j,
                                     tmpl: tmpl_j,
                                     i_pstate: existentWebAppState.i_pstate,
@@ -867,11 +878,12 @@ class CrawlingCtrl {
                                         user: user,
                                         tmpl: tmpl,
                                         node: node,
-                                        clk_i: clk_i} // This clickable will result in moving web-app state into state with specified template
+                                        clk_i: clk_i
+                                    } // This clickable will result in moving web-app state into state with specified template
                                 });
                                 
                                 consideredTmpls.add(tmpl_j);
-                            }
+                            }}}
                         }
                     }
                 }
@@ -928,13 +940,29 @@ class CrawlingCtrl {
 
 
     // ================================================================================================================
-    startCrawling(webCrawlers) {
+    startCrawling() {
         crawlerLogger.info('Starting crawling process.');
 
+        // ==================
+        let webCrawlingEnd = false;
+        let initWebAppState = (webUsersStates, i_pstate) => {
+            let webAppState = {
+                i_pstate: i_pstate
+            };
+            for (let i = 0; i < this.users.length; i++) {
+                webAppState[this.users[i]] = {
+                    tmpls: webUsersStates[i].tmpls,
+                    homePageUrl: webUsersStates[i].homePageUrl,
+                    webPageRoot: webUsersStates[i].webPageRoot,
+                    webPages: webUsersStates[i].webPages
+                };
+            }
+            return webAppState;
+        };
+
+        // ==================
         this.webAppTmplModel = new tmplModel.WebAppTmplModel();
-
         this.i_pstateCounter = 0;
-
         this.webAppModel = [];
 
         this.webAppTmplModel.on('tmplPartition', (old_tmpl, new_tmpls) => {
@@ -947,277 +975,125 @@ class CrawlingCtrl {
                     }
                 }
             }
-
-            // let lastState = this.webAppModel[this.webAppModel.length -1];
-            // for (let user of this.users) {
-            //     if (lastState[user].tmpls.has(old_tmpl))
-            //         ; // template from last webApp-model state changed !!! should we restart some crawling process ??
-            // }
         });
-        
 
+        // ==================
         // Get first web-app state
-        let workflow = Promise.all(this.users.map(user => this.crawlCurrentWebAppState(crawlerSettings.homePageUrl, this.webCrawlers[user], this.i_pstateCounter)))
-        // .then(webUsersStates => {
-        //     let webAppState = {
-        //         i_pstate: this.i_pstateCounter
-        //     };
-        //     for (let i = 0; i < this.users.length; i++) {
-        //         webAppState[this.users[i]] = {
-        //             tmpls: webUsersStates[i].tmplSet,
-        //             webPageRoot: webUsersStates[i].webPageRoot,
-        //         };
-        //     }
-        //     this.webAppModel.push(webAppState);
-        //     this.i_pstateCounter ++;
-        // })
-        // .then(() => {
-        //     return utils.promise_for(() => true, () => {}, (res, rej) => {
+        return Promise.all(this.users.map(user => this.crawlCurrentWebAppState(crawlerSettings.homePageUrl, this.webCrawlers[user], this.i_pstateCounter)))
+        .then(webUsersStates => {
+            this.webAppModel.push(initWebAppState(webUsersStates, this.i_pstateCounter));
+            this.i_pstateCounter ++;
+        })
+        // ==================
+        // crawl web-app states
+        .then(() => { return utils.promise_for(() => !webCrawlingEnd, () => {}, (res, rej) => {
+            
+            let followTheTrace = crawlerSettings.webAppStateCrawler_settings.followTheTrace;
+
+            let pclkQueue = this._findNextPClickable(followTheTrace); // [{i_pstate, user, tmpl, node, clk_i}, ...]
+            if (pclkQueue === undefined) {
+                crawlerLogger.info('Unique clickables of type POST come to the end. Crawling process will be stopped.')
+                webCrawlingEnd = true;
+                res();
+                throw undefined;
+            }
+
+            crawlerLogger.trace('Targeted p-clickable node = ' + this._getTargetedClickable_str(pclkQueue[pclkQueue.length -1].node, pclkQueue[pclkQueue.length -1].clk_i));
+
+            let i = 0;
+            return utils.promise_for(() => i < pclkQueue.length, () => i++, (res_pclk, rej_pclk) => {
+
+                crawlerLogger.trace('Moving web-browser into state to RE-make p-clickable = ' + this._getTargetedClickable_str(pclkQueue[i].node, pclkQueue[i].clk_i));
                 
-        //         let followTheTrace = 2;
+                let maxDepth = crawlerSettings.webAppStateCrawler_settings.maxDepth;
+                let clk_searcher = new clickSearcher.ClickSearcher(maxDepth, pclkQueue[i].i_pstate, pclkQueue[i].user, 
+                    (node, clk_i) =>
+                        node.clickables[clk_i] !== undefined &&
+                        node.clickables[clk_i][pclkQueue[i].user] !== undefined &&
+                        node.clickables[clk_i][pclkQueue[i].user].type === 'p'
+                );
+                clk_searcher.addWebPageAfterClickable(this.webAppModel[pclkQueue[i].i_pstate][pclkQueue[i].user].webPageRoot);
+                clk_searcher.shiftToNextClickable();
 
-        //         let pclkQueue = this._findNextPClickable(followTheTrace); // [{i_pstate, user, tmpl, node, clk_i}, ...]
-        //         if (pclkQueue === undefined) {
-        //             crawlerLogger.info('Unique clickables of type POST come to the end. Crawling process will be stopped.')
-        //             rej('p-clk ended');
-        //             return;
-        //         }
+                if (clk_searcher.webPageStack.length === 0) {
+                    crawlerLogger.warn('Can not find g-clickable\'s sequence for making required p-clickable. WebApp state = ' + pclkQueue[i].i_pstate);
+                    pclkQueue[i].node.clickables[pclkQueue[i].clk_i][pclkQueue[i].user].type = 'd'; // blocking p-clickable
+                    rej_pclk({message: 'browser-shift-fault'});
+                    throw undefined;
+                }
 
-        //         crawlerLogger.debug('Moving web-app state into appropriate to make target clickable.')
-        //         let i = 0;
-        //         return utils.promise_for(() => i < pclkQueue.length, () => i++, (res_pclk, rej_pclk) => {
+                return Promise.resolve()
+                .then(() => {
+                    return this._shiftBrowserState(clk_searcher, this.webCrawlers[pclkQueue[i].user], this.webAppModel[pclkQueue[i].i_pstate][pclkQueue[i].user].homePageUrl, true);
+                })
+                .then(() => {
+                    res_pclk();
+                })
+                .catch(err => {
+                    if (err !== undefined && err.message === 'click-failed') {
+                        crawlerLogger.warn('Error shifting browser into proper state ended with p-clickable action');
+                        pclkQueue[i].node.clickables[pclkQueue[i].clk_i][pclkQueue[i].user].type = 'd'; // blocking p-clickable
+                        rej_pclk({message: 'browser-shift-fault'});
+                        throw undefined;
+                    } else {
+                        rej_pclk(err);
+                        throw err;
+                    }
+                });
+            })
+            .catch(err => {
+                if (err !== undefined && err.message === 'browser-shift-fault') {
+                    crawlerLogger.warn('Error moving web-app and web-browser into state suitable for making targeted pclk.')
+                    res();
+                    throw undefined;
+                } else {
+                    rej(err);
+                    throw err;
+                }
+            }) // utils.promise_for(i < pclkQueue.length)
+            
+            .then(() => {
+                // Targeted pclk performed - start fixation of current web-app state.
 
-        //             crawlerLogger.trace('Moving web-browser into state to make clickable = ' + this._getTargetedClickable_str(pclkQueue[i].node, pclkQueue[i].clk_i));
-                    
-        //             let cs = this.webAppModel[this.webAppModel.length -1]; // current web-app state
-        //             // let prev_cs = cs;
+                followTheTrace --;
+                if (followTheTrace < 0)
+                    followTheTrace = crawlerSettings.webAppStateCrawler_settings.followTheTrace;
 
+                return Promise.all(this.users.map(user => this.crawlCurrentWebAppState(crawlerSettings.homePageUrl, this.webCrawlers[user], this.i_pstateCounter)))
+                .then(webUsersStates => {
 
-        //             let webPageStack;
-        //             let foundWebPageStack = false;
+                    if (webUsersStates.some(val => val === undefined)) {
+                        crawlerLogger.fatal('Error crawling one of user\'s state of web-app.');
+                        throw new Error('Crawling of some user\'s web-app state returned \'undefined\'');
+                    }
 
-        //             let depthStep = 1;
-        //             for (let depth = depthStep; foundWebPageStack === false; depth += depthStep) {
+                    let webAppState = initWebAppState(webUsersStates, this.i_pstateCounter);
+                    this.webAppModel.push(webAppState);
+                    this.i_pstateCounter ++;
 
-        //                 let tmpls = new Set();
-        //                 let gclk_initPoint = this._initWebPageMiddleCrawlState(pclkQueue[i].user, cs[pclkQueue[i].user].webPageRoot, tmpls, pclkQueue[i].i_pstate);
-        //                 if (gclk_initPoint === undefined) {
-        //                     crawlerLogger.error('Root web-page has no g-clickables to search for required tmpl.');
-        //                     rej_pclk();
-        //                     return;
-        //                 }
-        //                 webPageStack = [gclk_initPoint];
-        //                 if (webPageStack[0].tmpl === pclkQueue[i].tmpl)
-        //                     foundWebPageStack = true;
-
-        //                 let findNext_gclk = false;
-        //                 while (foundWebPageStack === false) {
-        //                     if (webPageStack.length === 0) {
-        //                         crawlerLogger.error('Can not find required template to make p-clickable.');
-        //                         if (i !== 0) {
-        //                             pclkQueue[i-1].node.clickables[pclkQueue[i-1].clk_i].type = 'd';
-        //                             rej_pclk();
-        //                             throw undefined;
-        //                         } else {
-        //                             crawlerLogger.fatal('Can not find required template to make p-clickable in web-app state crawled just now.');
-        //                             rej_pclk('fatal');
-        //                             throw new Error('fatal');
-        //                         }
-        //                     }
-        //                     let sp = webPageStack[webPageStack.length -1]; // sp - statePoint
-
-        //                     if (findNext_gclk === true) {
-                                
-        //                         ({node: sp.node, clk_i: sp.clk_i} = this._getNextGClickableInStack(pclkQueue[i].user, sp.tmplIt, sp.tmplNodeStack, pclkQueue[i].i_pstate, sp.node, sp.clk_i));
-        //                         if (sp.node !== undefined && sp.clk_i !== undefined) {
-        //                             findNext_gclk = false;
-        //                         } else {
-        //                             sp.tmpl = this._getNextUniqueTmplInWebPage(sp.pageIt, sp.pageNodeStack, tmpls);
-        //                             if (sp.tmpl !== undefined) {
-
-        //                                 if (sp.tmpl === pclkQueue[i].tmpl) {
-                                            
-        //                                     foundWebPageStack = true;
-        //                                     break; // Template FOUND --> break;
-        //                                 }
-
-        //                                 tmpls.add(sp.tmpl);
-        //                                 if (sp.tmplNodeStack.length > 0)
-        //                                     throw new Error('tmplNodeStack is not cleared after previous steps, this must never happen.');
-        //                                 sp.tmplIt = utils.yieldTreeNodes(sp.tmpl.tmplRoot, tmplModel.NodeProcessing.getYieldNodeChilds());
-        //                             }
-        //                             else {
-        //                                 webPageStack.pop();
-        //                                 findNext_gclk = true;
-        //                             }
-        //                         }
-        //                     } else {
-        //                         let clickable = sp.node.clickables[sp.clk_i][pclkQueue[i].user];
-        //                         let previouslyClicked = clickable.webAppStates.findIndex(pstate => pstate.i === pclkQueue[i].i_pstate);
-
-        //                         if (previouslyClicked === -1)
-        //                             findNext_gclk = true;
-        //                         else {
-        //                             if (webPageStack.length < depth) {
-        //                                 let nsp = this._initWebPageMiddleCrawlState(pclkQueue[i].user, clickable.webAppStates[previouslyClicked].webPage, tmpls, pclkQueue[i].i_pstate);
-        //                                 if (nsp !== undefined) {
-        //                                     webPageStack.push(nsp);
-        //                                 } else {
-        //                                     findNext_gclk = true;
-        //                                 }
-        //                             } else {
-        //                                 findNext_gclk = true;
-        //                             }
-        //                         }
-        //                     }
-        //                 } // while (true)
-
-        //                 // restore sp.node and its p-clickable in webPageStack structure
-        //                 let sp = webPageStack[webPageStack.length -1]; // sp - statePoint
-        //                 sp.tmplIt = utils.yieldTreeNodes(sp.tmpl.tmplRoot, tmplModel.NodeProcessing.getYieldNodeChilds());
-        //                 let {value, done} = sp.tmplIt.next();
-        //                 sp.node = value.node;
-        //                 // loop is needed to move sp.tmplIt generator into correct state
-        //                 while (sp.node !== pclkQueue[i].node) {
-        //                     ({value, done} = sp.tmplIt.next());
-        //                     if (done === true) {
-        //                         crawlerLogger.error('Can not find required node in known template.');
-        //                         rej_pclk();
-        //                         throw undefined;
-        //                     } else {
-        //                         sp.node = value.node;
-        //                     }
-        //                 }
-        //                 sp.tmplNodeStack = [];
-        //                 let tmp_node = sp.node;
-        //                 while (tmp_node !== sp.tmpl) {
-        //                     sp.tmplNodeStack.unshift(tmp_node);
-        //                     tmp_node = tmp_node.parent;
-        //                 }
-        //                 sp.clk_i = pclkQueue[i].clk_i;
-
-        //             } // for (depth)
-
-
-        //             // webPageStack for gclk found!
-
-        //             crawlerLogger.trace('Found web-page sequence for gclk\'s to lead into pclk\'s template.');
-
-        //             let browserCorrelatedState = 0;
-        //             return Promise.resolve()
-        //             .then(() => {
-        //                 return this.webCrawlers[pclkQueue[i].user].browserClient.get(cs[pclkQueue[i].user].webPageRoot.url);
-        //             })
-        //             .then(() => {
-
-        //                 return utils.promise_for(() => browserCorrelatedState < webPageStack.length, () => {}, (res_t, rej_t) => {
-        //                     let cp = webPageStack[browserCorrelatedState]; // cp - currentPoint
-
-        //                     let initialHandle;
-        //                     return Promise.resolve()
-        //                     .then(() => { return this.webCrawlers[pclkQueue[i].user].browserClient.getWindowHandle(); })
-        //                     .then(handle => { initialHandle = handle; })
-        //                     .then(() => { return this.webCrawlers[pclkQueue[i].user].performAction(this._getClickableCss(cp), cp.clk_i, cp.node); })
-        //                     .then(() => { return this.webCrawlers[pclkQueue[i].user].autoAcceptAlert(); })
-        //                     .then(() => { return this._checkHandlesAfterClickable(this.webCrawlers[pclkQueue[i].user], initialHandle); })
-        //                     .then(() => {
-        //                         browserCorrelatedState ++;
-        //                         res_t();
-        //                     })
-        //                     .catch(err => {
-        //                         if (err !== undefined && err.message === 'click-failed') {
-        //                             crawlerLogger.warn('Error RE-performing action (find the cause and patch it).');
-        //                             rej_t(err);
-        //                         } else {
-        //                             rej_t(err);
-        //                             throw err;
-        //                         }
-        //                     });
-        //                 })
-        //                 .then(() => {
-        //                     if (i !== pclkQueue.length -1)
-        //                         cs = pclkQueue[i].node.clickables[pclkQueue[i].clk_i][pclkQueue[i].user].webAppStates[0].webAppStateDst;
-        //                     // else
-        //                     //     prev_cs = cs;
-        //                     res_pclk();
-        //                 })
-        //                 .catch(err => {
-        //                     if (err !== undefined && err.message === 'click-failed') {
-        //                         crawlerLogger.warn('Error RE-performing queue of g-clk actions ended with p-clk action.')
-        //                         res_pclk();
-        //                     } else {
-        //                         rej_pclk(err);
-        //                         throw err;
-        //                     }
-        //                 });
-        //             })
-        //             .catch(err => {
-        //                 rej_pclk(err);
-        //                 throw err;
-        //             });
-
-
-
-        //         }) // utils.promise_for(i < pclkQueue.length)
-        //         .then(() => {
-        //             // Finally targeted pclk performed !!!
-
-        //             followTheTrace --;
-        //             if (followTheTrace < 0)
-        //                 followTheTrace = 2;
-
-        //             return Promise.all(this.users.map(user => this.crawlCurrentWebAppState(this.webCrawlers[user], this.i_pstateCounter)))
-        //             .then(webUsersStates => {
-        //                 let webAppState = {
-        //                     i_pstate: this.i_pstateCounter
-        //                 };
-        //                 for (let i = 0; i < this.users.length; i++) {
-        //                     webAppState[this.users[i]] = {
-        //                         tmpls: webUsersStates[i].tmplSet,
-        //                         webPageRoot: webUsersStates[i].webPageRoot,
-        //                     };
-        //                 }
-        //                 this.webAppModel.push(webAppState);
-        //                 this.i_pstateCounter ++;
-
-        //                 let last_pclk = pclkQueue[pclkQueue.length -1];
-        //                 if (last_pclk.node.clickables[last_pclk.clk_i][last_pclk.user].webAppStates === undefined)
-        //                     last_pclk.node.clickables[last_pclk.clk_i][last_pclk.user].webAppStates = [];
-        //                 last_pclk.node.clickables[last_pclk.clk_i][last_pclk.user].webAppStates.push({
-        //                     i_pstate: undefined,
-        //                     webAppStateSrc: this.webAppModel[pclkQueue[pclkQueue.length -1].i_pstate],
-        //                     webAppStateDst: webAppState
-        //                 });
-
-        //             });
-        //         })
-        //         .then(() => {
-        //             res();
-        //         })
-        //         .catch(err => {
-        //             if (err === undefined) {
-        //                 res();
-        //             } else {
-        //                 rej(err);
-        //                 throw err;
-        //             }
-        //         });
-
-        //     }) // utils.promise_for - main loop
-        //     .catch(err => {
-        //         throw err;
-        //     });
-        // })
-        // .catch (err => {
-        //     if (err !== undefined && err === 'p-clk ended') {
-        //         // everything is okey
-        //     } else {
-        //         throw err;
-        //     }
-        // })
+                    let last_pclk = pclkQueue[pclkQueue.length -1];
+                    if (last_pclk.node.clickables[last_pclk.clk_i][last_pclk.user].webAppStates === undefined)
+                        last_pclk.node.clickables[last_pclk.clk_i][last_pclk.user].webAppStates = [];
+                    last_pclk.node.clickables[last_pclk.clk_i][last_pclk.user].webAppStates.push({
+                        i_pstate: pclkQueue[pclkQueue.length -1].i_pstate,
+                        webAppStateSrc: this.webAppModel[pclkQueue[pclkQueue.length -1].i_pstate],
+                        webAppStateDst: webAppState
+                    });
+                });
+            })
+            .then(() => {
+                res();
+                crawlerLogger.info('Fixed templates = ' + this.webAppTmplModel.templates.length + ' fixed web-pages = ' + this.webAppTmplModel.webAppPageList.length);
+            })
+            .catch(err => {
+                rej(err);
+                throw err;
+            });
+        })}) // utils.promise_for (!webCrawlingEnd)
 
         .then(() => {
             crawlerLogger.info('End crawling process.');
+            crawlerLogger.info('Fixed templates = ' + this.webAppTmplModel.templates.length + ' fixed web-pages = ' + this.webAppTmplModel.webAppPageList.length);
             crawlerLogger.info('Dumping webApp model.');
             this.webAppTmplModel.dumpWebAppTmplModel('./_html/');
             crawlerLogger.info('Dumping ended.');
@@ -1228,8 +1104,6 @@ class CrawlingCtrl {
             crawlerLogger.fatal('Error while crawling web-application.');
             throw err;
         });
-
-        return workflow;
     }
 
     // ================================================================================================================

@@ -21,8 +21,6 @@ class ClickSearcher {
         this.webPageStack = [];
         this.browserPos = 0;
         this.browserTrace = false; // trace === false after back-off for depth first search
-
-        // addWebPageAfterClickable(this.homePage);
     }
 
     // ================================================================================================================
@@ -86,34 +84,34 @@ class ClickSearcher {
     // ================================================================================================================
     _getNextGClickableInStack(gen, stack, fcheckClickable, node = undefined, clk_i = undefined) {
 
-            if (node === undefined) {
+        if (node === undefined) {
+            node = this._genNextNode(gen, stack);
+            if (node === undefined)
+                return {node: undefined, clk_i: undefined};
+            clk_i = undefined;
+        }
+
+        let i = 0; // skip clickables before clk_i
+        if (clk_i !== undefined) {
+            while (node.clickables[i].clk !== node.clickables[clk_i].clk)
+                i++;
+            i++;
+        }
+
+        while (true) {
+            while ( i < node.clickables.length && ! fcheckClickable(node, i))
+                i++;
+            
+            if (i >= node.clickables.length) {
                 node = this._genNextNode(gen, stack);
+                i = 0;
                 if (node === undefined)
                     return {node: undefined, clk_i: undefined};
-                clk_i = undefined;
-            }
-
-            let i = 0; // skip clickables before clk_i
-            if (clk_i !== undefined) {
-                while (node.clickables[i].clk !== node.clickables[clk_i].clk)
-                    i++;
-                i++;
-            }
-
-            while (true) {
-                while ( i < node.clickables.length && ! fcheckClickable(node, i))
-                    i++;
-                
-                if (i >= node.clickables.length) {
-                    node = this._genNextNode(gen, stack);
-                    i = 0;
-                    if (node === undefined)
-                        return {node: undefined, clk_i: undefined};
-                } else {
-                    return {node, clk_i: i};
-                }
+            } else {
+                return {node, clk_i: i};
             }
         }
+    }
 
     // ================================================================================================================
     shiftToNextClickable() {
